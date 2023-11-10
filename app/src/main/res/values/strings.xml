@@ -8,5 +8,7 @@
     <string name="register">Register</string>
     <string name="loginbtn">Login</string>
     <string name="confirmPassword">Re-Enter Password</string>
+    <string name="registernow">Don\'t Have An Account? Register Now.</string>
+    <string name="loginNow">Already Have An Account? Login Now</string>
 
 </resources>

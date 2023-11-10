@@ -6,4 +6,6 @@
     </style>
 
     <style name="Theme.RigCraft" parent="Base.Theme.RigCraft" />
+
+    <style name="Theme.Material3.Light" parent="android:Theme.Material.Light.NoActionBar" />
 </resources>

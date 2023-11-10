@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:orientation="vertical"
     android:gravity="center"
     android:layout_height="match_parent"
-    tools:context=".Register">
+    android:layout_width="match_parent"
+    tools:context=".RegistrationActivity">
 
-    <!--    <ImageView-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:src="@drawable/logo"-->
-    <!--        android:layout_marginBottom="20dp"/>-->
+    <!-- Logo-->
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginBottom="20dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/rigcraft_logo_cropped" />
 
 
+    <!--Page Heading-->
 
     <TextView
         android:text="@string/register"
@@ -59,12 +61,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/confirmPassword"
-            android:hint="@string/confirmPassword"
-            android:inputType="textPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/confirmPassword"
+        android:hint="@string/confirmPassword"
+        android:inputType="textPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+<!--    Progress bar that shows once login btn pressed -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 
     <!-- Login button -->
 
@@ -73,7 +83,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/register"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="15dp"/>
+
+    <TextView
+        android:id="@+id/lgnNow"
+        android:text="@string/loginNow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="15dp"/>
+
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>
