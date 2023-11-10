@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">RigCraft</string>
+    <string name="title_activity_login">Login</string>
+
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="loginbtn">Login</string>
+    <string name="confirmPassword">Re-Enter Password</string>
+
 </resources>

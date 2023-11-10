@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "540458196075",
+    "project_id": "rigcraft-firebase",
+    "storage_bucket": "rigcraft-firebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:540458196075:android:722e61a2c8c787cbbca52e",
+        "android_client_info": {
+          "package_name": "com.fahm781.rigcraft"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYVUCGxhd8G6nwgX7c016emYhGKzy-D0A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
