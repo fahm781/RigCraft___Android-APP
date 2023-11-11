@@ -21,7 +21,7 @@ class LoginActivity : AppCompatActivity() {
     lateinit var auth: FirebaseAuth
     lateinit var textView: TextView
 
-
+//this method checks if the user is already logged in, also this function is causing the crash when logged in
     public override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
