@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <menu xmlns:android="http://schemas.android.com/apk/res/android">
+        <item android:id="@+id/partpicker"
+            android:icon="@drawable/partpicker_icon_svg"
+            android:title="@string/partPicker"/>
+        <item android:id="@+id/buildguide"
+              android:icon="@drawable/twotone_book_24"
+              android:title="@string/buildGuide"/>
+        <item android:id="@+id/chatbot"
+              android:icon="@drawable/chatbot_icon_svg"
+              android:title="@string/chatbot"/>
+        <item android:id="@+id/useraccount"
+              android:icon="@drawable/sharp_account_circle_24"
+              android:title="@string/userAccount"/>
+        <!--     Add more Tabs as needed here  -->
+    </menu>
+

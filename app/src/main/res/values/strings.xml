@@ -10,5 +10,11 @@
     <string name="confirmPassword">Re-Enter Password</string>
     <string name="registernow">Don\'t Have An Account? Register Now.</string>
     <string name="loginNow">Already Have An Account? Login Now</string>
+    <string name="chatbot">Chatbot</string>
+    <string name="userAccount">Account</string>
+    <string name="buildGuide">Build Guide</string>
+    <string name="partPicker">Part Picker</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
