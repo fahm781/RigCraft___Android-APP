@@ -6,7 +6,8 @@
     android:orientation="vertical"
     android:gravity="center"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".LoginActivity"
+    >
 
 
     <!--Logo-->
@@ -34,7 +35,9 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp"
+        android:paddingBottom="2dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/email"
@@ -48,7 +51,8 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password"

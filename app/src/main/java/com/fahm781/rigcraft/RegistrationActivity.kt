@@ -3,8 +3,6 @@ package com.fahm781.rigcraft
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -19,7 +17,7 @@ class RegistrationActivity : AppCompatActivity() {
     lateinit var editTextPassword: TextInputEditText
     lateinit var editTextPassword2: TextInputEditText
     lateinit var buttonRegister: Button
-    lateinit var progressBar: ProgressBar;
+    lateinit var progressBar: ProgressBar
 
     //create a Firebase Authentication object
     lateinit var auth: FirebaseAuth

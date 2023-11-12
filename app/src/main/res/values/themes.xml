@@ -3,9 +3,15 @@
     <style name="Base.Theme.RigCraft" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+        <!-- the following changes the bg Colour-->
+        <item name="android:windowBackground">@color/background_color</item>
+
     </style>
 
     <style name="Theme.RigCraft" parent="Base.Theme.RigCraft" />
+
+
 
 <!--    <style name="Theme.Material3.Light" parent="android:Theme.Material.Light.NoActionBar" />-->
 </resources>

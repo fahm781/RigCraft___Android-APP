@@ -1,16 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AccountFragment">
+    android:fillViewport="true">
 
-    <TextView
-
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="@string/userAccount"
-        android:textSize="26sp" />
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:paddingTop="100dp" >
 
-</RelativeLayout>
+        <!-- User Account Section -->
+        <ImageView
+            android:layout_width="94dp"
+            android:layout_height="97dp"
+            android:layout_gravity="center"
+            android:src="@drawable/sharp_manage_accounts_24" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/userEmail"
+            android:text="Email: test@test.com"
+            android:layout_marginTop="16dp"/>
+
+        <!-- Reset Password Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reset Password"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"/>
+
+        <EditText
+            android:id="@+id/oldPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Old Password"/>
+
+        <EditText
+            android:id="@+id/newPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="New Password"/>
+
+        <EditText
+            android:id="@+id/confirmNewPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Re-Enter New Password"/>
+
+        <Button
+            android:id="@+id/changePwdButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Change Password" />
+        <!-- Feedback and Reporting Issues Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Feedback and Reporting Issues"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"/>
+
+        <EditText
+            android:id="@+id/feedbackTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Title"/>
+
+        <EditText
+            android:id="@+id/feedbackMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Message"
+            android:inputType="textMultiLine"
+            android:gravity="top"
+            android:minLines="3"/>
+
+        <Button
+            android:id="@+id/feedbackSubButton"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:text="Send Feedback" />
+        <Button
+            android:id="@+id/logoutButton"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="Log Out"
+            />
+
+    </LinearLayout>
+</ScrollView>

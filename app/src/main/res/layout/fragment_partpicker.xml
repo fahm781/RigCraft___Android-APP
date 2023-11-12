@@ -1,16 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PartPickerFragment">
+    android:orientation="vertical"
+    android:padding="16dp">
 
-<TextView
+    <Button
+        android:id="@+id/compatibilityCheck"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Compatibility Check"
+        />
 
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerInParent="true"
-    android:text="@string/partPicker"
-    android:textSize="26sp" />
+    <!-- Replace the following with a RecyclerView for dynamic content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
+    <LinearLayout
 
-</RelativeLayout>
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Select component buttons only one for now -->
+        <Button
+            android:id="@+id/selectCpu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select CPU"
+            android:drawableStart="@android:drawable/ic_menu_manage"
+            android:padding="16dp" />
+
+        <!-- Option that shows when a component is selected for each category -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@android:drawable/dialog_holo_light_frame"
+            android:padding="16dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_menu_manage" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Selected Mobo: B450 AMD, £120"
+                android:gravity="center_vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_delete" />
+        </LinearLayout>
+
+        <!-- Add more components in the same fashion -->
+    </LinearLayout>
+    </ScrollView>
+
+    <!-- Buttons at the bottom -->
+    <Button
+        android:id="@+id/saveBuild"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save Build"
+        android:layout_marginTop="16dp"
+         />
+
+    <Button
+        android:id="@+id/clearBuild"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Clear Build"
+         />
+
+    <!-- Saved builds section -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Saved Builds (if any exist will appear here) :"
+        android:layout_marginTop="16dp" />
+
+    <!-- Placeholder for dynamic list of saved builds -->
+    <LinearLayout
+        android:id="@+id/savedBuildsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <!-- Dynamic content will be added here programmatically -->
+    </LinearLayout>
+
+</LinearLayout>

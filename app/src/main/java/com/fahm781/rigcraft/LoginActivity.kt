@@ -56,11 +56,13 @@ class LoginActivity : AppCompatActivity() {
             val password = editTextPassword.text.toString()
 
             if (email.isEmpty()) {
+                progressBar.visibility = ProgressBar.GONE
                 Toast.makeText(this, "Enter an email address", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             if (password.isEmpty()) {
+                progressBar.visibility = ProgressBar.GONE
                 Toast.makeText(this, "Enter a Password into the field(s)", Toast.LENGTH_SHORT)
                     .show()
                 return@setOnClickListener
@@ -79,7 +81,8 @@ class LoginActivity : AppCompatActivity() {
                         val user = auth.currentUser
 
                         //Send the user to the next relevant page
-                        //code here
+                        val intent = Intent(applicationContext, MainActivity::class.java)
+                        startActivity(intent)
                     } else {
                         // If sign in fails, display a message to the user.
                         Toast.makeText(
