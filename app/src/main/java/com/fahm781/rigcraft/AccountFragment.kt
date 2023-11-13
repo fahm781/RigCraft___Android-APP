@@ -1,12 +1,18 @@
 package com.fahm781.rigcraft
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 
 // TODO: Rename parameter arguments, choose names that match
@@ -21,6 +27,15 @@ private const val ARG_PARAM2 = "param2"
  */
 class AccountFragment : Fragment() {
     private lateinit var logoutButton: Button
+    private lateinit var changePwdButton: Button
+    private lateinit var oldPassword: EditText
+    private lateinit var newPassword: EditText
+    private lateinit var confirmNewPassword: EditText
+    private lateinit var userEmailTextView: TextView
+    private lateinit var feedbackSubButton: Button
+    private lateinit var feedbackMessage: EditText
+    private lateinit var feedbackTitle: EditText
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,7 +44,8 @@ class AccountFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_account, container, false)
 
-        // Initialize the button and set the click listener
+// Logging out User
+
         logoutButton = view.findViewById(R.id.logoutButton) // replace with your actual button ID
         logoutButton.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
@@ -38,6 +54,128 @@ class AccountFragment : Fragment() {
             activity?.finish()
         }
 
+//Changing password
+
+        changePwdButton = view.findViewById(R.id.changePwdButton)
+        newPassword = view.findViewById(R.id.newPassword)
+        oldPassword = view.findViewById(R.id.oldPassword)
+        confirmNewPassword = view.findViewById(R.id.confirmNewPassword)
+        changePwdButton.setOnClickListener{
+            changePassword(view)
+        }
+
+        // Get the TextView by its ID
+        userEmailTextView = view.findViewById(R.id.userEmail)
+
+        // Get the current user from FirebaseAuth
+        val currentUser = FirebaseAuth.getInstance().currentUser
+
+        // Set the user's email to the TextView, if the user is not null
+        currentUser?.let {
+            userEmailTextView.text = "User: ${it.email}"
+        } ?: run {
+            userEmailTextView.text = "User: not logged in"
+        }
+
+//Submitting User Feedback
+        feedbackSubButton = view.findViewById(R.id.feedbackSubButton)
+        feedbackSubButton.setOnClickListener{
+            sendFeedback(view)
+        }
+
         return view
     }
-}
+
+    private fun sendFeedback(view: View){
+        feedbackMessage = view.findViewById(R.id.feedbackMessage)
+        feedbackTitle = view.findViewById(R.id.feedbackTitle)
+        val message = feedbackMessage.text.toString()
+        val title = feedbackTitle.text.toString()
+        val user = FirebaseAuth.getInstance().currentUser
+        val email = user?.email.toString()
+
+        if (message.isEmpty() || title.isEmpty()) {
+            Toast.makeText(context, "Enter Both Fields", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val emailIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "message/rfc822"
+            putExtra(Intent.EXTRA_EMAIL, arrayOf("farazahmed9910@gmail.com")) // Receiver's email address
+            putExtra(Intent.EXTRA_SUBJECT, "RigCraft Feedback (User Email: $email)\n$title") // Subject of the email
+            putExtra(Intent.EXTRA_TEXT, message) // Body of the email
+        }
+
+        try {
+            startActivity(Intent.createChooser(emailIntent, "Send feedback..."))
+        } catch (ex: ActivityNotFoundException) {
+            Toast.makeText(context, "No email client installed", Toast.LENGTH_SHORT).show()
+        }
+    }
+    private fun changePassword(view: View) {
+
+
+            val user = FirebaseAuth.getInstance().currentUser
+            val oldPwd = oldPassword.text.toString()
+            val newPwd = newPassword.text.toString()
+            val confirmPwd = confirmNewPassword.text.toString()
+
+            if (oldPwd.isEmpty() || newPwd.isEmpty() || confirmPwd.isEmpty()) {
+                Toast.makeText(
+                    context,
+                    "Make sure all Password fields are filled",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return
+            }
+            if (newPwd != confirmPwd) {
+                Toast.makeText(
+                    context,
+                    "New password and confirm password do not match.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return
+            }
+
+            // Check password complexity requirements if any
+            if (newPwd.length < 6) {
+                Toast.makeText(
+                    context,
+                    "Password should be at least 6 characters long.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return
+            }
+
+            if (user != null) {
+                // Re-authenticate the user
+                val credential = EmailAuthProvider.getCredential(user.email!!, oldPwd)
+                user.reauthenticate(credential).addOnCompleteListener { reauthTask ->
+                    if (reauthTask.isSuccessful) {
+                        // Proceed with password update
+                        user.updatePassword(newPwd).addOnCompleteListener { updateTask ->
+                            if (updateTask.isSuccessful) {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Password updated successfully!",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Failed to update password: ${updateTask.exception?.message}",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            "Re-authentication failed: ${reauthTask.exception?.message}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            }
+        }
+    }

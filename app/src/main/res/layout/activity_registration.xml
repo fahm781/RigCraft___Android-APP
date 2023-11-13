@@ -32,11 +32,14 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp"
+        android:paddingBottom="2dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/email"
             android:hint="@string/email"
+            android:inputType="textEmailAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
@@ -46,7 +49,9 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp"
+        android:paddingBottom="2dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password"
@@ -56,10 +61,11 @@
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
-
+    <!-- Confirm Password input -->
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp">
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/confirmPassword"
@@ -67,7 +73,7 @@
         android:inputType="textPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
+    </com.google.android.material.textfield.TextInputLayout>
 <!--    Progress bar that shows once login btn pressed -->
     <ProgressBar
         android:id="@+id/progressBar"
@@ -76,14 +82,14 @@
         android:layout_height="wrap_content" />
 
 
-    <!-- Login button -->
+    <!-- Register button -->
 
     <Button
         android:id="@+id/buttonReg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/register"
-        android:layout_marginTop="15dp"/>
+        android:layout_marginTop="10dp"/>
 
     <TextView
         android:id="@+id/lgnNow"

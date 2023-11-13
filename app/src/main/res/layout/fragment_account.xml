@@ -22,8 +22,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/userEmail"
-            android:text="Email: test@test.com"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginTop="16dp"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            />
 
         <!-- Reset Password Section -->
         <TextView
@@ -31,38 +33,43 @@
             android:layout_height="wrap_content"
             android:text="Reset Password"
             android:textStyle="bold"
-            android:layout_marginTop="24dp"/>
+            android:layout_marginTop="26sp"/>
 
         <EditText
             android:id="@+id/oldPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Old Password"/>
+            android:hint="Old Password"
+            android:inputType="textPassword"
+            />
 
         <EditText
             android:id="@+id/newPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="New Password"/>
+            android:hint="New Password"
+            android:inputType="textPassword"/>
 
         <EditText
             android:id="@+id/confirmNewPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Re-Enter New Password"/>
+            android:hint="Re-Enter New Password"
+            android:inputType="textPassword"/>
 
         <Button
             android:id="@+id/changePwdButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Change Password" />
+
         <!-- Feedback and Reporting Issues Section -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Feedback and Reporting Issues"
+            android:text="Feedback and Issue Reporting"
             android:textStyle="bold"
-            android:layout_marginTop="24dp"/>
+            android:layout_marginTop="26sp"/>
 
         <EditText
             android:id="@+id/feedbackTitle"

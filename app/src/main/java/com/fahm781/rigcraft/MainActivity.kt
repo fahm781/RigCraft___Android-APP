@@ -3,6 +3,8 @@ package com.fahm781.rigcraft
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.bottomnavigation.LabelVisibilityMode
+import com.google.android.material.navigation.NavigationBarView
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,6 +18,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
+        bottomNavigationView.setLabelVisibilityMode(NavigationBarView.LABEL_VISIBILITY_LABELED);
+
         //when app opens the selected tab should be the part picker
     supportFragmentManager.beginTransaction().replace(R.id.fragment_container, partPickerFragment).commit()
        // bottomNavigationView.setOnNavigationItemSelectedListener  { item ->   //uncomment this if the line below doesnt work

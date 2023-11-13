@@ -58,11 +58,13 @@ class RegistrationActivity : AppCompatActivity() {
             val password2 = editTextPassword2.text.toString()
 
             if (email.isEmpty()) {
+                progressBar.visibility = ProgressBar.GONE
                 Toast.makeText(this, "Enter an email address", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             if (password.isEmpty() || password2.isEmpty()) {
+                progressBar.visibility = ProgressBar.GONE
                 Toast.makeText(this, "Enter a Password into the field(s)", Toast.LENGTH_SHORT)
                     .show()
                 return@setOnClickListener
@@ -70,6 +72,7 @@ class RegistrationActivity : AppCompatActivity() {
 
             //check if password matches the confirm password
             if (password != password2) {
+                progressBar.visibility = ProgressBar.GONE
                 Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
