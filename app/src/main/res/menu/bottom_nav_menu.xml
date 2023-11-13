@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
     <menu xmlns:android="http://schemas.android.com/apk/res/android">
-        <item android:id="@+id/partpicker"
+        <item android:id="@+id/partPickerFragment"
             android:icon="@drawable/partpicker_icon_svg"
             android:title="@string/partPicker"/>
-        <item android:id="@+id/buildguide"
+        <item android:id="@+id/buildGuideFragment"
               android:icon="@drawable/twotone_book_24"
               android:title="@string/buildGuide"/>
-        <item android:id="@+id/chatbot"
+        <item android:id="@+id/chatbotFragment"
               android:icon="@drawable/twotone_chat_24"
               android:title="@string/chatbot"/>
-        <item android:id="@+id/useraccount"
+        <item android:id="@+id/accountFragment"
               android:icon="@drawable/sharp_account_circle_24"
               android:title="@string/userAccount"/>
         <!--     Add more Tabs as needed here  -->

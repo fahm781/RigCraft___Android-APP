@@ -15,32 +15,36 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [PartPickerFragment.newInstance] factory method to
+ * Use the [ProductListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class PartPickerFragment : Fragment() {
+class ProductListFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    private lateinit var selectCpu: Button
+    private lateinit var moreDetailsButton: Button
 
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            param1 = it.getString(ARG_PARAM1)
+            param2 = it.getString(ARG_PARAM2)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_partpicker, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        selectCpu = view.findViewById(R.id.selectCpu)
-        selectCpu.setOnClickListener {
-           findNavController().navigate(R.id.action_partPickerFragment_to_productListFragment)
+        val view =  inflater.inflate(R.layout.fragment_product_list, container, false)
+        moreDetailsButton = view.findViewById(R.id.moreDetailsButton)
+        moreDetailsButton.setOnClickListener {
+            findNavController().navigate(R.id.action_productListFragment_to_productPageFragment)
         }
 
+
+        return view
     }
 
 }

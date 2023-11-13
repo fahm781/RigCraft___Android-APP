@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/partPickerFragment">
+
+    <fragment
+        android:id="@+id/partPickerFragment"
+        android:name="com.fahm781.rigcraft.PartPickerFragment"
+        android:label="PartPickerFragment" >
+        <action
+            android:id="@+id/action_partPickerFragment_to_productListFragment"
+            app:destination="@id/productListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/productListFragment"
+        android:name="com.fahm781.rigcraft.ProductListFragment"
+        android:label="fragment_product_list"
+        tools:layout="@layout/fragment_product_list" >
+        <action
+            android:id="@+id/action_productListFragment_to_productPageFragment"
+            app:destination="@id/productPageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/productPageFragment"
+        android:name="com.fahm781.rigcraft.ProductPageFragment"
+        android:label="fragment_product_page"
+        tools:layout="@layout/fragment_product_page" />
+    <fragment
+        android:id="@+id/chatbotFragment"
+        android:name="com.fahm781.rigcraft.ChatbotFragment"
+        android:label="fragment_chatbot"
+        tools:layout="@layout/fragment_chatbot" />
+    <fragment
+        android:id="@+id/buildGuideFragment"
+        android:name="com.fahm781.rigcraft.BuildGuideFragment"
+        android:label="BuildGuideFragment" />
+    <fragment
+        android:id="@+id/accountFragment"
+        android:name="com.fahm781.rigcraft.AccountFragment"
+        android:label="AccountFragment" />
+</navigation>
