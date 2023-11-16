@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -57,13 +59,62 @@ private val steps = listOf(
  */
 class BuildGuideFragment : Fragment() {
 
-
+    private lateinit var buttonNext: Button
+    private lateinit var buttonPrevious: Button
+    private lateinit var textViewTitle: TextView
+    private lateinit var textViewContent: TextView
+    private var currentStepIndex = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_build_guide, container, false)
+        val view =  inflater.inflate(R.layout.fragment_build_guide, container, false)
+
+        buttonNext = view.findViewById(R.id.buttonNext)
+        buttonPrevious = view.findViewById(R.id.buttonPrevious)
+        textViewTitle = view.findViewById(R.id.textViewTitle)
+        textViewContent = view.findViewById(R.id.textViewContent)
+
+        updateUI()
+        buttonNext.setOnClickListener {
+            moveToNextStep()
+            updateUI()
+        }
+
+        buttonPrevious.setOnClickListener {
+            moveToPreviousStep()
+            updateUI()
+        }
+
+        return view;
     }
 
+    fun getCurrentStep(): InstructionStep {
+        if (currentStepIndex >= 0 && currentStepIndex < steps.size) {
+            return steps[currentStepIndex]
+        }
+        // Handle index out of bounds or other error case here
+        return InstructionStep("Error", "Invalid step index")
+    }
+
+    fun moveToNextStep() {
+        if (currentStepIndex < steps.size - 1) {
+            currentStepIndex++
+        }
+    }
+
+    fun moveToPreviousStep() {
+        if (currentStepIndex > 0) {
+            currentStepIndex--
+        }
+    }
+
+    private fun updateUI() {
+        val currentStep = getCurrentStep()
+        textViewTitle.text = currentStep.title
+        textViewContent.text = currentStep.content
+    }
 }
+
+
