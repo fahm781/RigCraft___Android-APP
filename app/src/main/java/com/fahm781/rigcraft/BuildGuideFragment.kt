@@ -25,7 +25,7 @@ private val steps = listOf(
     ),
     InstructionStep(
         "Applying the Thermal Paste",
-        "1. Clean CPU surface with isopropyl alcohol. \\n2. Place a pea-sized dot of thermal paste on CPU center. \\n3. Position heatsink on top and press down evenly. \\n4. Secure heatsink with provided mechanism. \\n5. Power on to ensure correct application."
+        "1. Clean CPU surface with isopropyl alcohol. \n2. Place a pea-sized dot of thermal paste on CPU center. \n3. Position heatsink on top and press down evenly. \n4. Secure heatsink with provided mechanism. \n5. Power on to ensure correct application."
     ),
     InstructionStep(
         "Installing CPU Fan",
@@ -95,7 +95,7 @@ class BuildGuideFragment : Fragment() {
             return steps[currentStepIndex]
         }
         // Handle index out of bounds or other error case here
-        return InstructionStep("Error", "Invalid step index")
+        return InstructionStep("Invalid Heading Index", "Invalid step index")
     }
 
     fun moveToNextStep() {

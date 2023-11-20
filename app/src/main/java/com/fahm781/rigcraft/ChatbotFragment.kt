@@ -1,6 +1,5 @@
 package com.fahm781.rigcraft
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,8 +9,15 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.auth.FirebaseAuth
+import com.fahm781.rigcraft.ChatbotServices.BOT_MSG
+import com.fahm781.rigcraft.ChatbotServices.ChatbotRepository
+import com.fahm781.rigcraft.ChatbotServices.ChatbotViewModel
+import com.fahm781.rigcraft.ChatbotServices.MY_MSG
+import com.fahm781.rigcraft.ChatbotServices.Msg
+import com.fahm781.rigcraft.ChatbotServices.MsgAdapter
+import com.fahm781.rigcraft.ChatbotServices.OpenAIApiService
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -28,7 +34,9 @@ class ChatbotFragment : Fragment() {
     private lateinit var editTextMessage: EditText
     private lateinit var buttonSend: ImageButton
     private lateinit var welcomeText: TextView
-
+    private lateinit var viewModel: ChatbotViewModel
+    private lateinit var msgList: ArrayList<Msg>
+    private lateinit var msgAdapter: MsgAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,26 +49,45 @@ class ChatbotFragment : Fragment() {
         editTextMessage = view.findViewById(R.id.editTextMessage)
         chatRecyclerView = view.findViewById(R.id.chatRecyclerView)
         welcomeText = view.findViewById(R.id.welcomeText)
+        msgList =  ArrayList()
+
+        //setup recycler view
+        msgAdapter = MsgAdapter(requireContext(), msgList)
+        chatRecyclerView.adapter = msgAdapter
+        LinearLayoutManager(requireContext()).also { linearLayoutManager ->
+            linearLayoutManager.stackFromEnd = true
+            chatRecyclerView.layoutManager = linearLayoutManager
+        }
+
 
         buttonSend.setOnClickListener {
-            val message = editTextMessage.text.toString().trim()
-            if (message.isNotEmpty()) {
-                sendMessageToChatbot(message)
-                //reset the text in the edit text
-                //send a short toast message to the user with the message
-                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+            val query = editTextMessage.text.toString().trim()
+            if (query.isNotEmpty()) {
+                sendMessageToChatbot(query, MY_MSG)
+
+
+                //set the edit text to empty
                 editTextMessage.setText("")
+                welcomeText.visibility = View.GONE
             }
         }
+
 
         return view
     }
 
-    private fun sendMessageToChatbot(message: String) {
-        //  chatbot message sending logic
+
+    private fun sendMessageToChatbot(message: String, sentBy: String) {
+
+        activity?.runOnUiThread {
+            msgList.add(Msg(message, sentBy))
+            msgAdapter.notifyDataSetChanged()
+            chatRecyclerView.smoothScrollToPosition(msgAdapter.itemCount - 1)
+        }
+    }
+
+
     }
 
 
 
-
-}
