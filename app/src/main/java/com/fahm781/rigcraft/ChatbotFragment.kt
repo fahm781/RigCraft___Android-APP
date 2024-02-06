@@ -11,13 +11,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.fahm781.rigcraft.ChatbotServices.BOT_MSG
+//import com.fahm781.rigcraft.ChatbotServices.BOT_MSG
 import com.fahm781.rigcraft.ChatbotServices.ChatbotRepository
-import com.fahm781.rigcraft.ChatbotServices.ChatbotViewModel
-import com.fahm781.rigcraft.ChatbotServices.MY_MSG
+//import com.fahm781.rigcraft.ChatbotServices.MY_MSG
 import com.fahm781.rigcraft.ChatbotServices.Msg
 import com.fahm781.rigcraft.ChatbotServices.MsgAdapter
-import com.fahm781.rigcraft.ChatbotServices.OpenAIApiService
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,9 +32,10 @@ class ChatbotFragment : Fragment() {
     private lateinit var editTextMessage: EditText
     private lateinit var buttonSend: ImageButton
     private lateinit var welcomeText: TextView
-    private lateinit var viewModel: ChatbotViewModel
+
     private lateinit var msgList: ArrayList<Msg>
     private lateinit var msgAdapter: MsgAdapter
+     var chatbotRepository = ChatbotRepository()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -52,7 +51,7 @@ class ChatbotFragment : Fragment() {
         msgList =  ArrayList()
 
         //setup recycler view
-        msgAdapter = MsgAdapter(requireContext(), msgList)
+        msgAdapter = MsgAdapter(msgList)
         chatRecyclerView.adapter = msgAdapter
         LinearLayoutManager(requireContext()).also { linearLayoutManager ->
             linearLayoutManager.stackFromEnd = true
@@ -63,12 +62,14 @@ class ChatbotFragment : Fragment() {
         buttonSend.setOnClickListener {
             val query = editTextMessage.text.toString().trim()
             if (query.isNotEmpty()) {
-                sendMessageToChatbot(query, MY_MSG)
-
-
-                //set the edit text to empty
+                sendMessageToChatbot(query, "me")
+              //set the edit text to empty
                 editTextMessage.setText("")
                 welcomeText.visibility = View.GONE
+
+                getResponse(query)
+            } else {
+                Toast.makeText(requireContext(), "Please enter a query", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -80,12 +81,15 @@ class ChatbotFragment : Fragment() {
     private fun sendMessageToChatbot(message: String, sentBy: String) {
 
         activity?.runOnUiThread {
-            msgList.add(Msg(message, sentBy))
+            msgList.add(Msg(sentBy, message))
             msgAdapter.notifyDataSetChanged()
             chatRecyclerView.smoothScrollToPosition(msgAdapter.itemCount - 1)
         }
     }
 
+    fun getResponse(msg: String){
+        chatbotRepository.getResponse(msg)
+    }
 
     }
 

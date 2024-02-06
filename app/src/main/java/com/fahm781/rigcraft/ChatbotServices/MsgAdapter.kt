@@ -1,6 +1,5 @@
 package com.fahm781.rigcraft.ChatbotServices
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.fahm781.rigcraft.R
 
-class MsgAdapter(private val context: Context, private val msgList: List<Msg>) :
+class MsgAdapter(private val msgList: List<Msg>) :
     RecyclerView.Adapter<MsgAdapter.MsgViewHolder>() {
 
     class MsgViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -18,6 +17,7 @@ class MsgAdapter(private val context: Context, private val msgList: List<Msg>) :
         val leftMsg: TextView = itemView.findViewById(R.id.left_chat_text_view)
         val rightMsg: TextView = itemView.findViewById(R.id.right_chat_text_view)
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MsgViewHolder {
         //val view = LayoutInflater.from(parent.context).inflate(R.layout.chat_view, null)
@@ -28,14 +28,15 @@ class MsgAdapter(private val context: Context, private val msgList: List<Msg>) :
 
     override fun onBindViewHolder(holder: MsgViewHolder, position: Int) {
         val message = msgList[position]
-        if (message.sentBy == MY_MSG) {
+        if (message.role == "me") {
             holder.rightChatView.visibility = View.VISIBLE
             holder.leftChatView.visibility = View.GONE
-            holder.rightMsg.text = message.message
-        } else {
+            holder.rightMsg.text = message.content
+        }
+        if(message.role == "assistant") {
             holder.leftChatView.visibility = View.VISIBLE
             holder.rightChatView.visibility = View.GONE
-            holder.leftMsg.text = message.message
+            holder.leftMsg.text = message.content
         }
     }
 
