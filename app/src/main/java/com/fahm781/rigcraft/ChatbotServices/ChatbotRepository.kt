@@ -13,7 +13,7 @@ class ChatbotRepository {
 //    private val msgAdapter = MsgAdapter(msgList)
 
 
-    fun getResponse(msg: String) {
+    fun getResponse(msg: String, callback: (String) -> Unit) {
         val prompt = "Answer queries only related to PC building and such. Otherwise, say 'I can only answer queries related to PC building'"
         val model = "gpt-3.5-turbo"
         try {
@@ -39,8 +39,9 @@ class ChatbotRepository {
                         val code = response.code()
                         if(code == 200){
                             response.body()?.choices?.get(0)?.message?.let {
-                                Log.d("message", it.toString())}
-
+                                callback(it.toString())
+                                Log.d("message", it.toString()) //this is just for testing
+                            }
                             }   else{
                             response.errorBody()?.let {
                                 Log.d("Error", it.string())

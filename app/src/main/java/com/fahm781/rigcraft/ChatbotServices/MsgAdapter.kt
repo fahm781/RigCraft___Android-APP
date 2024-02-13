@@ -28,12 +28,12 @@ class MsgAdapter(private val msgList: List<Msg>) :
 
     override fun onBindViewHolder(holder: MsgViewHolder, position: Int) {
         val message = msgList[position]
-        if (message.role == "me") {
+        if (message.role == MY_MSG) {
             holder.rightChatView.visibility = View.VISIBLE
             holder.leftChatView.visibility = View.GONE
             holder.rightMsg.text = message.content
         }
-        if(message.role == "assistant") {
+        if(message.role == BOT_MSG) {
             holder.leftChatView.visibility = View.VISIBLE
             holder.rightChatView.visibility = View.GONE
             holder.leftMsg.text = message.content

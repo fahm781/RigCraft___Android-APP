@@ -11,11 +11,14 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.fahm781.rigcraft.ChatbotServices.BOT_MSG
 //import com.fahm781.rigcraft.ChatbotServices.BOT_MSG
 import com.fahm781.rigcraft.ChatbotServices.ChatbotRepository
+import com.fahm781.rigcraft.ChatbotServices.MY_MSG
 //import com.fahm781.rigcraft.ChatbotServices.MY_MSG
 import com.fahm781.rigcraft.ChatbotServices.Msg
 import com.fahm781.rigcraft.ChatbotServices.MsgAdapter
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,33 +65,31 @@ class ChatbotFragment : Fragment() {
         buttonSend.setOnClickListener {
             val query = editTextMessage.text.toString().trim()
             if (query.isNotEmpty()) {
-                sendMessageToChatbot(query, "me")
-              //set the edit text to empty
+                addMessage(query, MY_MSG)
                 editTextMessage.setText("")
                 welcomeText.visibility = View.GONE
-
-                getResponse(query)
+                chatbotRepository.getResponse(query) { result ->
+                    addMessage(result, BOT_MSG)
+                }
             } else {
                 Toast.makeText(requireContext(), "Please enter a query", Toast.LENGTH_SHORT).show()
             }
         }
-
-
         return view
     }
 
-
-    private fun sendMessageToChatbot(message: String, sentBy: String) {
-
+    private fun addMessage(message: String, sentBy: String) {
         activity?.runOnUiThread {
-            msgList.add(Msg(sentBy, message))
+            val content = if (sentBy == BOT_MSG) {
+                // Parse the message to extract the content
+                message.substringAfter("content=").trimEnd(')')
+            } else {
+                message
+            }
+            msgList.add(Msg(sentBy, content))
             msgAdapter.notifyDataSetChanged()
             chatRecyclerView.smoothScrollToPosition(msgAdapter.itemCount - 1)
         }
-    }
-
-    fun getResponse(msg: String){
-        chatbotRepository.getResponse(msg)
     }
 
     }
