@@ -9,9 +9,6 @@ class ChatbotRepository {
 
     private val openAiApiClient = OpenAiApiClient()
     private val openAiApiInstance = openAiApiClient.getInstance()
-//    private val msgList = arrayListOf<Msg>()
-//    private val msgAdapter = MsgAdapter(msgList)
-
 
     fun getResponse(msg: String, callback: (String) -> Unit) {
         val prompt = "Answer queries only related to PC building and such. Otherwise, say 'I can only answer queries related to PC building'"
@@ -31,7 +28,6 @@ class ChatbotRepository {
                 model
             )
 
-
             openAiApiInstance.getResponse(request)
                 .enqueue(object : Callback<Response> {
                     override fun onResponse(call: Call<Response>, response: retrofit2.Response<Response>) {
@@ -44,20 +40,18 @@ class ChatbotRepository {
                             }
                             }   else{
                             response.errorBody()?.let {
+                                callback(it.toString())
                                 Log.d("Error", it.string())
                             }
-
                             }
                     }
-
                     override fun onFailure(call: Call<Response>, t: Throwable) {
                         t.printStackTrace()
                     }
                 })
-
         }   catch (e: Exception) {
-        return e.printStackTrace()
+                return e.printStackTrace()
 
-    }
+        }
     }
 }

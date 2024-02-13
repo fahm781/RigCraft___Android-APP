@@ -1,6 +1,7 @@
 package com.fahm781.rigcraft
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,12 +13,13 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fahm781.rigcraft.ChatbotServices.BOT_MSG
-//import com.fahm781.rigcraft.ChatbotServices.BOT_MSG
 import com.fahm781.rigcraft.ChatbotServices.ChatbotRepository
 import com.fahm781.rigcraft.ChatbotServices.MY_MSG
-//import com.fahm781.rigcraft.ChatbotServices.MY_MSG
+import com.google.firebase.firestore.FirebaseFirestore
 import com.fahm781.rigcraft.ChatbotServices.Msg
 import com.fahm781.rigcraft.ChatbotServices.MsgAdapter
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.Query
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -38,11 +40,14 @@ class ChatbotFragment : Fragment() {
 
     private lateinit var msgList: ArrayList<Msg>
     private lateinit var msgAdapter: MsgAdapter
-     var chatbotRepository = ChatbotRepository()
+    private var chatbotRepository = ChatbotRepository()
+    private val db = FirebaseFirestore.getInstance()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         // Inflate the layout for this fragment
         val view=  inflater.inflate(R.layout.fragment_chatbot, container, false)
 
@@ -75,22 +80,79 @@ class ChatbotFragment : Fragment() {
                 Toast.makeText(requireContext(), "Please enter a query", Toast.LENGTH_SHORT).show()
             }
         }
+      loadMessagesFromFirestore()
         return view
     }
 
     private fun addMessage(message: String, sentBy: String) {
         activity?.runOnUiThread {
             val content = if (sentBy == BOT_MSG) {
-                // Parse the message to extract the content
                 message.substringAfter("content=").trimEnd(')')
             } else {
                 message
             }
+            saveMessageToFirestore(sentBy, content)
             msgList.add(Msg(sentBy, content))
             msgAdapter.notifyDataSetChanged()
             chatRecyclerView.smoothScrollToPosition(msgAdapter.itemCount - 1)
         }
     }
+    //this method will load the previous messages (if any) from the firestore database
+    private fun saveMessageToFirestore(sentBy: String, message: String) {
+
+        val msg = hashMapOf(
+            "sentBy" to sentBy,
+            "message" to message,
+            "User UID" to FirebaseAuth.getInstance().currentUser?.uid,
+            "timestamp" to System.currentTimeMillis()
+        )
+
+        db.collection("ChatbotMessages")
+            .add(msg)
+            .addOnSuccessListener { documentReference ->
+                Log.d("Firestore", "DocumentSnapshot added with ID: ${documentReference.id}")
+            }
+            .addOnFailureListener { e ->
+                Log.w("Firestore", "Error adding document", e)
+            }
+    }
+
+    //this method will load the previous messages (if any) from the firestore database
+    private fun loadMessagesFromFirestore() {
+        //need to check first if there are any ChatbotMessages in the database
+        db.collection("ChatbotMessages")
+            .whereEqualTo("User UID", FirebaseAuth.getInstance().currentUser?.uid)
+            .orderBy("timestamp", Query.Direction.ASCENDING)
+            .limit(150) //can change later to 90
+            .get()
+            .addOnSuccessListener { documents ->
+                if (documents.isEmpty) {
+                    return@addOnSuccessListener // No documents found, return from the method
+                }
+                for (document in documents) {
+                    val sentBy = document.getString("sentBy") ?: ""
+                    val message = document.getString("message") ?: ""
+                    msgList.add(Msg(sentBy, message))
+                }
+                // If the total number of messages exceeds 150, delete the oldest messages (uncomment the following loop if any problems)
+                val excess = documents.size() - 90
+                if (excess > 0) {
+                    // If the total number of messages exceeds 150, delete the oldest messages
+                    val messagesToDelete = documents.documents.take(excess)
+                    for (message in messagesToDelete) {
+                        db.collection("ChatbotMessages").document(message.id).delete()
+                    }
+                }
+                welcomeText.visibility = View.GONE
+                Log.d("TEST", FirebaseAuth.getInstance().currentUser?.uid.toString())
+                msgAdapter.notifyDataSetChanged()
+                chatRecyclerView.smoothScrollToPosition(msgAdapter.itemCount - 1)
+            }
+            .addOnFailureListener { exception ->
+                Log.w("Firestore", "Error getting documents: ", exception)
+            }
+    }
+
 
     }
 
