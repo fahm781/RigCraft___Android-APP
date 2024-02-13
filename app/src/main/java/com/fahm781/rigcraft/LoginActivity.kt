@@ -73,23 +73,14 @@ class LoginActivity : AppCompatActivity() {
                     progressBar.visibility = ProgressBar.GONE
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
-                        Toast.makeText(
-                            baseContext,
-                            "Logged In Successfully.",
-                            Toast.LENGTH_SHORT,
-                        ).show()
+                        Toast.makeText(baseContext, "Logged In Successfully.",Toast.LENGTH_SHORT).show()
                         val user = auth.currentUser
-
                         //Send the user to the next relevant page
                         val intent = Intent(applicationContext, MainActivity::class.java)
                         startActivity(intent)
                     } else {
                         // If sign in fails, display a message to the user.
-                        Toast.makeText(
-                            baseContext,
-                            "Email Or Password Incorrect.",
-                            Toast.LENGTH_SHORT,
-                        ).show()
+                        Toast.makeText(baseContext, "Email Or Password Incorrect.", Toast.LENGTH_SHORT).show()
 
                     }
                 }

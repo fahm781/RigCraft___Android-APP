@@ -37,7 +37,6 @@ class ChatbotFragment : Fragment() {
     private lateinit var editTextMessage: EditText
     private lateinit var buttonSend: ImageButton
     private lateinit var welcomeText: TextView
-
     private lateinit var msgList: ArrayList<Msg>
     private lateinit var msgAdapter: MsgAdapter
     private var chatbotRepository = ChatbotRepository()
@@ -56,7 +55,7 @@ class ChatbotFragment : Fragment() {
         editTextMessage = view.findViewById(R.id.editTextMessage)
         chatRecyclerView = view.findViewById(R.id.chatRecyclerView)
         welcomeText = view.findViewById(R.id.welcomeText)
-        msgList =  ArrayList()
+        msgList = ArrayList()
 
         //setup recycler view
         msgAdapter = MsgAdapter(msgList)
@@ -65,7 +64,6 @@ class ChatbotFragment : Fragment() {
             linearLayoutManager.stackFromEnd = true
             chatRecyclerView.layoutManager = linearLayoutManager
         }
-
 
         buttonSend.setOnClickListener {
             val query = editTextMessage.text.toString().trim()
@@ -97,7 +95,7 @@ class ChatbotFragment : Fragment() {
             chatRecyclerView.smoothScrollToPosition(msgAdapter.itemCount - 1)
         }
     }
-    //this method will load the previous messages (if any) from the firestore database
+    //this method will save the messages to the firestore database
     private fun saveMessageToFirestore(sentBy: String, message: String) {
 
         val msg = hashMapOf(
@@ -134,17 +132,16 @@ class ChatbotFragment : Fragment() {
                     val message = document.getString("message") ?: ""
                     msgList.add(Msg(sentBy, message))
                 }
-                // If the total number of messages exceeds 150, delete the oldest messages (uncomment the following loop if any problems)
+                // If the total number of messages exceeds 90, delete the oldest messages (uncomment the following loop if any problems)
                 val excess = documents.size() - 90
                 if (excess > 0) {
-                    // If the total number of messages exceeds 150, delete the oldest messages
+                    // If the total number of messages exceeds 90, delete the oldest messages
                     val messagesToDelete = documents.documents.take(excess)
                     for (message in messagesToDelete) {
                         db.collection("ChatbotMessages").document(message.id).delete()
                     }
                 }
                 welcomeText.visibility = View.GONE
-                Log.d("TEST", FirebaseAuth.getInstance().currentUser?.uid.toString())
                 msgAdapter.notifyDataSetChanged()
                 chatRecyclerView.smoothScrollToPosition(msgAdapter.itemCount - 1)
             }

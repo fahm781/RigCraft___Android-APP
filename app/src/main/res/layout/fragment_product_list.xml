@@ -5,17 +5,46 @@
     android:layout_height="match_parent"
     tools:context=".ProductListFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/productList"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:padding="16dp"-->
+<!--        android:clipToPadding="false"-->
+<!--        android:background="#f0f0f0"-->
+<!--        android:scrollbars="vertical"-->
+<!--        tools:listitem="@layout/product_list_item" />-->
+    <LinearLayout
+        android:id="@+id/selected"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
-<!--    Temporary button for now -->
-    <Button
-        android:id="@+id/moreDetailsButton"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="More Details" />
+        android:orientation="horizontal"
+        android:background="@android:drawable/dialog_holo_light_frame"
+        android:padding="16dp">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_manage" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Selected Mobo: B450 AMD, £120"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp" />
+
+        <!--    Temporary button for now -->
+        <Button
+            android:id="@+id/moreDetailsButton"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:text="More Details" />
+    </LinearLayout>
+
+
 
 </FrameLayout>

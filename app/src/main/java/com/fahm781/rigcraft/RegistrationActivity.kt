@@ -28,7 +28,6 @@ class RegistrationActivity : AppCompatActivity() {
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
         if (currentUser != null) {
-            //send the user to MainActivity for now
             val intent = Intent(applicationContext, MainActivity::class.java)
             startActivity(intent)
             finish()
@@ -82,7 +81,6 @@ class RegistrationActivity : AppCompatActivity() {
                     progressBar.visibility = ProgressBar.GONE
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
-                        //  Log.d(TAG, "createUserWithEmail:success")
                         Toast.makeText(
                             baseContext,
                             "Account Created.",
@@ -91,8 +89,7 @@ class RegistrationActivity : AppCompatActivity() {
                         val user = auth.currentUser
 
                     } else {
-                        // If sign in fails, display a message to the user.
-                        //  Log.w(TAG, "createUserWithEmail:failure", task.exception)
+                        // If sign in fails, display a message to the user
                         Toast.makeText(
                             baseContext,
                             "Authentication failed.",

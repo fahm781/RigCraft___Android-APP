@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,10 +21,12 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:paddingTop="15dp"
+        android:background="#f0f0f0"
+        >
+
     <LinearLayout
-
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -27,14 +34,64 @@
         <!-- Select component buttons only one for now -->
         <Button
             android:id="@+id/selectCpu"
-            android:layout_width="match_parent"
+            android:layout_width="250dp"
+            android:layout_gravity="center"
             android:layout_height="wrap_content"
+            android:padding="16dp"
             android:text="Select CPU"
-            android:drawableStart="@android:drawable/ic_menu_manage"
+            android:drawableLeft="@drawable/cpu"
+            />
+
+        <Button
+            android:id="@+id/selectGpu"
+            android:layout_width="250dp"
+            android:layout_gravity="center"
+
+            android:layout_height="wrap_content"
+            android:text="Select GPU"
+            android:drawableLeft="@drawable/indicator_sensors_gpu"
+            android:padding="16dp" />
+        <Button
+            android:id="@+id/selectRam"
+            android:layout_width="250dp"
+            android:layout_gravity="center"
+
+            android:layout_height="wrap_content"
+            android:text="Select RAM"
+            android:drawableLeft="@drawable/ram__1_"
+            android:padding="16dp" />
+
+        <Button
+            android:id="@+id/selectStorage"
+            android:layout_width="250dp"
+            android:layout_gravity="center"
+
+            android:layout_height="wrap_content"
+            android:text="Select Storage"
+            android:drawableLeft="@drawable/storage_icon"
+            android:padding="16dp" />
+
+        <Button
+            android:id="@+id/selectPowersupply"
+            android:layout_width="250dp"
+            android:layout_gravity="center"
+
+            android:layout_height="wrap_content"
+            android:text="Select Power Supply"
+            android:drawableLeft="@drawable/reshot_icon_power_supply"
+            android:padding="16dp" />
+        <Button
+            android:id="@+id/selectMotherboard"
+            android:layout_width="250dp"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:text="Select Motherboard"
+            android:drawableLeft="@drawable/reshot_icon_computer_motherboard"
             android:padding="16dp" />
 
         <!-- Option that shows when a component is selected for each category -->
         <LinearLayout
+            android:id="@+id/selected"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -98,3 +155,4 @@
     </LinearLayout>
 
 </LinearLayout>
+</ScrollView>
