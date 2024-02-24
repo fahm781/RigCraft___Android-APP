@@ -1,11 +1,13 @@
 package com.fahm781.rigcraft
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 
 // TODO: Rename parameter arguments, choose names that match
@@ -23,6 +25,8 @@ class ProductListFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var moreDetailsButton: Button
+    private lateinit var heading: TextView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +46,14 @@ class ProductListFragment : Fragment() {
         moreDetailsButton.setOnClickListener {
             findNavController().navigate(R.id.action_productListFragment_to_productPageFragment)
         }
+
+        var productType = requireArguments().getString(  "productType")
+
+        if (productType != null) {
+            heading = view.findViewById(R.id.heading)
+            heading.text = "Select " + productType + ":"
+        }
+        Log.d("ProductListFragment", productType.toString())
 
 
         return view

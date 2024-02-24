@@ -1,50 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ProductListFragment">
 
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/productList"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:padding="16dp"-->
-<!--        android:clipToPadding="false"-->
-<!--        android:background="#f0f0f0"-->
-<!--        android:scrollbars="vertical"-->
-<!--        tools:listitem="@layout/product_list_item" />-->
-    <LinearLayout
-        android:id="@+id/selected"
+    <TextView
+        android:id="@+id/heading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@android:drawable/dialog_holo_light_frame"
-        android:padding="16dp">
+        android:text="Your Heading"
+        android:textSize="28sp"
+        android:gravity="left"
+        android:padding="10dp" />
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/selected"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_manage" />
+            android:orientation="horizontal"
+            android:background="@android:drawable/dialog_holo_light_frame"
+            android:padding="16dp">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Selected Mobo: B450 AMD, £120"
-            android:gravity="center_vertical"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_menu_manage" />
 
-        <!--    Temporary button for now -->
-        <Button
-            android:id="@+id/moreDetailsButton"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:text="More Details" />
-    </LinearLayout>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Selected Mobo: B450 AMD, £120"
+                android:gravity="center_vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp" />
 
+            <Button
+                android:id="@+id/moreDetailsButton"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:text="More Details" />
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>
 
+<!--<androidx.recyclerview.widget.RecyclerView-->
+<!--android:id="@+id/productList"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="match_parent"-->
+<!--android:padding="16dp"-->
+<!--android:clipToPadding="false"-->
+<!--android:background="#f0f0f0"-->
+<!--android:scrollbars="vertical"-->
+<!--tools:listitem="@layout/product_list_item" />-->
 
-</FrameLayout>

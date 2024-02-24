@@ -25,6 +25,11 @@ class PartPickerFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var selectCpu: Button
+    private lateinit var selectGpu: Button
+    private lateinit var selectRam: Button
+    private lateinit var selectStorage: Button
+    private lateinit var selectPowersupply: Button
+    private lateinit var selectMotherboard: Button
 
 
 
@@ -39,10 +44,48 @@ class PartPickerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         selectCpu = view.findViewById(R.id.selectCpu)
         selectCpu.setOnClickListener {
-           findNavController().navigate(R.id.action_partPickerFragment_to_productListFragment)
+           findNavController().navigate(R.id.action_partPickerFragment_to_productListFragment,
+               Bundle().apply {putString("productType", "cpu")})
         }
+
+        selectGpu = view.findViewById(R.id.selectGpu)
+        selectGpu.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_partPickerFragment_to_productListFragment,
+                Bundle().apply { putString("productType", "gpu") })
+        }
+
+        //do the same as above for the rest of the buttons
+        selectRam = view.findViewById(R.id.selectRam)
+        selectRam.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_partPickerFragment_to_productListFragment,
+                Bundle().apply { putString("productType", "ram") })
+        }
+        selectStorage = view.findViewById(R.id.selectStorage)
+        selectStorage.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_partPickerFragment_to_productListFragment,
+                Bundle().apply { putString("productType", "storage") })
+        }
+        selectPowersupply = view.findViewById(R.id.selectPowersupply)
+        selectPowersupply.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_partPickerFragment_to_productListFragment,
+                Bundle().apply { putString("productType", "power supply") })
+        }
+
+        selectMotherboard = view.findViewById(R.id.selectMotherboard)
+        selectMotherboard.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_partPickerFragment_to_productListFragment,
+                Bundle().apply { putString("productType", "motherboard") })
+        }
+
 
     }
 

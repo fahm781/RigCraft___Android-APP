@@ -26,7 +26,12 @@
         android:id="@+id/productPageFragment"
         android:name="com.fahm781.rigcraft.ProductPageFragment"
         android:label="fragment_product_page"
-        tools:layout="@layout/fragment_product_page" />
+        tools:layout="@layout/fragment_product_page" >
+        <argument
+            android:name="productType"
+            app:argType="string"
+            android:defaultValue="Cpu" />
+    </fragment>
     <fragment
         android:id="@+id/chatbotFragment"
         android:name="com.fahm781.rigcraft.ChatbotFragment"
