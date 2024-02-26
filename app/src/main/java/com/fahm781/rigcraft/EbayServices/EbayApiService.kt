@@ -1,17 +1,31 @@
 package com.fahm781.rigcraft.EbayServices
 
+
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.Query
 
+
+//interface EbayApiService {
+//
+////    val token: String
+////        get() = "Bearer ${CoroutineScope(Dispatchers.Main).launch {EbayTokenRepo().getToken()}}"
+//
+//    @Headers("Authorization: Bearer {token}")
+//    @GET("buy/browse/v1/item_summary/search")
+//    fun searchItems(@Query("q") query: String): Call<SearchResult>
+//
+//
+//}
+
 interface EbayApiService {
 
-
-   // @Headers("Authorization: Bearer v^1.1#i^1#r^0#f^0#p^1#I^3#t^H4sIAAAAAAAAAOVYW2xURRje7c0gtE2kqKkElq1KKDln55y9nT3pbrK9r0BbumspRSTnMtuesufimVnaLS9rVQRC+iBgEF8ICSAPbTRFvEUCaqyIJkgIYryg+KCmBrUGNDGic7albCsBpJvYxH3ZzD///PN93/z/zJwB6aI5lVsat/xWbL8rb18apPPsdmYumFNUuLwkP6+80AayHOz70g+mC/rzv69Cgpow+FaIDF1D0NGrJjTEZ4xBZ9LUeF1ACuI1QYWIxxIfDa9aybM04A1Tx7qkJ5yOSG3QycoSBxkO+vycx8sJArFq12LG9KDT52H9cdEv+RmRAQGfj/QjlIQRDWFBw2Q8YD0UYCnWGwMM7/bxwEsDr6/D6WiDJlJ0jbjQwBnKwOUzY80srDeHKiAETUyCOEORcH20ORyprWuKVbmyYoUmdIhiASfR1FaNLkNHm5BIwptPgzLefDQpSRAhpys0PsPUoHz4Gpg7gJ+RmpHdAW/Az3Ki28txHpATKet1UxXwzXFYFkWm4hlXHmpYwalbKUrUELuhhCdaTSREpNZh/a1OCgklrkAz6KyrDq8Nt7Q4Q/WCKfSFu1SqXjER3ghTVEtrLeWXiaCi4JcoVmJEQDJoYqLxaBMyT5upRtdkxRINOZp0XA0JajhdGzZLG+LUrDWb4Ti2EGX7ua9p6OY6rEUdX8Uk7tKsdYUqEcKRad56BSZHY2wqYhLDyQjTOzISBZ2CYSiyc3pnJhcn0qcXBZ1dGBu8y9XT00P3uGnd7HSxADCu9lUro1IXVEkx9qpWrY/7K7ceQCkZKhIkI5HC45RBsPSSXCUAtE5nyBMALOef0H0qrNB06z8MWZxdUysiVxXCCT7oESXggzDgDwjxXFRIaCJJXRYOko0pShXMjRAbCUGClETyLKlCU5F5tzfOurk4pGRfIE55AvE4JXplH8XEIQQQiqIU4P5PhXK7qR6FkglxTnI9Z3ne4uoQlhtuT1Ote213w6qaXhF1S480tyIpItfHlG5lU/cKT0Nnm6z1BG+3Gm5IviahEGViZP5cCGDVeu5EaNQRhvKM6EUl3YAtekKRUrNrgd2m3CKYOBWFiQQxzIhk2DAiudmrc0bvX24Td8Y7d2fUf3Q+3ZAVslJ2drGyxiMSQDAU2jqBaElXXVat6wK5fljmDRnUM+KtkJvrrGJNSI6zVeTxKyedoUujTRJtQqQnTXLbpputG1hM3wg1cp5hU08koNk2s7y26llVk1gQE3C2FXYOElwRZtlhy/gBx7GegM87I15S5ijdMNu2pFxsxQUNd3itdk39yA/ZMj+m3/4O6Lcfy7PbQRV4iKkAS4ryHy3In1eOFAxpRYjTSOnUyLerCWmC2BAUM2++bWz/7saa8rrm5ys3x1KnXxyxzct6Y9i3Htw/+cowJ5+Zm/XkABZe7ylkSu8rZj2AZb2AcfuAtwNUXO8tYO4tKDs1vP69EX6wYfDShY9Kfh48taaxbgwUTzrZ7YW2gn677cmP234debX9mdMH3358z2Pvp+ihdX99S504VHXlpbVXwhf98cPdXxWWRp5+WS3NPzP0+/mxEwuEt765u7jnbFQfqy4b2Lb1j4Zl3z21sCR9YPTLw0b0BRy0Layr3Lnm62VPlJ579tzu+UtLwnsHPj96zLFdLQP+oyNpLrFtdPkpavHD9wzvcaRfOfJp36LAwIrFn9h27K188/XWEttQH9e3491ddaOxBZHysz8tWfrAZ5U/qo6KohOXhy+fOTT3XMPx/X+erJi/+Yf8cu6DUvu6yisXjowOlO1cd/BDsemquMUoPlBAn78aP149vLqive1i+xsnt0qbv6AGt3e8Vjp4SXpu0HvxGP5lNG/R0Pha/g1My7Mq/REAAA==")
-    @Headers("Authorization: Bearer v^1.1#i^1#f^0#p^1#I^3#r^0#t^H4sIAAAAAAAAAOVYf2wTVRzvdRs4YBAiojbGjJsEw3LXd9frj11otXQUymCra+3ckJD78bpdd7+4d11XQVOXMKcm6h+CPxAzDUswQRTBBCXihD8IwRAkGqJoTJAIGmKEmGiMUe+6MrpJAFkTl9h/mvd93/d9n8/nfb/vvXugMKN26eCqwV/rsJnO4QIoODGMmg1qZ9Q0zq1yumocoMwBGy7cV6geqLqwDHGKrLPtEOmaimB9vyKriC0ag3jWUFmNQxJiVU6BiDUFNhFeu4alScDqhmZqgibj9bHmIO6l02kfJdB+2MSLXoG2rOqVmEktiPOCAKBHFGkfwzCc3+pGKAtjKjI51QziNKAZAtAE7U3SFMv4WAqQFO3pwutT0ECSplouJMBDRbRscaxRBvX6SDmEoGFaQfBQLBxNtIVjzStak8vcZbFCJRkSJmdm0cRWRBNhfYqTs/D606CiN5vICgJECHeHxmaYGJQNXwFzC/CLSlNiwAcoxk8BDnh5mqqIlFHNUDjz+jhsiyQS6aIrC1VTMvM3UtRSg89AwSy1Wq0QseZ6+++hLCdLaQkaQXzF8nBnOB7HQ1HO4B4L9yhEVDKQ2QvzRLy9mfCLlqA85xcIWqB4QPFUaaKxaCWZJ80U0VRRskVD9a2auRxaqOFkbTxl2lhObWqbEU6bNqJyP88VDalAl72oY6uYNXtUe12hYglRX2zeeAXGR5umIfFZE45HmNxRlCiIc7ouifjkzmIultKnHwXxHtPUWbc7l8uROQ+pGd1uGgDK/cjaNQmhByocbvvatV70l248gJCKVARojUQSa+Z1C0u/lasWALUbDzFNgA74S7pPhBWabP2HoYyze2JFVKpC/IxI89AHBR9PAy9NV6JCQqUkdds4rGzMEwpn9EJTlzkBEoKVZ1kFGpLIerxp2hNIQ0L0NaUJpimdJniv6COoNIQAQp4XmgL/p0K52VRPQMGAZmVyvVJ5Hnd3cY26h2lt9nRmVq6N9PMoI6xua0dCTIwmpYzUl2lhVnanRDUXvNlquCb5iCxZyiSt+SsigF3rFRNhlYZMKE6JXkLQdBjXZEnIT68F9hhinDPMfALKsmWYEsmwrscqtFdXit6/3CZujXcFz6j/5ny6Jitkp+z0YmWPR1YATpdI+wQiBU1xa3atc9b1wzZvKKKeEm/JurlOK9YWyTG2kjh25SQ1my6J+gTSgEjLGtZtm2yzb2BJrReq1nlmGposQyM1tby261lRsibHy3C6FXYFElziptlhS/lBINDk9/rBlHgJxaN0w3TbkiqyFVdHb+1a7Z74jR9yFH/UAHYYDGCHnBgGloHFVANYNKPq4eqqOS4kmZCUuDSJpG7V+nY1IGkh1jnJcN7uuPzm1lUR14q2bUs3JfMntx91zCl7YhheD+4af2SoraJml704gHuu9tRQ8+6soxlA016aYnwU6AINV3urqYXVCzJvxIb+bMG/P3ciMHp+x3vftRxK/g7qxp0wrMZRPYA5SHILExmpO+18YMvAvZ70Aeexj462GEufGHUNf3hg/XNVZ38OnH19Vl/fttFdH4fWFPr3/DIzsvd+7tPe94+0Yhc3kXuly/OCypkln82f9fkuLDbrQO4ZY6B7Z8KxX7j72VFXo/bKpS93932x791Tz60WG463BiKFH/54+9QHcWXmzs6nM8O+7a8tubTu1cSP75x8aWTI1TC8f6jPfa4x+ejmyFtEanNHbvHhfQn5hd21C/hFK3v3KxdWo62p9S9/NXix48UjJ5avG8HkY0rnyPFmAxELfbnLv+07T268zfHXULR748Htn+wYPd2e6jg41/X41/MPfvPkXO+uTT91nHn+29kJY/DBPafveGpsLf8GGVE3Q/wRAAA=")
+    @Headers("Content-Type: application/json", "X-EBAY-C-MARKETPLACE-ID:EBAY_GB")
     @GET("buy/browse/v1/item_summary/search")
-    fun searchItems(@Query("q") query: String): Call<SearchResult>
-
-
+    fun searchItems(
+        @Header("Authorization") authorization: String,
+        @Query("q") query: String
+    ): Call<SearchResult>
 }

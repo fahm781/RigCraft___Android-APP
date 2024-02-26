@@ -9,9 +9,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
+import com.fahm781.rigcraft.EbayServices.EbayTokenRegenerator
 
 import com.fahm781.rigcraft.EbayServices.RetrofitClient
 import com.fahm781.rigcraft.EbayServices.SearchResult
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -53,37 +57,61 @@ class ProductListFragment : Fragment() {
             findNavController().navigate(R.id.action_productListFragment_to_productPageFragment)
         }
 
-        var productType = requireArguments().getString(  "productType")
+        var productType = requireArguments().getString("productType")
 
         if (productType != null) {
             heading = view.findViewById(R.id.heading)
             heading.text = "Select " + productType + ":"
         }
-        Log.d("ProductListFragment", productType.toString())
 
         searchEbayForItems(productType.toString())
         return view
     }
 
 
+//    fun searchEbayForItems(query: String) {
+//        RetrofitClient.ebayApi.searchItems(query).enqueue(object : Callback<SearchResult> {
+//            override fun onResponse(call: Call<SearchResult>, response: Response<SearchResult>) {
+//                if (response.isSuccessful) {
+//                    response.body()?.let { searchResult ->
+//                        for (item in searchResult.itemSummaries) {
+//                            Log.d("EbaySearch", "Item: ${item.title}")
+//                        }
+//                    }
+//                } else {
+//                    Log.e("EbaySearch", "Search failed: ${response.errorBody()?.string()}")
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<SearchResult>, t: Throwable) {
+//                Log.e("EbaySearch", "Network error: ${t.message}")
+//            }
+//        })
+//    }
+
     fun searchEbayForItems(query: String) {
-        RetrofitClient.ebayApi.searchItems(query).enqueue(object : Callback<SearchResult> {
-            override fun onResponse(call: Call<SearchResult>, response: Response<SearchResult>) {
-                if (response.isSuccessful) {
-                    response.body()?.let { searchResult ->
-                        for (item in searchResult.itemSummaries) {
-                            Log.d("EbaySearch", "Item: ${item.title}")
+        CoroutineScope(Dispatchers.Main).launch {
+            val token = EbayTokenRegenerator().getToken()
+            if (token != null) {
+                RetrofitClient.ebayApi.searchItems("Bearer $token", query).enqueue(object : Callback<SearchResult> {
+                    override fun onResponse(call: Call<SearchResult>, response: Response<SearchResult>) {
+                        if (response.isSuccessful) {
+                            response.body()?.let { searchResult ->
+                                for (item in searchResult.itemSummaries) {
+                                    Log.d("EbaySearch", "Item: ${item.title}" + "// Price: ${item.price.value}" + "// Price Currency: ${item.price.currency}" + "// Item URL: ${item.itemWebUrl}" + "// Image URL: ${item.image.imageUrl}")
+                                }
+                            }
+                        } else {
+                            Log.e("EbaySearch", "Search failed: ${response.errorBody()?.string()}")
                         }
                     }
-                } else {
-                    Log.e("EbaySearch", "Search failed: ${response.errorBody()?.string()}")
-                }
-            }
 
-            override fun onFailure(call: Call<SearchResult>, t: Throwable) {
-                Log.e("EbaySearch", "Network error: ${t.message}")
+                    override fun onFailure(call: Call<SearchResult>, t: Throwable) {
+                        Log.e("EbaySearch", "Network error: ${t.message}")
+                    }
+                })
             }
-        })
+        }
     }
 
 }
