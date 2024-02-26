@@ -10,6 +10,12 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 
+import com.fahm781.rigcraft.EbayServices.RetrofitClient
+import com.fahm781.rigcraft.EbayServices.SearchResult
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
@@ -55,8 +61,29 @@ class ProductListFragment : Fragment() {
         }
         Log.d("ProductListFragment", productType.toString())
 
-
+        searchEbayForItems(productType.toString())
         return view
+    }
+
+
+    fun searchEbayForItems(query: String) {
+        RetrofitClient.ebayApi.searchItems(query).enqueue(object : Callback<SearchResult> {
+            override fun onResponse(call: Call<SearchResult>, response: Response<SearchResult>) {
+                if (response.isSuccessful) {
+                    response.body()?.let { searchResult ->
+                        for (item in searchResult.itemSummaries) {
+                            Log.d("EbaySearch", "Item: ${item.title}")
+                        }
+                    }
+                } else {
+                    Log.e("EbaySearch", "Search failed: ${response.errorBody()?.string()}")
+                }
+            }
+
+            override fun onFailure(call: Call<SearchResult>, t: Throwable) {
+                Log.e("EbaySearch", "Network error: ${t.message}")
+            }
+        })
     }
 
 }

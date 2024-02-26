@@ -97,4 +97,13 @@ dependencies {
     implementation ("com.google.code.gson:gson:2.8.9")
 
 
+    implementation ("org.apache.oltu.oauth2:org.apache.oltu.oauth2.client:1.0.2"){
+        exclude(group = "org.apache.oltu.oauth2", module = "org.apache.oltu.oauth2.common")
+    }
+
+
+
+
+//implementation("androidx.navigation:navigation-safe-args-gradle-plugin:2.7.7")
+
 }
