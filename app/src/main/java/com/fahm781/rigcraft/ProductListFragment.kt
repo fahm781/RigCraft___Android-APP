@@ -6,9 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
 import android.widget.Button
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.fahm781.rigcraft.EbayServices.EbayTokenRegenerator
 
 import com.fahm781.rigcraft.EbayServices.RetrofitClient
@@ -36,6 +39,7 @@ class ProductListFragment : Fragment() {
     private var param2: String? = null
     private lateinit var moreDetailsButton: Button
     private lateinit var heading: TextView
+    private lateinit var productrecyclerView: RecyclerView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,12 +54,17 @@ class ProductListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
         // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.fragment_product_list, container, false)
-        moreDetailsButton = view.findViewById(R.id.moreDetailsButton)
-        moreDetailsButton.setOnClickListener {
-            findNavController().navigate(R.id.action_productListFragment_to_productPageFragment)
-        }
+//        moreDetailsButton = view.findViewById(R.id.moreDetailsButton)
+//        moreDetailsButton.setOnClickListener {
+//            findNavController().navigate(R.id.action_productListFragment_to_productPageFragment)
+//        }
+
+        productrecyclerView = view.findViewById(R.id.productrecyclerView)
+
 
         var productType = requireArguments().getString("productType")
 
@@ -65,6 +74,7 @@ class ProductListFragment : Fragment() {
         }
 
         searchEbayForItems(productType.toString())
+
         return view
     }
 
@@ -99,6 +109,9 @@ class ProductListFragment : Fragment() {
                             response.body()?.let { searchResult ->
                                 for (item in searchResult.itemSummaries) {
                                     Log.d("EbaySearch", "Item: ${item.title}" + "// Price: ${item.price.value}" + "// Price Currency: ${item.price.currency}" + "// Item URL: ${item.itemWebUrl}" + "// Image URL: ${item.image.imageUrl}")
+                                    productrecyclerView.adapter = ItemSummaryAdapter(searchResult.itemSummaries)
+                                    productrecyclerView.layoutManager = LinearLayoutManager(context)
+
                                 }
                             }
                         } else {

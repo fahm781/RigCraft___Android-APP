@@ -1,6 +1,7 @@
 package com.fahm781.rigcraft
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -92,8 +98,24 @@ class PartPickerFragment : Fragment() {
         saveBuild = view.findViewById(R.id.saveBuild)
         saveBuild.setOnClickListener {
             saveBuild()
+            CoroutineScope(Dispatchers.Main).launch {
+                getApiKey()
+            }
         }
     }
+
+    suspend fun getApiKey():  String?  {
+        return try {
+        val db = FirebaseFirestore.getInstance()
+        val snapshot = db.collection("OpenAIAPIKey").document("api_key").get().await()
+       // Log.d("Firestore", "Key is : ${snapshot.getString("key")}")
+         snapshot.getString("key")
+        } catch (e: Exception) {
+            Log.d("Firestore", "Error getting documents: ", e)
+            null
+        }
+    }
+
 
     fun saveBuild(){
         //save the selected parts to the database
