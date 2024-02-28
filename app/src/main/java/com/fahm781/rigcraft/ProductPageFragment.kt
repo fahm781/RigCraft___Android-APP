@@ -1,10 +1,16 @@
 package com.fahm781.rigcraft
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import com.squareup.picasso.Picasso
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -20,6 +26,10 @@ class ProductPageFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var titleTextView: TextView
+    private lateinit var priceTextView: TextView
+    private lateinit var imageView: ImageView
+    private lateinit var itemWebUrlButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +44,27 @@ class ProductPageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_product_page, container, false)
+        val view = inflater.inflate(R.layout.fragment_product_page, container, false)
+
+        val title = arguments?.getString("title")
+        val price = arguments?.getString("price")
+        val imageUrl = arguments?.getString("imageUrl")
+        val itemWebUrl = arguments?.getString("itemWebUrl")
+        titleTextView = view.findViewById(R.id.titleTextView)
+        priceTextView = view.findViewById(R.id.priceTextView)
+        imageView = view.findViewById(R.id.itemImageView)
+        itemWebUrlButton = view.findViewById(R.id.lookOnEbayButton)
+
+        titleTextView.text = title
+        priceTextView.text = "£" +price
+        Picasso.get().load(imageUrl).into(imageView)
+
+        itemWebUrlButton.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(itemWebUrl))
+            startActivity(intent)
+        }
+
+        return view
     }
 
     companion object {

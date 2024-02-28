@@ -58,10 +58,6 @@ class ProductListFragment : Fragment() {
 
         // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.fragment_product_list, container, false)
-//        moreDetailsButton = view.findViewById(R.id.moreDetailsButton)
-//        moreDetailsButton.setOnClickListener {
-//            findNavController().navigate(R.id.action_productListFragment_to_productPageFragment)
-//        }
 
         productrecyclerView = view.findViewById(R.id.productrecyclerView)
 
@@ -74,6 +70,11 @@ class ProductListFragment : Fragment() {
         }
 
         searchEbayForItems(productType.toString())
+
+        //        moreDetailsButton = view.findViewById(R.id.moreDetailsButton)
+//        moreDetailsButton.setOnClickListener {
+//            findNavController().navigate(R.id.action_productListFragment_to_productPageFragment)
+//        }
 
         return view
     }
@@ -108,7 +109,7 @@ class ProductListFragment : Fragment() {
                         if (response.isSuccessful) {
                             response.body()?.let { searchResult ->
                                 for (item in searchResult.itemSummaries) {
-                                    Log.d("EbaySearch", "Item: ${item.title}" + "// Price: ${item.price.value}" + "// Price Currency: ${item.price.currency}" + "// Item URL: ${item.itemWebUrl}" + "// Image URL: ${item.image.imageUrl}")
+//                                    Log.d("EbaySearch", "Item: ${item.title}" + "// Price: ${item.price.value}" + "// Price Currency: ${item.price.currency}" + "// Item URL: ${item.itemWebUrl}" + "// Image URL: ${item.image.imageUrl}")
                                     productrecyclerView.adapter = ItemSummaryAdapter(searchResult.itemSummaries)
                                     productrecyclerView.layoutManager = LinearLayoutManager(context)
 

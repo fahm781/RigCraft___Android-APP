@@ -22,10 +22,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:gravity="center">
     <Button
         android:id="@+id/itemWebUrlButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="View on eBay" />
+    <Button
+        android:id="@+id/moreDetailsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="More Details" />
+
+    </LinearLayout>
 
 </LinearLayout>
