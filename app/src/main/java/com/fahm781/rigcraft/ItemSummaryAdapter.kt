@@ -11,12 +11,14 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.fahm781.rigcraft.EbayServices.ItemSummary
+import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
 
-class ItemSummaryAdapter(private val itemSummaries: List<ItemSummary>) : RecyclerView.Adapter<ItemSummaryAdapter.ViewHolder>() {
+class ItemSummaryAdapter(private val itemSummaries: List<ItemSummary>,  private val productType: String) : RecyclerView.Adapter<ItemSummaryAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val titleTextView: TextView = view.findViewById(R.id.titleTextView)
@@ -24,6 +26,7 @@ class ItemSummaryAdapter(private val itemSummaries: List<ItemSummary>) : Recycle
         val imageView: ImageView = view.findViewById(R.id.imageView)
         val itemWebUrlButton: Button = view.findViewById(R.id.itemWebUrlButton)
         val moreDetailsButton: Button = view.findViewById(R.id.moreDetailsButton)
+        val addToBuildButton: Button = view.findViewById(R.id.addToBuildButton)
 
     }
 
@@ -37,11 +40,13 @@ class ItemSummaryAdapter(private val itemSummaries: List<ItemSummary>) : Recycle
         holder.titleTextView.text = itemSummary.title
         holder.priceTextView.text = "£${itemSummary.price.value}"
         Picasso.get().load(itemSummary.image.imageUrl).into(holder.imageView)
+
         holder.itemWebUrlButton.setOnClickListener {
             //redirect user to the ebay listing page aka. the itemSuumary.itemWebUrl
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(itemSummary.itemWebUrl))
             holder.itemView.context.startActivity(intent)
         }
+
         holder.moreDetailsButton.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("title", itemSummary.title)
@@ -49,6 +54,26 @@ class ItemSummaryAdapter(private val itemSummaries: List<ItemSummary>) : Recycle
             bundle.putString("imageUrl", itemSummary.image.imageUrl)
             bundle.putString("itemWebUrl", itemSummary.itemWebUrl)
             holder.itemView.findNavController().navigate(R.id.action_productListFragment_to_productPageFragment, bundle)
+        }
+
+        holder.addToBuildButton.setOnClickListener {
+            val db = FirebaseFirestore.getInstance()
+            val selectedBuild = hashMapOf(
+                "title" to itemSummary.title,
+                "price" to itemSummary.price.value,
+                "imageUrl" to itemSummary.image.imageUrl,
+                "itemWebUrl" to itemSummary.itemWebUrl
+                //can add more info later
+            )
+            db.collection("SelectedBuild").document(productType).set(selectedBuild)
+                .addOnSuccessListener {
+                    Log.d("Firestore", "DocumentSnapshot successfully written!")
+                    Toast.makeText(holder.itemView.context, "Item added to build", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener { e ->
+                    Log.w("Firestore", "Error writing document", e)
+//                    Toast.makeText(holder.itemView.context, "Error adding item to build", Toast.LENGTH_SHORT).show()
+                }
         }
     }
 

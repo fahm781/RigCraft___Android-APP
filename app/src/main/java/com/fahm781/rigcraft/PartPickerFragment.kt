@@ -7,9 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -40,6 +42,8 @@ class PartPickerFragment : Fragment() {
     private lateinit var saveBuild: Button
     private lateinit var clearBuild: Button
     private val db = FirebaseFirestore.getInstance()
+//    val productTypes = listOf("cpu", "gpu", "ram", "storage", "powerSupply", "motherboard")
+    val productTypes = listOf("cpu", "gpu", "ram", "Pc_storage", "power_supply", "motherboard")
 
 
 
@@ -98,10 +102,14 @@ class PartPickerFragment : Fragment() {
         saveBuild = view.findViewById(R.id.saveBuild)
         saveBuild.setOnClickListener {
             saveBuild()
-            CoroutineScope(Dispatchers.Main).launch {
-                getApiKey()
-            }
         }
+
+        clearBuild = view.findViewById(R.id.clearBuild)
+        clearBuild.setOnClickListener {
+            clearSelectedBuild()
+        }
+
+        showSelectedBuild()
     }
 
     suspend fun getApiKey():  String?  {
@@ -116,24 +124,131 @@ class PartPickerFragment : Fragment() {
         }
     }
 
+//    private fun showSelectedBuild() {
+//        val db = FirebaseFirestore.getInstance()
+//        for (productType in productTypes) {
+//            val documentName =  productType.replace("_", " ")
+//            db.collection("SelectedBuild").document(documentName).get()
+//                .addOnSuccessListener { document ->
+//                    if (document != null) {
+//                        val selectedItemsLayout : LinearLayout? = view?.findViewById(R.id.selectedItemsLayout)
+//                        selectedItemsLayout?.visibility = View.VISIBLE
+//                        val title = document.data?.get("title").toString()
+//                        val selectedTextViewId = resources.getIdentifier("${productType}SelectedTextView", "id", activity?.packageName)
+//                        val selectedTextView: TextView = view?.findViewById(selectedTextViewId) as TextView
+//                        selectedTextView.text = documentName + ": " + title + " - £" + document.data?.get("price").toString()
+//                        val selectedItemsHeading: TextView = view?.findViewById(R.id.selectedItemsHeading) as TextView
+//                        selectedItemsHeading.text = "Current Build:"
+//                        selectedItemsHeading.visibility = View.VISIBLE
+//                        Log.d("Firestore", "DocumentSnapshot data: ${document.data}")
+//                    }
+//                }
+//                .addOnFailureListener { exception ->
+//                    Log.d("Firestore", "get failed with ", exception)
+//                }
+//        }
+//    }
 
-    fun saveBuild(){
-        //save the selected parts to the database
-//        val msg = hashMapOf(
-//            //empty hashmap for now
-//        )
-//
-//        db.collection("Builds")
-//            .add(msg)
-//            .addOnSuccessListener { documentReference ->
-//                Log.d("Firestore", "DocumentSnapshot added with ID: ${documentReference.id}")
-//            }
-//            .addOnFailureListener { e ->
-//                Log.w("Firestore", "Error adding document", e)
-//            }
+    private fun showSelectedBuild() {
+        val db = FirebaseFirestore.getInstance()
+        var isEmpty = true
+        val selectedItemsLayout : LinearLayout? = view?.findViewById(R.id.selectedItemsLayout)
+
+        for (productType in productTypes) {
+            val documentName =  productType.replace("_", " ")
+            db.collection("SelectedBuild").document(documentName).get()
+                .addOnSuccessListener { document ->
+                    if (document != null && document.exists()) {
+                        isEmpty = false
+                        selectedItemsLayout?.visibility = View.VISIBLE
+                        val title = document.data?.get("title").toString()
+                        val selectedTextViewId = resources.getIdentifier("${productType}SelectedTextView", "id", activity?.packageName)
+                        val selectedTextView: TextView = view?.findViewById(selectedTextViewId) as TextView
+                        selectedTextView.text = documentName + ": " + title + " - £" + document.data?.get("price").toString()
+                        val selectedItemsHeading: TextView = view?.findViewById(R.id.selectedItemsHeading) as TextView
+                        selectedItemsHeading.text = "Current Build:"
+                        selectedItemsHeading.visibility = View.VISIBLE
+                        Log.d("Firestore", "DocumentSnapshot data: ${document.data}")
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.d("Firestore", "get failed with ", exception)
+                }
+        }
+
+        if (isEmpty) {
+            selectedItemsLayout?.visibility = View.GONE
+        } else {
+            selectedItemsLayout?.visibility = View.VISIBLE
+        }
     }
 
-    fun deletebuild(){
-  }
+
+     fun saveBuild() {
+        GlobalScope.launch(Dispatchers.IO) {
+            val db = FirebaseFirestore.getInstance()
+            val buildData = hashMapOf<String, Any>()
+            for (productType in productTypes) {
+                val documentName = productType.replace("_", " ")
+                //need to use await to get the data from firestore before adding to buildData.
+                val document = db.collection("SelectedBuild").document(documentName).get().await()
+                val data = document.data
+                if (data != null) {
+                    buildData[documentName] = data
+                }
+            }
+            val newBuildId = db.collection("SavedBuilds").document().id
+            db.collection("SavedBuilds").document(newBuildId).set(buildData).addOnSuccessListener {
+                Log.d("Firestore", "Build successfully saved with ID: $newBuildId")
+                clearSelectedBuild()
+                Toast.makeText(context, "Build saved", Toast.LENGTH_SHORT).show()
+            }.addOnFailureListener { e ->
+                Log.w("Firestore", "Error saving build", e)
+            }
+        }
+    }
+
+    fun deletebuild(id: String){
+        val db = FirebaseFirestore.getInstance()
+        db.collection("SavedBuilds").document(id).delete()
+            .addOnSuccessListener { documentReference ->
+                Log.d("Firestore", "Build Deleted")
+            }
+            .addOnFailureListener { e ->
+                Log.w("Firestore", "Error adding document", e)
+            }
+    }
+
+
+
+    fun clearSelectedBuild(){
+        //you have to delete one by one, firestore does not support batch delete
+        val db = FirebaseFirestore.getInstance()
+        for (productType in productTypes) {
+            val documentName =  productType.replace("_", " ")
+            db.collection("SelectedBuild").document(documentName).delete()
+                .addOnSuccessListener { documentReference ->
+                    Log.d("Firestore", "Build Cleared")
+                    showSelectedBuild()
+                }
+                .addOnFailureListener { e ->
+                    Log.w("Firestore", "Error adding document", e)
+                }
+        }
+
+    }
+
+//    fun showSavedBuilds(){
+//        val db = FirebaseFirestore.getInstance()
+//        db.collection("SavedBuilds").get()
+//            .addOnSuccessListener { result ->
+//                for (document in result) {
+//                    Log.d("Firestore", "${document.id} => ${document.data}")
+//                }
+//            }
+//            .addOnFailureListener { exception ->
+//                Log.w("Firestore", "Error getting documents.", exception)
+//            }
+//    }
 
 }

@@ -40,6 +40,9 @@ class ProductListFragment : Fragment() {
     private lateinit var moreDetailsButton: Button
     private lateinit var heading: TextView
     private lateinit var productrecyclerView: RecyclerView
+    //check if the product type is null
+    private var productType: String? = null
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,8 +64,8 @@ class ProductListFragment : Fragment() {
 
         productrecyclerView = view.findViewById(R.id.productrecyclerView)
 
+        productType = requireArguments().getString("productType")
 
-        var productType = requireArguments().getString("productType")
 
         if (productType != null) {
             heading = view.findViewById(R.id.heading)
@@ -110,7 +113,7 @@ class ProductListFragment : Fragment() {
                             response.body()?.let { searchResult ->
                                 for (item in searchResult.itemSummaries) {
 //                                    Log.d("EbaySearch", "Item: ${item.title}" + "// Price: ${item.price.value}" + "// Price Currency: ${item.price.currency}" + "// Item URL: ${item.itemWebUrl}" + "// Image URL: ${item.image.imageUrl}")
-                                    productrecyclerView.adapter = ItemSummaryAdapter(searchResult.itemSummaries)
+                                    productrecyclerView.adapter = ItemSummaryAdapter(searchResult.itemSummaries, productType.toString())
                                     productrecyclerView.layoutManager = LinearLayoutManager(context)
 
                                 }
