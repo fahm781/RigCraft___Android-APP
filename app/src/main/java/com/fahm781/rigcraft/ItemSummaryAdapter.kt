@@ -69,10 +69,11 @@ class ItemSummaryAdapter(private val itemSummaries: List<ItemSummary>,  private 
                 .addOnSuccessListener {
                     Log.d("Firestore", "DocumentSnapshot successfully written!")
                     Toast.makeText(holder.itemView.context, "Item added to build", Toast.LENGTH_SHORT).show()
+                    holder.itemView.findNavController().navigate(R.id.action_productListFragment_to_partPickerFragment)
                 }
                 .addOnFailureListener { e ->
                     Log.w("Firestore", "Error writing document", e)
-//                    Toast.makeText(holder.itemView.context, "Error adding item to build", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(holder.itemView.context, "Error adding item to build", Toast.LENGTH_SHORT).show()
                 }
         }
     }

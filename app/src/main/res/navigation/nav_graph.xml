@@ -21,6 +21,9 @@
         <action
             android:id="@+id/action_productListFragment_to_productPageFragment"
             app:destination="@id/productPageFragment" />
+        <action
+            android:id="@+id/action_productListFragment_to_partPickerFragment"
+            app:destination="@id/partPickerFragment" />
     </fragment>
     <fragment
         android:id="@+id/productPageFragment"

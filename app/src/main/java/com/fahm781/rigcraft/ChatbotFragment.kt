@@ -82,6 +82,7 @@ class ChatbotFragment : Fragment() {
         return view
     }
 
+    //add message to the recycler view/MsgAdapter
     private fun addMessage(message: String, sentBy: String) {
         activity?.runOnUiThread {
             val content = if (sentBy == BOT_MSG) {
@@ -95,7 +96,7 @@ class ChatbotFragment : Fragment() {
             chatRecyclerView.smoothScrollToPosition(msgAdapter.itemCount - 1)
         }
     }
-    //this method will save the messages to the firestore database
+    //this method saves the messages to the firestore database
     private fun saveMessageToFirestore(sentBy: String, message: String) {
 
         val msg = hashMapOf(
@@ -125,7 +126,7 @@ class ChatbotFragment : Fragment() {
             .get()
             .addOnSuccessListener { documents ->
                 if (documents.isEmpty) {
-                    return@addOnSuccessListener // No documents found, return from the method
+                    return@addOnSuccessListener // if no documents are found return from the method
                 }
                 for (document in documents) {
                     val sentBy = document.getString("sentBy") ?: ""

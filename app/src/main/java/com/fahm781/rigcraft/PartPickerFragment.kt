@@ -7,11 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -41,8 +46,6 @@ class PartPickerFragment : Fragment() {
     private lateinit var selectMotherboard: Button
     private lateinit var saveBuild: Button
     private lateinit var clearBuild: Button
-    private val db = FirebaseFirestore.getInstance()
-//    val productTypes = listOf("cpu", "gpu", "ram", "storage", "powerSupply", "motherboard")
     val productTypes = listOf("cpu", "gpu", "ram", "Pc_storage", "power_supply", "motherboard")
 
 
@@ -58,7 +61,7 @@ class PartPickerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        //select each component
         selectCpu = view.findViewById(R.id.selectCpu)
         selectCpu.setOnClickListener {
             findNavController().navigate(R.id.action_partPickerFragment_to_productListFragment,
@@ -72,19 +75,20 @@ class PartPickerFragment : Fragment() {
                 Bundle().apply { putString("productType", "gpu") })
         }
 
-        //do the same as above for the rest of the buttons
         selectRam = view.findViewById(R.id.selectRam)
         selectRam.setOnClickListener {
             findNavController().navigate(
                 R.id.action_partPickerFragment_to_productListFragment,
                 Bundle().apply { putString("productType", "ram") })
         }
+
         selectStorage = view.findViewById(R.id.selectStorage)
         selectStorage.setOnClickListener {
             findNavController().navigate(
                 R.id.action_partPickerFragment_to_productListFragment,
                 Bundle().apply { putString("productType", "Pc storage") })
         }
+
         selectPowersupply = view.findViewById(R.id.selectPowersupply)
         selectPowersupply.setOnClickListener {
             findNavController().navigate(
@@ -99,17 +103,27 @@ class PartPickerFragment : Fragment() {
                 Bundle().apply { putString("productType", "motherboard") })
         }
 
+        //save the build if any
         saveBuild = view.findViewById(R.id.saveBuild)
         saveBuild.setOnClickListener {
             saveBuild()
         }
 
+        //clear selected build if any
         clearBuild = view.findViewById(R.id.clearBuild)
         clearBuild.setOnClickListener {
-            clearSelectedBuild()
+            clearCurrentBuild()
         }
 
+        //show selected builds if any
         showSelectedBuild()
+
+        //show saved builds if any
+        val savedBuildsRecyclerView: RecyclerView = view.findViewById(R.id.savedBuildsRecyclerView)
+        savedBuildsRecyclerView.layoutManager = LinearLayoutManager(context)
+        getSavedBuilds { savedBuilds ->
+            savedBuildsRecyclerView.adapter = SavedBuildsAdapter(savedBuilds)
+        }
     }
 
     suspend fun getApiKey():  String?  {
@@ -126,12 +140,15 @@ class PartPickerFragment : Fragment() {
 
 //    private fun showSelectedBuild() {
 //        val db = FirebaseFirestore.getInstance()
+//        var isEmpty = true
+//        val selectedItemsLayout : LinearLayout? = view?.findViewById(R.id.selectedItemsLayout)
+//
 //        for (productType in productTypes) {
 //            val documentName =  productType.replace("_", " ")
 //            db.collection("SelectedBuild").document(documentName).get()
 //                .addOnSuccessListener { document ->
-//                    if (document != null) {
-//                        val selectedItemsLayout : LinearLayout? = view?.findViewById(R.id.selectedItemsLayout)
+//                    if (document != null && document.exists()) {
+//                        isEmpty = false
 //                        selectedItemsLayout?.visibility = View.VISIBLE
 //                        val title = document.data?.get("title").toString()
 //                        val selectedTextViewId = resources.getIdentifier("${productType}SelectedTextView", "id", activity?.packageName)
@@ -147,42 +164,67 @@ class PartPickerFragment : Fragment() {
 //                    Log.d("Firestore", "get failed with ", exception)
 //                }
 //        }
+//
+//        if (isEmpty) {
+//            selectedItemsLayout?.visibility = View.GONE
+//        } else {
+//            selectedItemsLayout?.visibility = View.VISIBLE
+//        }
 //    }
+
+
 
     private fun showSelectedBuild() {
         val db = FirebaseFirestore.getInstance()
-        var isEmpty = true
-        val selectedItemsLayout : LinearLayout? = view?.findViewById(R.id.selectedItemsLayout)
+
+        setLayoutToGone()
 
         for (productType in productTypes) {
             val documentName =  productType.replace("_", " ")
             db.collection("SelectedBuild").document(documentName).get()
                 .addOnSuccessListener { document ->
                     if (document != null && document.exists()) {
-                        isEmpty = false
-                        selectedItemsLayout?.visibility = View.VISIBLE
                         val title = document.data?.get("title").toString()
-                        val selectedTextViewId = resources.getIdentifier("${productType}SelectedTextView", "id", activity?.packageName)
+                        val image = document.data?.get("imageUrl").toString()
+                        val price = document.data?.get("price").toString()
+
+                        // Get the layout, ImageView, and TextView of the selected component
+                        val selectedLayoutId = resources.getIdentifier("${productType}SelectedLayout", "id", activity?.packageName)
+                        val selectedLayout: LinearLayout = view?.findViewById(selectedLayoutId) as LinearLayout
+                        val selectedImageViewId = resources.getIdentifier("${productType}ImageView", "id", activity?.packageName)
+                        val selectedImageView: ImageView = view?.findViewById(selectedImageViewId) as ImageView
+                        val selectedTextViewId = resources.getIdentifier("${productType}TextView", "id", activity?.packageName)
                         val selectedTextView: TextView = view?.findViewById(selectedTextViewId) as TextView
-                        selectedTextView.text = documentName + ": " + title + " - £" + document.data?.get("price").toString()
-                        val selectedItemsHeading: TextView = view?.findViewById(R.id.selectedItemsHeading) as TextView
-                        selectedItemsHeading.text = "Current Build:"
-                        selectedItemsHeading.visibility = View.VISIBLE
+                        val selectedRemoveButtonId = resources.getIdentifier("${productType}RemoveButton", "id", activity?.packageName)
+                        val selectedRemoveButton: ImageButton = view?.findViewById(selectedRemoveButtonId) as ImageButton
+
+                        // Set the visibility, image, title and price
+                        selectedLayout.visibility = View.VISIBLE
+                        Picasso.get().load(image).into(selectedImageView)
+                        selectedTextView.text = title + " - £" + price
+
+                        // delete the selected item from the build if the remove button is clicked
+                        selectedRemoveButton.setOnClickListener {
+                            deletebuild(documentName)
+                        }
                         Log.d("Firestore", "DocumentSnapshot data: ${document.data}")
                     }
                 }
                 .addOnFailureListener { exception ->
                     Log.d("Firestore", "get failed with ", exception)
+                    Toast.makeText(context, "An Unknown Database Error Has Occurred", Toast.LENGTH_SHORT).show()
                 }
-        }
-
-        if (isEmpty) {
-            selectedItemsLayout?.visibility = View.GONE
-        } else {
-            selectedItemsLayout?.visibility = View.VISIBLE
         }
     }
 
+    // Initially set all selected buildItem layout(s) to GONE
+    private fun setLayoutToGone() {
+        for (productType in productTypes) {
+            val selectedLayoutId = resources.getIdentifier("${productType}SelectedLayout", "id", activity?.packageName)
+            val selectedLayout: LinearLayout = view?.findViewById(selectedLayoutId) as LinearLayout
+            selectedLayout.visibility = View.GONE
+        }
+    }
 
      fun saveBuild() {
         GlobalScope.launch(Dispatchers.IO) {
@@ -200,28 +242,32 @@ class PartPickerFragment : Fragment() {
             val newBuildId = db.collection("SavedBuilds").document().id
             db.collection("SavedBuilds").document(newBuildId).set(buildData).addOnSuccessListener {
                 Log.d("Firestore", "Build successfully saved with ID: $newBuildId")
-                clearSelectedBuild()
+                clearCurrentBuild()
                 Toast.makeText(context, "Build saved", Toast.LENGTH_SHORT).show()
             }.addOnFailureListener { e ->
                 Log.w("Firestore", "Error saving build", e)
+                Toast.makeText(context, "Error saving Build", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    fun deletebuild(id: String){
+    //delete current build
+    fun deletebuild(documentName: String){
         val db = FirebaseFirestore.getInstance()
-        db.collection("SavedBuilds").document(id).delete()
-            .addOnSuccessListener { documentReference ->
-                Log.d("Firestore", "Build Deleted")
+        db.collection("SelectedBuild").document(documentName).delete()
+            .addOnSuccessListener {
+                Log.d("Firestore", "DocumentSnapshot successfully deleted!")
+                showSelectedBuild() // Refresh the selected build
+//                                    selectedLayout.visibility = View.GONE // Hide the layout (temporary fix)
             }
             .addOnFailureListener { e ->
-                Log.w("Firestore", "Error adding document", e)
+                Log.w("Firestore", "Error deleting document", e)
+                Toast.makeText(context, "Error deleting item from build", Toast.LENGTH_SHORT).show()
             }
     }
 
-
-
-    fun clearSelectedBuild(){
+    //clear current build
+    fun clearCurrentBuild(){
         //you have to delete one by one, firestore does not support batch delete
         val db = FirebaseFirestore.getInstance()
         for (productType in productTypes) {
@@ -235,20 +281,48 @@ class PartPickerFragment : Fragment() {
                     Log.w("Firestore", "Error adding document", e)
                 }
         }
-
     }
 
-//    fun showSavedBuilds(){
+//private suspend fun fetchSavedBuilds(): List<SavedBuild> {
+//    val savedBuilds = mutableListOf<SavedBuild>()
+//    try {
 //        val db = FirebaseFirestore.getInstance()
-//        db.collection("SavedBuilds").get()
-//            .addOnSuccessListener { result ->
-//                for (document in result) {
-//                    Log.d("Firestore", "${document.id} => ${document.data}")
-//                }
+//        val snapshot = db.collection("SavedBuilds").get().await()
+//        for (document in snapshot.documents) {
+//            val id = document.id
+//            val buildData = document.data
+//            if (buildData != null) {
+//                val savedBuild = SavedBuild(id, buildData)
+//                savedBuilds.add(savedBuild)
 //            }
-//            .addOnFailureListener { exception ->
-//                Log.w("Firestore", "Error getting documents.", exception)
-//            }
+//        }
+//    } catch (e: Exception) {
+//        Log.w("Firestore", "Error fetching saved builds", e)
 //    }
+//    return savedBuilds
+//}
+
+
+    //get saved builds from firestore database, add them to the SavedBuild list and return it
+    private fun getSavedBuilds(callback: (List<SavedBuild>) -> Unit) {
+        val savedBuilds = mutableListOf<SavedBuild>()
+        val db = FirebaseFirestore.getInstance()
+        db.collection("SavedBuilds").get()
+            .addOnSuccessListener { snapshot ->
+                for (document in snapshot.documents) {
+                    val id = document.id
+                    val buildData = document.data
+                    if (buildData != null) {
+                        val savedBuild = SavedBuild(id, buildData)
+                        savedBuilds.add(savedBuild)
+                    }
+                }
+                callback(savedBuilds)
+            }
+            .addOnFailureListener { exception ->
+                Log.w("Firestore", "Error fetching saved builds", exception)
+                Toast.makeText(context, "Error fetching saved builds", Toast.LENGTH_SHORT).show()
+            }
+    }
 
 }

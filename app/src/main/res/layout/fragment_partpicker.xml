@@ -31,56 +31,224 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="10sp">
-
-                <!-- Select component buttons only one for now -->
+<!--Select CPU-->
                 <Button
                     android:id="@+id/selectCpu"
                     android:layout_width="250dp"
                     android:layout_gravity="center"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
+                    android:padding="6dp"
                     android:text="Select CPU"
                     android:drawableLeft="@drawable/cpu"
                     />
 
+                <LinearLayout
+                    android:id="@+id/cpuSelectedLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:background="@color/white"
+                    android:visibility="gone"
+                    >
+
+                    <ImageView
+                        android:id="@+id/cpuImageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/cpuTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Selected Mobo: B450 AMD, £120"
+                        android:gravity="center"
+                        android:textAppearance="?attr/textAppearanceListItem"/>
+
+                    <ImageButton
+                        android:id="@+id/cpuRemoveButton"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/red_x_icon" />
+                </LinearLayout>
+
+<!-- //Select CPU-->
+
+<!--  Select GPU-->
                 <Button
                     android:id="@+id/selectGpu"
                     android:layout_width="250dp"
                     android:layout_gravity="center"
-
                     android:layout_height="wrap_content"
                     android:text="Select GPU"
                     android:drawableLeft="@drawable/indicator_sensors_gpu"
-                    android:padding="16dp" />
+                    android:padding="6dp" />
+
+                <LinearLayout
+                    android:id="@+id/gpuSelectedLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:background="@color/white"
+                    android:visibility="gone"
+                    >
+
+                    <ImageView
+                        android:id="@+id/gpuImageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/gpuTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Selected Mobo: B450 AMD, £120"
+                        android:gravity="center"
+                        android:textAppearance="?attr/textAppearanceListItem"/>
+
+                    <ImageButton
+                        android:id="@+id/gpuRemoveButton"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/red_x_icon" />
+                </LinearLayout>
+<!--   //Select GPU    -->
+
+<!--     Select Ram-->
                 <Button
                     android:id="@+id/selectRam"
                     android:layout_width="250dp"
                     android:layout_gravity="center"
-
                     android:layout_height="wrap_content"
                     android:text="Select RAM"
                     android:drawableLeft="@drawable/ram__1_"
-                    android:padding="16dp" />
+                    android:padding="6dp" />
 
+                <LinearLayout
+                    android:id="@+id/ramSelectedLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:background="@color/white"
+                    android:visibility="gone"
+                    >
+
+                    <ImageView
+                        android:id="@+id/ramImageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/ramTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Selected Mobo: B450 AMD, £120"
+                        android:gravity="center"
+                        android:textAppearance="?attr/textAppearanceListItem"/>
+
+                    <ImageButton
+                        android:id="@+id/ramRemoveButton"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/red_x_icon" />
+                </LinearLayout>
+<!--  //Select Ram -->
+
+<!--    Select Storage  -->
                 <Button
                     android:id="@+id/selectStorage"
                     android:layout_width="250dp"
                     android:layout_gravity="center"
-
                     android:layout_height="wrap_content"
                     android:text="Select Storage"
                     android:drawableLeft="@drawable/storage_icon"
-                    android:padding="16dp" />
+                    android:padding="6dp" />
 
+                <LinearLayout
+                    android:id="@+id/Pc_storageSelectedLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:background="@color/white"
+                    android:visibility="gone"
+                    >
+
+                    <ImageView
+                        android:id="@+id/Pc_storageImageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/Pc_storageTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Selected Mobo: B450 AMD, £120"
+                        android:gravity="center"
+                        android:textAppearance="?attr/textAppearanceListItem"/>
+
+                    <ImageButton
+                        android:id="@+id/Pc_storageRemoveButton"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/red_x_icon" />
+                </LinearLayout>
+
+<!--    //Select Storage -->
+
+<!--     Selected Power Supply -->
                 <Button
                     android:id="@+id/selectPowersupply"
                     android:layout_width="250dp"
                     android:layout_gravity="center"
-
                     android:layout_height="wrap_content"
                     android:text="Select Power Supply"
                     android:drawableLeft="@drawable/reshot_icon_power_supply"
-                    android:padding="16dp" />
+                    android:padding="6dp" />
+
+                <LinearLayout
+                    android:id="@+id/power_supplySelectedLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:background="@color/white"
+                    android:visibility="gone"
+                    >
+
+                    <ImageView
+                        android:id="@+id/power_supplyImageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
+
+                    <TextView
+                        android:id="@+id/power_supplyTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Selected Mobo: B450 AMD, £120"
+                        android:gravity="center"
+                        android:textAppearance="?attr/textAppearanceListItem"/>
+
+                    <ImageButton
+                        android:id="@+id/power_supplyRemoveButton"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/red_x_icon" />
+                </LinearLayout>
+<!--  // Selected PowerSupply    -->
+
+<!--     Selected Motherboard-->
                 <Button
                     android:id="@+id/selectMotherboard"
                     android:layout_width="250dp"
@@ -88,72 +256,103 @@
                     android:layout_height="wrap_content"
                     android:text="Select Motherboard"
                     android:drawableLeft="@drawable/reshot_icon_computer_motherboard"
-                    android:padding="16dp" />
+                    android:padding="6dp" />
+                <LinearLayout
+                    android:id="@+id/motherboardSelectedLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:background="@color/white"
+                    android:visibility="gone"
+                    >
 
-                <!-- Add more components in the same fashion -->
+                    <ImageView
+                        android:id="@+id/motherboardImageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/motherboardTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Selected Mobo: B450 AMD, £120"
+                        android:gravity="center"
+                        android:textAppearance="?attr/textAppearanceListItem"/>
+
+                    <ImageButton
+                        android:id="@+id/motherboardRemoveButton"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/red_x_icon" />
+                </LinearLayout>
+
+<!--//Selected Motherboard   -->
             </LinearLayout>
 
 
         </ScrollView>
 
-        <!-- Option that shows when a component is selected for each category -->
-        <LinearLayout
-            android:id="@+id/selectedItemsLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:visibility="gone"
-            >
+<!--        &lt;!&ndash; Option that shows when a component is selected for each category &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:id="@+id/selectedItemsLayout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical"-->
+<!--            android:padding="16dp"-->
+<!--            android:visibility="gone"-->
+<!--            >-->
 
 
-            <TextView
-                android:id="@+id/selectedItemsHeading"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:textSize="25sp"
-                android:layout_marginBottom="5dp"
-                android:gravity="left"
-                />
+<!--            <TextView-->
+<!--                android:id="@+id/selectedItemsHeading"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:visibility="gone"-->
+<!--                android:textSize="25sp"-->
+<!--                android:layout_marginBottom="5dp"-->
+<!--                android:gravity="left"-->
+<!--                />-->
 
-            <TextView
-                android:id="@+id/cpuSelectedTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp" />
+<!--            <TextView-->
+<!--                android:id="@+id/cpuSelectedTextView"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textSize="16sp" />-->
 
-            <TextView
-                android:id="@+id/gpuSelectedTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp" />
+<!--            <TextView-->
+<!--                android:id="@+id/gpuSelectedTextView"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textSize="16sp" />-->
 
-            <TextView
-                android:id="@+id/ramSelectedTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp" />
+<!--            <TextView-->
+<!--                android:id="@+id/ramSelectedTextView"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textSize="16sp" />-->
 
-            <TextView
-                android:id="@+id/Pc_storageSelectedTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp" />
+<!--            <TextView-->
+<!--                android:id="@+id/Pc_storageSelectedTextView"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textSize="16sp" />-->
 
-            <TextView
-                android:id="@+id/power_supplySelectedTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp" />
+<!--            <TextView-->
+<!--                android:id="@+id/power_supplySelectedTextView"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textSize="16sp" />-->
 
-            <TextView
-                android:id="@+id/motherboardSelectedTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp" />
+<!--            <TextView-->
+<!--                android:id="@+id/motherboardSelectedTextView"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textSize="16sp" />-->
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
 
         <!-- Buttons at the bottom -->
         <Button
@@ -173,18 +372,58 @@
 
         <!-- Saved builds section -->
         <TextView
+            android:id="@+id/savedBuildsHeading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Saved Builds (if any exist will appear here) :"
             android:layout_marginTop="16dp" />
 
-        <!-- Placeholder for dynamic list of saved builds -->
-        <LinearLayout
-            android:id="@+id/savedBuildsContainer"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/savedBuildsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <!-- Dynamic content will be added here programmatically -->
-        </LinearLayout>
+            android:scrollbars="vertical"
+            />
+
+<!--        &lt;!&ndash; Placeholder for dynamic list of saved builds &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:id="@+id/savedBuildsContainer"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical">-->
+<!--            &lt;!&ndash; Dynamic content will be added here programmatically &ndash;&gt;-->
+<!--        </LinearLayout>-->
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/savedBuildsContainer"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:padding="8dp"-->
+<!--            android:background="@color/white"-->
+<!--           >-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/iconView"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+
+<!--            />-->
+
+<!--            <TextView-->
+<!--            android:id="@+id/textView"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="Selected Mobo: B450 AMD, £120"-->
+<!--            android:gravity="center"-->
+<!--            android:textAppearance="?attr/textAppearanceListItem"/>-->
+
+<!--            <ImageButton-->
+<!--            android:id="@+id/removeButton"-->
+<!--                android:layout_width="30dp"-->
+<!--                android:layout_height="30dp"-->
+<!--            android:src="@drawable/red_x_icon" />-->
+<!--        </LinearLayout>-->
+
     </LinearLayout>
 </ScrollView>

@@ -37,7 +37,7 @@ class ProductListFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    private lateinit var moreDetailsButton: Button
+//    private lateinit var moreDetailsButton: Button
     private lateinit var heading: TextView
     private lateinit var productrecyclerView: RecyclerView
     //check if the product type is null
@@ -57,28 +57,16 @@ class ProductListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-
-        // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.fragment_product_list, container, false)
 
         productrecyclerView = view.findViewById(R.id.productrecyclerView)
-
         productType = requireArguments().getString("productType")
-
-
         if (productType != null) {
             heading = view.findViewById(R.id.heading)
             heading.text = "Select " + productType + ":"
         }
 
         searchEbayForItems(productType.toString())
-
-        //        moreDetailsButton = view.findViewById(R.id.moreDetailsButton)
-//        moreDetailsButton.setOnClickListener {
-//            findNavController().navigate(R.id.action_productListFragment_to_productPageFragment)
-//        }
-
         return view
     }
 
@@ -115,14 +103,12 @@ class ProductListFragment : Fragment() {
 //                                    Log.d("EbaySearch", "Item: ${item.title}" + "// Price: ${item.price.value}" + "// Price Currency: ${item.price.currency}" + "// Item URL: ${item.itemWebUrl}" + "// Image URL: ${item.image.imageUrl}")
                                     productrecyclerView.adapter = ItemSummaryAdapter(searchResult.itemSummaries, productType.toString())
                                     productrecyclerView.layoutManager = LinearLayoutManager(context)
-
                                 }
                             }
                         } else {
                             Log.e("EbaySearch", "Search failed: ${response.errorBody()?.string()}")
                         }
                     }
-
                     override fun onFailure(call: Call<SearchResult>, t: Throwable) {
                         Log.e("EbaySearch", "Network error: ${t.message}")
                     }
