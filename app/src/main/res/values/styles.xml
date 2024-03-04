@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="CompatibilityButtonRed" parent="Widget.AppCompat.Button">
+        <item name="android:background">#971B1B</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:text">Uncompatible</item>
+        <item name="android:drawableLeft">@drawable/red_x_icon</item>
+        <item name="android:drawablePadding">100dp</item>
+
+    </style>
+
+    <style name="CompatibilityButtonGrey" parent="Widget.AppCompat.Button">
+        <item name="android:background">#777474</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:text">Compibility: Unverified</item>
+        <item name ="android:drawableLeft">@drawable/question_mark_icon</item>
+        <item name="android:drawablePadding">70dp</item>
+
+    </style>
+
+    <style name="CompatibilityButtonGreen" parent="Widget.AppCompat.Button">
+        <item name="android:background">#4CAF50</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:text">Compatible</item>
+        <item name ="android:drawableLeft">@drawable/reshot_icon_tick_circle_nc7gmqhp6x</item>
+        <item name="android:drawablePadding">105dp</item>
+    </style>
+</resources>

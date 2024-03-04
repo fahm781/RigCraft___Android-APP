@@ -10,8 +10,8 @@ class ChatbotRepository {
     private val openAiApiClient = OpenAiApiClient()
     private val openAiApiInstance = openAiApiClient.getInstance()
 
-    fun getResponse(msg: String, callback: (String) -> Unit) {
-        val prompt = "Answer queries only related to PC building and such. Otherwise, say 'I can only answer queries related to PC building'"
+    fun getResponse(msg: String, prompt: String, callback: (String) -> Unit) {
+//        val prompt = "Answer queries only related to PC building and such. Otherwise, say 'I can only answer queries related to PC building'"
         val model = "gpt-3.5-turbo"
         try {
             val request = Request(
@@ -35,8 +35,8 @@ class ChatbotRepository {
                         val code = response.code()
                         if(code == 200){
                             response.body()?.choices?.get(0)?.message?.let {
-                                callback(it.toString())
-                                Log.d("message", it.toString()) //this is just for testing
+                                callback(it.content)
+                                Log.d("message", it.content) //this is just for testing
                             }
                             }   else{
                             response.errorBody()?.let {

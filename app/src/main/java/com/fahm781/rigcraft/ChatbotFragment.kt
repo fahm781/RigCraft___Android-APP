@@ -70,8 +70,10 @@ class ChatbotFragment : Fragment() {
             if (query.isNotEmpty()) {
                 addMessage(query, MY_MSG)
                 editTextMessage.setText("")
+                val prompt = "Answer queries only related to PC building and such. Otherwise, say 'I can only answer queries related to PC building'"
+
                 welcomeText.visibility = View.GONE
-                chatbotRepository.getResponse(query) { result ->
+                chatbotRepository.getResponse(query, prompt) { result ->
                     addMessage(result, BOT_MSG)
                 }
             } else {
@@ -85,13 +87,9 @@ class ChatbotFragment : Fragment() {
     //add message to the recycler view/MsgAdapter
     private fun addMessage(message: String, sentBy: String) {
         activity?.runOnUiThread {
-            val content = if (sentBy == BOT_MSG) {
-                message.substringAfter("content=").trimEnd(')')
-            } else {
-                message
-            }
-            saveMessageToFirestore(sentBy, content)
-            msgList.add(Msg(sentBy, content))
+
+            saveMessageToFirestore(sentBy, message)
+            msgList.add(Msg(sentBy, message))
             msgAdapter.notifyDataSetChanged()
             chatRecyclerView.smoothScrollToPosition(msgAdapter.itemCount - 1)
         }

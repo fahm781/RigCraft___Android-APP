@@ -12,9 +12,11 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.fahm781.rigcraft.ChatbotServices.ChatbotRepository
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
@@ -46,6 +48,7 @@ class PartPickerFragment : Fragment() {
     private lateinit var selectMotherboard: Button
     private lateinit var saveBuild: Button
     private lateinit var clearBuild: Button
+    private lateinit var compatibilityCheck: Button
     val productTypes = listOf("cpu", "gpu", "ram", "Pc_storage", "power_supply", "motherboard")
 
 
@@ -124,6 +127,58 @@ class PartPickerFragment : Fragment() {
         getSavedBuilds { savedBuilds ->
             savedBuildsRecyclerView.adapter = SavedBuildsAdapter(savedBuilds)
         }
+
+
+        compatibilityCheck = view.findViewById(R.id.compatibilityCheck)
+        compatibilityCheck.setOnClickListener {
+            val buildDetails = getCurrentBuildDetails()
+            if (buildDetails.isEmpty()) {
+                Toast.makeText(context, "Please select a build", Toast.LENGTH_SHORT).show()
+                Log.d("BuildDetails", "build details is empty")
+            }
+
+            Log.d("BuildDetails Actual", buildDetails)
+            val chatbotRepository = ChatbotRepository()
+            val prompt = "Check the compatibility of the components. And respond with GREEN if the components are compatible, RED if they are not compatible, and GREY if you are not sure. Ignore the price and other useless information"
+
+            chatbotRepository.getResponse(buildDetails, prompt) { response ->
+                //return the message from the chatbot and display it in a Log message
+                Log.d("ChatbotResponse", response)
+                when (response) {
+                    "GREEN" -> context?.let { it1 -> ContextCompat.getColor(it1, R.color.green) }
+                        ?.let { it2 ->
+                            setButtonStyle(compatibilityCheck,
+                                it2, "Compatible", R.drawable.reshot_icon_tick_circle_nc7gmqhp6x, 105)
+                        }
+                    "RED" -> context?.let { it1 -> ContextCompat.getColor(it1, R.color.red) }
+                        ?.let { it2 ->
+                            setButtonStyle(compatibilityCheck,
+                                it2, "Uncompatible", R.drawable.red_x_icon, 100)
+                        }
+                    else -> context?.let { it1 -> ContextCompat.getColor(it1, R.color.grey) }
+                        ?.let { it2 ->
+                            setButtonStyle(compatibilityCheck,
+                                it2, "Compibility: Unverified", R.drawable.question_mark_icon, 70)
+                        }
+                }
+            }
+        }
+    }
+
+
+    //this method is used to get the current build details as a string to pass to the chatbot for compatibility check
+    private fun getCurrentBuildDetails(): String {
+        val buildDetails = StringBuilder()
+        for (productType in productTypes) {
+            val selectedLayoutId = resources.getIdentifier("${productType}SelectedLayout", "id", activity?.packageName)
+            val selectedLayout: LinearLayout = view?.findViewById(selectedLayoutId) as LinearLayout
+            if (selectedLayout.visibility == View.VISIBLE) {
+                val selectedTextViewId = resources.getIdentifier("${productType}TextView", "id", activity?.packageName)
+                val selectedTextView: TextView = view?.findViewById(selectedTextViewId) as TextView
+                buildDetails.append("{"+ productType+ ": "+selectedTextView.text.toString()).append("}")
+            }
+        }
+        return buildDetails.toString()
     }
 
     suspend fun getApiKey():  String?  {
@@ -136,6 +191,13 @@ class PartPickerFragment : Fragment() {
             Log.d("Firestore", "Error getting documents: ", e)
             null
         }
+    }
+
+    fun setButtonStyle(button: Button, color: Int, text: String, drawable: Int, padding: Int) {
+        button.setBackgroundColor(color)
+        button.text = text
+        button.setCompoundDrawablesWithIntrinsicBounds(drawable, 0, 0, 0)
+        button.compoundDrawablePadding = padding
     }
 
 //    private fun showSelectedBuild() {
@@ -173,12 +235,9 @@ class PartPickerFragment : Fragment() {
 //    }
 
 
-
     private fun showSelectedBuild() {
         val db = FirebaseFirestore.getInstance()
-
         setLayoutToGone()
-
         for (productType in productTypes) {
             val documentName =  productType.replace("_", " ")
             db.collection("SelectedBuild").document(documentName).get()
