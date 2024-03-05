@@ -8,11 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Adapter
 import android.widget.Button
+import android.widget.SearchView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fahm781.rigcraft.EbayServices.EbayTokenRegenerator
+import com.fahm781.rigcraft.EbayServices.ItemSummary
 
 import com.fahm781.rigcraft.EbayServices.RetrofitClient
 import com.fahm781.rigcraft.EbayServices.SearchResult
@@ -42,6 +45,8 @@ class ProductListFragment : Fragment() {
     private lateinit var productrecyclerView: RecyclerView
     //check if the product type is null
     private var productType: String? = null
+    private lateinit var searchView: androidx.appcompat.widget.SearchView
+    private var itemSummaries: List<ItemSummary> = ArrayList<ItemSummary>()
 
 
 
@@ -67,29 +72,21 @@ class ProductListFragment : Fragment() {
         }
 
         searchEbayForItems(productType.toString())
+
+        searchView = view.findViewById(R.id.searchView)
+        searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+            filterSearchResults(newText.toString())
+                return true
+            }
+        })
+
         return view
     }
-
-
-//    fun searchEbayForItems(query: String) {
-//        RetrofitClient.ebayApi.searchItems(query).enqueue(object : Callback<SearchResult> {
-//            override fun onResponse(call: Call<SearchResult>, response: Response<SearchResult>) {
-//                if (response.isSuccessful) {
-//                    response.body()?.let { searchResult ->
-//                        for (item in searchResult.itemSummaries) {
-//                            Log.d("EbaySearch", "Item: ${item.title}")
-//                        }
-//                    }
-//                } else {
-//                    Log.e("EbaySearch", "Search failed: ${response.errorBody()?.string()}")
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<SearchResult>, t: Throwable) {
-//                Log.e("EbaySearch", "Network error: ${t.message}")
-//            }
-//        })
-//    }
 
     fun searchEbayForItems(query: String) {
         CoroutineScope(Dispatchers.Main).launch {
@@ -100,6 +97,7 @@ class ProductListFragment : Fragment() {
                         if (response.isSuccessful) {
                             response.body()?.let { searchResult ->
                                 for (item in searchResult.itemSummaries) {
+                                    itemSummaries = searchResult.itemSummaries
 //                                    Log.d("EbaySearch", "Item: ${item.title}" + "// Price: ${item.price.value}" + "// Price Currency: ${item.price.currency}" + "// Item URL: ${item.itemWebUrl}" + "// Image URL: ${item.image.imageUrl}")
                                     productrecyclerView.adapter = ItemSummaryAdapter(searchResult.itemSummaries, productType.toString())
                                     productrecyclerView.layoutManager = LinearLayoutManager(context)
@@ -117,4 +115,17 @@ class ProductListFragment : Fragment() {
         }
     }
 
-}
+    fun filterSearchResults(searchQuery: String){
+        val filteredList = ArrayList<ItemSummary>()
+        for (item in itemSummaries){
+            if (item.title.toLowerCase().contains(searchQuery.lowercase())){
+                filteredList.add(item)
+            }
+        }
+        productrecyclerView.adapter = ItemSummaryAdapter(filteredList, productType.toString())
+        productrecyclerView.adapter?.notifyDataSetChanged()
+
+    }
+
+    }
+

@@ -1,18 +1,18 @@
 package com.fahm781.rigcraft
 
+import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlin.coroutines.coroutineContext
 
-class SavedBuildsAdapter(private val savedBuilds: List<SavedBuild>) : RecyclerView.Adapter<SavedBuildsAdapter.ViewHolder>() {
+class SavedBuildsAdapter(private var savedBuilds: MutableList<SavedBuild>) : RecyclerView.Adapter<SavedBuildsAdapter.ViewHolder>() {
 
     // Step 3: Define a ViewHolder
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -49,23 +49,36 @@ class SavedBuildsAdapter(private val savedBuilds: List<SavedBuild>) : RecyclerVi
         }
 
         holder.deleteBuildButton.setOnClickListener{
-            deleteBuildFromFirestore(position)
+            deleteBuildFromFirestore(position, holder.itemView.context)
         }
         }
 
-    private fun deleteBuildFromFirestore (position: Int) {
+    private fun deleteBuildFromFirestore (position: Int, context: Context) {
         val buildId = savedBuilds[position].id
         val db = FirebaseFirestore.getInstance()
         db.collection("SavedBuilds").document(buildId)
             .delete()
             .addOnSuccessListener {
-//                savedBuilds.toMutableList().removeAt(position)
-//                notifyItemRemoved(position)
+                savedBuilds.removeAt(position)
+                notifyItemRemoved(position)
                 Log.d("Firestore", "Successfully deleted build with ID: $buildId")
+
+                // Update the visibility of the heading based on the item count
+                val savedBuildsHeading: TextView = (context as Activity).findViewById(R.id.savedBuildsHeading)
+                if (savedBuilds.size > 0) {
+                    savedBuildsHeading.visibility = View.VISIBLE
+                } else {
+                    savedBuildsHeading.visibility = View.GONE
+                }
+
             }
             .addOnFailureListener { e ->
                 Log.w("Firestore", "Error deleting build", e)
             }
+    }
+
+    fun updateData(newSavedBuilds: MutableList<SavedBuild>) {
+        this.savedBuilds = newSavedBuilds
     }
 
     }

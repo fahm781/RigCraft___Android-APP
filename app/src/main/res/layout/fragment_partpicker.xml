@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -16,8 +18,11 @@
             android:layout_height="wrap_content"
             android:padding="12dp"
             android:gravity="center_vertical"
-            style="@style/CompatibilityButtonGrey"
-
+            android:text="Press to check for compatibility"
+            android:background="#C5960A"
+            android:drawableLeft = "@drawable/press"
+            android:drawablePadding= "30dp"
+            android:textColor="@color/white"
         />
 
         <!-- Replace the following with a RecyclerView for dynamic content -->
@@ -357,35 +362,74 @@
 
 <!--        </LinearLayout>-->
 
-        <!-- Buttons at the bottom -->
-        <Button
-            android:id="@+id/saveBuild"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Save Build"
-            android:layout_marginTop="16dp"
-            />
 
-        <Button
-            android:id="@+id/clearBuild"
+
+        <!-- Buttons at the bottom -->
+<!--        <Button-->
+<!--            android:id="@+id/saveBuild"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Save Build"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            />-->
+
+<!--        <Button-->
+<!--            android:id="@+id/clearBuild"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Clear Build"-->
+<!--            />-->
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Clear Build"
-            />
+            android:paddingTop="11dp">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/saveBuild"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save Build"
+                app:layout_constraintEnd_toStartOf="@+id/clearBuild"
+                app:layout_constraintHorizontal_bias="0.108"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:layout_editor_absoluteY="4dp"
+                android:background="@drawable/rounded_custom_button"
+                android:textColor="@color/white"
+                android:padding="11sp"
+
+                />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/clearBuild"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="Clear Build"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:layout_editor_absoluteY="4dp"
+                android:background="@drawable/rounded_custom_button1"
+                android:textColor="@color/white"
+                android:padding="11sp"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- Saved builds section -->
         <TextView
             android:id="@+id/savedBuildsHeading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Saved Builds (if any exist will appear here) :"
-            android:layout_marginTop="16dp" />
+            android:text="Saved Builds:"
+            android:paddingVertical="6dp"
+            android:textSize="24sp"
+            android:textStyle="bold"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/savedBuildsRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:scrollbars="vertical"
+            android:background="@color/white"
             />
 
 <!--        &lt;!&ndash; Placeholder for dynamic list of saved builds &ndash;&gt;-->

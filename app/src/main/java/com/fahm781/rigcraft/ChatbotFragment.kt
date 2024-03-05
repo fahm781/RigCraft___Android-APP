@@ -87,7 +87,6 @@ class ChatbotFragment : Fragment() {
     //add message to the recycler view/MsgAdapter
     private fun addMessage(message: String, sentBy: String) {
         activity?.runOnUiThread {
-
             saveMessageToFirestore(sentBy, message)
             msgList.add(Msg(sentBy, message))
             msgAdapter.notifyDataSetChanged()

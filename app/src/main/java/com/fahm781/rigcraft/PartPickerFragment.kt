@@ -49,6 +49,7 @@ class PartPickerFragment : Fragment() {
     private lateinit var saveBuild: Button
     private lateinit var clearBuild: Button
     private lateinit var compatibilityCheck: Button
+    private var savedBuildsAdapter: SavedBuildsAdapter? = null
     val productTypes = listOf("cpu", "gpu", "ram", "Pc_storage", "power_supply", "motherboard")
 
 
@@ -121,13 +122,12 @@ class PartPickerFragment : Fragment() {
         //show selected builds if any
         showSelectedBuild()
 
-        //show saved builds if any
         val savedBuildsRecyclerView: RecyclerView = view.findViewById(R.id.savedBuildsRecyclerView)
         savedBuildsRecyclerView.layoutManager = LinearLayoutManager(context)
         getSavedBuilds { savedBuilds ->
-            savedBuildsRecyclerView.adapter = SavedBuildsAdapter(savedBuilds)
+            savedBuildsAdapter = SavedBuildsAdapter(savedBuilds)
+            savedBuildsRecyclerView.adapter = savedBuildsAdapter
         }
-
 
         compatibilityCheck = view.findViewById(R.id.compatibilityCheck)
         compatibilityCheck.setOnClickListener {
@@ -135,6 +135,7 @@ class PartPickerFragment : Fragment() {
             if (buildDetails.isEmpty()) {
                 Toast.makeText(context, "Please select a build", Toast.LENGTH_SHORT).show()
                 Log.d("BuildDetails", "build details is empty")
+                return@setOnClickListener
             }
 
             Log.d("BuildDetails Actual", buildDetails)
@@ -153,7 +154,7 @@ class PartPickerFragment : Fragment() {
                     "RED" -> context?.let { it1 -> ContextCompat.getColor(it1, R.color.red) }
                         ?.let { it2 ->
                             setButtonStyle(compatibilityCheck,
-                                it2, "Uncompatible", R.drawable.red_x_icon, 100)
+                                it2, "Incompatible", R.drawable.red_x_icon, 100)
                         }
                     else -> context?.let { it1 -> ContextCompat.getColor(it1, R.color.grey) }
                         ?.let { it2 ->
@@ -164,7 +165,6 @@ class PartPickerFragment : Fragment() {
             }
         }
     }
-
 
     //this method is used to get the current build details as a string to pass to the chatbot for compatibility check
     private fun getCurrentBuildDetails(): String {
@@ -193,48 +193,16 @@ class PartPickerFragment : Fragment() {
         }
     }
 
+    //changing the compatibilityCheck button style based on the response from the chatbot
     fun setButtonStyle(button: Button, color: Int, text: String, drawable: Int, padding: Int) {
         button.setBackgroundColor(color)
         button.text = text
         button.setCompoundDrawablesWithIntrinsicBounds(drawable, 0, 0, 0)
         button.compoundDrawablePadding = padding
+        button.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
     }
 
-//    private fun showSelectedBuild() {
-//        val db = FirebaseFirestore.getInstance()
-//        var isEmpty = true
-//        val selectedItemsLayout : LinearLayout? = view?.findViewById(R.id.selectedItemsLayout)
-//
-//        for (productType in productTypes) {
-//            val documentName =  productType.replace("_", " ")
-//            db.collection("SelectedBuild").document(documentName).get()
-//                .addOnSuccessListener { document ->
-//                    if (document != null && document.exists()) {
-//                        isEmpty = false
-//                        selectedItemsLayout?.visibility = View.VISIBLE
-//                        val title = document.data?.get("title").toString()
-//                        val selectedTextViewId = resources.getIdentifier("${productType}SelectedTextView", "id", activity?.packageName)
-//                        val selectedTextView: TextView = view?.findViewById(selectedTextViewId) as TextView
-//                        selectedTextView.text = documentName + ": " + title + " - £" + document.data?.get("price").toString()
-//                        val selectedItemsHeading: TextView = view?.findViewById(R.id.selectedItemsHeading) as TextView
-//                        selectedItemsHeading.text = "Current Build:"
-//                        selectedItemsHeading.visibility = View.VISIBLE
-//                        Log.d("Firestore", "DocumentSnapshot data: ${document.data}")
-//                    }
-//                }
-//                .addOnFailureListener { exception ->
-//                    Log.d("Firestore", "get failed with ", exception)
-//                }
-//        }
-//
-//        if (isEmpty) {
-//            selectedItemsLayout?.visibility = View.GONE
-//        } else {
-//            selectedItemsLayout?.visibility = View.VISIBLE
-//        }
-//    }
-
-
+    //show the selected build items on the GUI
     private fun showSelectedBuild() {
         val db = FirebaseFirestore.getInstance()
         setLayoutToGone()
@@ -285,7 +253,12 @@ class PartPickerFragment : Fragment() {
         }
     }
 
+    //save the build to firestore database
      fun saveBuild() {
+         if (getCurrentBuildDetails().isEmpty()) {
+             Toast.makeText(context, "No items to save", Toast.LENGTH_SHORT).show()
+             return
+         }
         GlobalScope.launch(Dispatchers.IO) {
             val db = FirebaseFirestore.getInstance()
             val buildData = hashMapOf<String, Any>()
@@ -301,6 +274,10 @@ class PartPickerFragment : Fragment() {
             val newBuildId = db.collection("SavedBuilds").document().id
             db.collection("SavedBuilds").document(newBuildId).set(buildData).addOnSuccessListener {
                 Log.d("Firestore", "Build successfully saved with ID: $newBuildId")
+                getSavedBuilds { savedBuilds ->
+                    savedBuildsAdapter?.updateData(savedBuilds)
+                    savedBuildsAdapter?.notifyDataSetChanged()
+                }
                 clearCurrentBuild()
                 Toast.makeText(context, "Build saved", Toast.LENGTH_SHORT).show()
             }.addOnFailureListener { e ->
@@ -318,6 +295,7 @@ class PartPickerFragment : Fragment() {
                 Log.d("Firestore", "DocumentSnapshot successfully deleted!")
                 showSelectedBuild() // Refresh the selected build
 //                                    selectedLayout.visibility = View.GONE // Hide the layout (temporary fix)
+
             }
             .addOnFailureListener { e ->
                 Log.w("Firestore", "Error deleting document", e)
@@ -327,6 +305,10 @@ class PartPickerFragment : Fragment() {
 
     //clear current build
     fun clearCurrentBuild(){
+        if (getCurrentBuildDetails().isEmpty()) {
+            Toast.makeText(context, "No items to clear", Toast.LENGTH_SHORT).show()
+            return
+        }
         //you have to delete one by one, firestore does not support batch delete
         val db = FirebaseFirestore.getInstance()
         for (productType in productTypes) {
@@ -334,7 +316,7 @@ class PartPickerFragment : Fragment() {
             db.collection("SelectedBuild").document(documentName).delete()
                 .addOnSuccessListener { documentReference ->
                     Log.d("Firestore", "Build Cleared")
-                    showSelectedBuild()
+                    showSelectedBuild() //try moving this outside the loop
                 }
                 .addOnFailureListener { e ->
                     Log.w("Firestore", "Error adding document", e)
@@ -342,28 +324,8 @@ class PartPickerFragment : Fragment() {
         }
     }
 
-//private suspend fun fetchSavedBuilds(): List<SavedBuild> {
-//    val savedBuilds = mutableListOf<SavedBuild>()
-//    try {
-//        val db = FirebaseFirestore.getInstance()
-//        val snapshot = db.collection("SavedBuilds").get().await()
-//        for (document in snapshot.documents) {
-//            val id = document.id
-//            val buildData = document.data
-//            if (buildData != null) {
-//                val savedBuild = SavedBuild(id, buildData)
-//                savedBuilds.add(savedBuild)
-//            }
-//        }
-//    } catch (e: Exception) {
-//        Log.w("Firestore", "Error fetching saved builds", e)
-//    }
-//    return savedBuilds
-//}
-
-
     //get saved builds from firestore database, add them to the SavedBuild list and return it
-    private fun getSavedBuilds(callback: (List<SavedBuild>) -> Unit) {
+    private fun getSavedBuilds(callback: (MutableList<SavedBuild>) -> Unit) {
         val savedBuilds = mutableListOf<SavedBuild>()
         val db = FirebaseFirestore.getInstance()
         db.collection("SavedBuilds").get()
@@ -377,6 +339,14 @@ class PartPickerFragment : Fragment() {
                     }
                 }
                 callback(savedBuilds)
+
+                // Update the visibility of the heading based on the item count
+                val savedBuildsHeading: TextView = view?.findViewById(R.id.savedBuildsHeading) as TextView
+                if (savedBuilds.size > 0) {
+                    savedBuildsHeading.visibility = View.VISIBLE
+                } else {
+                    savedBuildsHeading.visibility = View.GONE
+                }
             }
             .addOnFailureListener { exception ->
                 Log.w("Firestore", "Error fetching saved builds", exception)

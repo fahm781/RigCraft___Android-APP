@@ -27,7 +27,6 @@ class ItemSummaryAdapter(private val itemSummaries: List<ItemSummary>,  private 
         val itemWebUrlButton: Button = view.findViewById(R.id.itemWebUrlButton)
         val moreDetailsButton: Button = view.findViewById(R.id.moreDetailsButton)
         val addToBuildButton: Button = view.findViewById(R.id.addToBuildButton)
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

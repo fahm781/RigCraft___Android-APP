@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".ProductListFragment">
 
@@ -48,12 +49,35 @@
 <!--                android:text="More Details" />-->
 <!--        </LinearLayout>-->
 <!--    </FrameLayout>-->
+<!--    <EditText-->
+<!--        android:id="@+id/searchBar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="Search items..."-->
+<!--        android:inputType="text"-->
+<!--        android:padding="10dp" />-->
 
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:queryHint="Search items..."
+        app:iconifiedByDefault="false"
+        />
+
+    <ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="9dp"
+    android:scrollbarStyle="insideInset"
+    >
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/productrecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
        />
+    </ScrollView>
 </LinearLayout>
 
 
