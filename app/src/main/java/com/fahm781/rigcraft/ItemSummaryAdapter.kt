@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.fahm781.rigcraft.EbayServices.ItemSummary
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
 
@@ -55,7 +56,33 @@ class ItemSummaryAdapter(private val itemSummaries: List<ItemSummary>,  private 
             holder.itemView.findNavController().navigate(R.id.action_productListFragment_to_productPageFragment, bundle)
         }
 
+//        holder.addToBuildButton.setOnClickListener {
+//            val user = FirebaseAuth.getInstance().currentUser
+//            val userId = user?.uid
+//            val db = FirebaseFirestore.getInstance()
+//            val selectedBuild = hashMapOf(
+//                "title" to itemSummary.title,
+//                "price" to itemSummary.price.value,
+//                "imageUrl" to itemSummary.image.imageUrl,
+//                "itemWebUrl" to itemSummary.itemWebUrl
+//                //can add more info later
+//            )
+//            db.collection("users").document(userId).collection("currentBuild").document(productType).set(selectedBuild)
+//                .addOnSuccessListener {
+//                    Log.d("Firestore", "DocumentSnapshot successfully written!")
+//                    Toast.makeText(holder.itemView.context, "Item added to build", Toast.LENGTH_SHORT).show()
+//                    holder.itemView.findNavController().navigate(R.id.action_productListFragment_to_partPickerFragment)
+//                }
+//                .addOnFailureListener { e ->
+//                    Log.w("Firestore", "Error writing document", e)
+//                    Toast.makeText(holder.itemView.context, "Error adding item to build", Toast.LENGTH_SHORT).show()
+//                }
+//        }
+
         holder.addToBuildButton.setOnClickListener {
+            val user = FirebaseAuth.getInstance().currentUser
+            val userId = user?.uid
+
             val db = FirebaseFirestore.getInstance()
             val selectedBuild = hashMapOf(
                 "title" to itemSummary.title,
@@ -64,16 +91,18 @@ class ItemSummaryAdapter(private val itemSummaries: List<ItemSummary>,  private 
                 "itemWebUrl" to itemSummary.itemWebUrl
                 //can add more info later
             )
-            db.collection("SelectedBuild").document(productType).set(selectedBuild)
-                .addOnSuccessListener {
-                    Log.d("Firestore", "DocumentSnapshot successfully written!")
-                    Toast.makeText(holder.itemView.context, "Item added to build", Toast.LENGTH_SHORT).show()
-                    holder.itemView.findNavController().navigate(R.id.action_productListFragment_to_partPickerFragment)
-                }
-                .addOnFailureListener { e ->
-                    Log.w("Firestore", "Error writing document", e)
-                    Toast.makeText(holder.itemView.context, "Error adding item to build", Toast.LENGTH_SHORT).show()
-                }
+            if (userId != null) {
+                db.collection("Users").document(userId).collection("currentBuild").document(productType).set(selectedBuild)
+                    .addOnSuccessListener {
+                        Log.d("Firestore", "DocumentSnapshot successfully written!")
+                        Toast.makeText(holder.itemView.context, "Item added to build", Toast.LENGTH_SHORT).show()
+                        holder.itemView.findNavController().navigate(R.id.action_productListFragment_to_partPickerFragment)
+                    }
+                    .addOnFailureListener { e ->
+                        Log.w("Firestore", "Error writing document", e)
+                        Toast.makeText(holder.itemView.context, "Error adding item to build", Toast.LENGTH_SHORT).show()
+                    }
+            }
         }
     }
 

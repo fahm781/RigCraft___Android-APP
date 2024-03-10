@@ -72,7 +72,7 @@ class AccountFragment : Fragment() {
 
         // Set the user's email to the TextView, if the user is not null
         currentUser?.let {
-            userEmailTextView.text = "User: ${it.email}"
+            userEmailTextView.text = "${it.email}"
         } ?: run {
             userEmailTextView.text = "User: not logged in"
         }

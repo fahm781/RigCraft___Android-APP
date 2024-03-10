@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp"
-        android:paddingTop="100dp" >
+         >
 
         <!-- User Account Section -->
         <ImageView
@@ -22,9 +22,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/userEmail"
-            android:layout_marginTop="16dp"
             android:textSize="22sp"
             android:textStyle="bold"
+            android:text="testing"
+            android:layout_gravity="center"
+            android:padding="9dp"
             />
         <androidx.cardview.widget.CardView
             xmlns:app="http://schemas.android.com/apk/res-auto"

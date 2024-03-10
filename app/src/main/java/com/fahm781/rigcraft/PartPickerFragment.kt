@@ -17,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fahm781.rigcraft.ChatbotServices.ChatbotRepository
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
@@ -252,85 +253,90 @@ class PartPickerFragment : Fragment() {
         button.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
     }
 
-    //show the selected build items on the GUI
+//    show the selected build items on the GUI
     private fun showSelectedBuild() {
         val db = FirebaseFirestore.getInstance()
+        val userId = getUserID()
         setLayoutToGone()
         for (productType in productTypes) {
             val documentName = productType.replace("_", " ")
-            db.collection("SelectedBuild").document(documentName).get()
-                .addOnSuccessListener { document ->
-                    if (document != null && document.exists()) {
-                        val title = document.data?.get("title").toString()
-                        val image = document.data?.get("imageUrl").toString()
-                        val price = document.data?.get("price").toString()
+            if (userId != null) {
+                db.collection("Users").document(userId).collection("currentBuild").document(documentName).get()
+                    .addOnSuccessListener { document ->
+                        if (document != null && document.exists()) {
+                            val title = document.data?.get("title").toString()
+                            val image = document.data?.get("imageUrl").toString()
+                            val price = document.data?.get("price").toString()
 
-                        // Get the layout, ImageView, and TextView of the selected component
-                        val selectedLayoutId = resources.getIdentifier(
-                            "${productType}SelectedLayout",
-                            "id",
-                            activity?.packageName
-                        )
-                        val selectedLayout: LinearLayout =
-                            view?.findViewById(selectedLayoutId) as LinearLayout
-                        val selectedImageViewId = resources.getIdentifier(
-                            "${productType}ImageView",
-                            "id",
-                            activity?.packageName
-                        )
-                        val selectedImageView: ImageView =
-                            view?.findViewById(selectedImageViewId) as ImageView
-                        val selectedTextViewId = resources.getIdentifier(
-                            "${productType}TextView",
-                            "id",
-                            activity?.packageName
-                        )
-                        val selectedTextView: TextView =
-                            view?.findViewById(selectedTextViewId) as TextView
-                        val selectedPriceTextViewId = resources.getIdentifier(
-                            "${productType}PriceTextView",
-                            "id",
-                            activity?.packageName
-                        )
-                        val selectedPriceTextView: TextView =
-                            view?.findViewById(selectedPriceTextViewId) as TextView
-                        val selectedRemoveButtonId = resources.getIdentifier(
-                            "${productType}RemoveButton",
-                            "id",
-                            activity?.packageName
-                        )
-                        val selectedRemoveButton: ImageButton =
-                            view?.findViewById(selectedRemoveButtonId) as ImageButton
+                            // Get the layout, ImageView, and TextView of the selected component
+                            val selectedLayoutId = resources.getIdentifier(
+                                "${productType}SelectedLayout",
+                                "id",
+                                activity?.packageName
+                            )
+                            val selectedLayout: LinearLayout =
+                                view?.findViewById(selectedLayoutId) as LinearLayout
+                            val selectedImageViewId = resources.getIdentifier(
+                                "${productType}ImageView",
+                                "id",
+                                activity?.packageName
+                            )
+                            val selectedImageView: ImageView =
+                                view?.findViewById(selectedImageViewId) as ImageView
+                            val selectedTextViewId = resources.getIdentifier(
+                                "${productType}TextView",
+                                "id",
+                                activity?.packageName
+                            )
+                            val selectedTextView: TextView =
+                                view?.findViewById(selectedTextViewId) as TextView
+                            val selectedPriceTextViewId = resources.getIdentifier(
+                                "${productType}PriceTextView",
+                                "id",
+                                activity?.packageName
+                            )
+                            val selectedPriceTextView: TextView =
+                                view?.findViewById(selectedPriceTextViewId) as TextView
+                            val selectedRemoveButtonId = resources.getIdentifier(
+                                "${productType}RemoveButton",
+                                "id",
+                                activity?.packageName
+                            )
+                            val selectedRemoveButton: ImageButton =
+                                view?.findViewById(selectedRemoveButtonId) as ImageButton
 
-                        // Set the visibility, image, title and price
-                        selectedLayout.visibility = View.VISIBLE
-                        Picasso.get().load(image).into(selectedImageView)
-                        selectedTextView.text = title
-                        selectedPriceTextView.text = "£ ${price}"
+                            // Set the visibility, image, title and price
+                            selectedLayout.visibility = View.VISIBLE
+                            Picasso.get().load(image).into(selectedImageView)
+                            selectedTextView.text = title
+                            selectedPriceTextView.text = "£ ${price}"
 
-                        // delete the selected item from the build if the remove button is clicked
-                        selectedRemoveButton.setOnClickListener {
-                            deletebuild(documentName)
-                        }
+                            // delete the selected item from the build if the remove button is clicked
+                            selectedRemoveButton.setOnClickListener {
+                                deletebuild(documentName)
+                            }
                             getCurrentBuildSubtotal()
-                        Log.d("Firestore", "DocumentSnapshot data: ${document.data}")
+                            Log.d("Firestore", "DocumentSnapshot data: ${document.data}")
+                        }
                     }
-                }
 
 
-                .addOnFailureListener { exception ->
-                    Log.d("Firestore", "get failed with ", exception)
-                    Toast.makeText(
-                        context,
-                        "An Unknown Database Error Has Occurred",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+                    .addOnFailureListener { exception ->
+                        Log.d("Firestore", "get failed with ", exception)
+                        Toast.makeText(
+                            context,
+                            "An Unknown Database Error Has Occurred",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+            }
         }
 
 
 
     }
+
+
 
     // Initially set all selected buildItem layout(s) to GONE
     private fun setLayoutToGone() {
@@ -384,21 +390,24 @@ class PartPickerFragment : Fragment() {
 
     //delete current build
     fun deletebuild(documentName: String) {
+        val userId = getUserID()
         val db = FirebaseFirestore.getInstance()
-        db.collection("SelectedBuild").document(documentName).delete()
-            .addOnSuccessListener {
-                Log.d("Firestore", "DocumentSnapshot successfully deleted!")
-                showSelectedBuild() // Refresh the selected build
-//                                    selectedLayout.visibility = View.GONE // Hide the layout (temporary fix)
-                if (getVisibleLayoutsCount() == 0){
-                    subtotalTextView.visibility = View.GONE
-                }
+        if (userId != null) {
+            db.collection("Users").document(userId).collection("currentBuild").document(documentName).delete()
+                .addOnSuccessListener {
+                    Log.d("Firestore", "DocumentSnapshot successfully deleted!")
+                    showSelectedBuild() // Refresh the selected build
+    //                                    selectedLayout.visibility = View.GONE // Hide the layout (temporary fix)
+                    if (getVisibleLayoutsCount() == 0){
+                        subtotalTextView.visibility = View.GONE
+                    }
 
-            }
-            .addOnFailureListener { e ->
-                Log.w("Firestore", "Error deleting document", e)
-                Toast.makeText(context, "Error deleting item from build", Toast.LENGTH_SHORT).show()
-            }
+                }
+                .addOnFailureListener { e ->
+                    Log.w("Firestore", "Error deleting document", e)
+                    Toast.makeText(context, "Error deleting item from build", Toast.LENGTH_SHORT).show()
+                }
+        }
     }
 
     //clear current build
@@ -409,16 +418,18 @@ class PartPickerFragment : Fragment() {
         }
         //you have to delete one by one, firestore does not support batch delete
         val db = FirebaseFirestore.getInstance()
+        val userId = getUserID()
+        if (userId != null) {
         for (productType in productTypes) {
-            val documentName = productType.replace("_", " ")
-            db.collection("SelectedBuild").document(documentName).delete()
-                .addOnSuccessListener { documentReference ->
-                    Log.d("Firestore", "Build Cleared")
-                    showSelectedBuild() //try moving this outside the loop
-                }
-                .addOnFailureListener { e ->
-                    Log.w("Firestore", "Error adding document", e)
-                }
+                db.collection("Users").document(userId).collection("currentBuild").document(productType).delete()
+                    .addOnSuccessListener { documentReference ->
+                        Log.d("Firestore", "Build Cleared")
+                        showSelectedBuild() //try moving this outside the loop
+                    }
+                    .addOnFailureListener { e ->
+                        Log.w("Firestore", "Error adding document", e)
+                    }
+            }
         }
         subtotalTextView.visibility = View.GONE
     }
@@ -439,13 +450,23 @@ class PartPickerFragment : Fragment() {
                 }
                 callback(savedBuilds)
 
+                //commented out the code below if any errors happen
                 // Update the visibility of the heading based on the item count
-                val savedBuildsHeading: TextView =
-                    view?.findViewById(R.id.savedBuildsHeading) as TextView
-                if (savedBuilds.size > 0) {
-                    savedBuildsHeading.visibility = View.VISIBLE
-                } else {
-                    savedBuildsHeading.visibility = View.GONE
+//                val savedBuildsHeading: TextView =
+//                    view?.findViewById(R.id.savedBuildsHeading) as TextView
+//                if (savedBuilds.size > 0) {
+//                    savedBuildsHeading.visibility = View.VISIBLE
+//                } else {
+//                    savedBuildsHeading.visibility = View.GONE
+//                }
+
+                val savedBuildsHeading: TextView? = view?.findViewById(R.id.savedBuildsHeading) as? TextView
+                if (savedBuildsHeading != null) {
+                    if (savedBuilds.size > 0) {
+                        savedBuildsHeading.visibility = View.VISIBLE
+                    } else {
+                        savedBuildsHeading.visibility = View.GONE
+                    }
                 }
             }
             .addOnFailureListener { exception ->
@@ -454,23 +475,28 @@ class PartPickerFragment : Fragment() {
             }
     }
 
+    private fun getUserID(): String? {
+        val user = FirebaseAuth.getInstance().currentUser
+        return user?.uid
+    }
+
     private fun getCurrentBuildSubtotal(){
         if (getVisibleLayoutsCount() > 0){
-        var subtotal = 0.0
-        for (productType in productTypes) {
-            val selectedLayoutId = resources.getIdentifier("${productType}SelectedLayout", "id", activity?.packageName)
-            val selectedLayout: LinearLayout = view?.findViewById(selectedLayoutId) as LinearLayout
-            if (selectedLayout.visibility == View.VISIBLE) {
-                val selectedPriceTextViewId = resources.getIdentifier("${productType}PriceTextView", "id", activity?.packageName)
-                val selectedPriceTextView: TextView = view?.findViewById(selectedPriceTextViewId) as TextView
-                val priceText = selectedPriceTextView.text.toString()
-                val price = priceText.replace("£", "").trim().toDouble()
-                subtotal += price
+            var subtotal = 0.0
+            for (productType in productTypes) {
+                val selectedLayoutId = resources.getIdentifier("${productType}SelectedLayout", "id", activity?.packageName)
+                val selectedLayout: LinearLayout = view?.findViewById(selectedLayoutId) as LinearLayout
+                if (selectedLayout.visibility == View.VISIBLE) {
+                    val selectedPriceTextViewId = resources.getIdentifier("${productType}PriceTextView", "id", activity?.packageName)
+                    val selectedPriceTextView: TextView = view?.findViewById(selectedPriceTextViewId) as TextView
+                    val priceText = selectedPriceTextView.text.toString()
+                    val price = priceText.replace("£", "").trim().toDouble()
+                    subtotal += price
+                }
             }
-        }
-        Log.d("SUBTOTAL", subtotal.toString())
+            Log.d("SUBTOTAL", subtotal.toString())
             subtotalTextView.visibility = View.VISIBLE
-        subtotalTextView.text = "Subtotal: £$subtotal"
-            }
+            subtotalTextView.text = "Subtotal: £$subtotal"
+        }
     }
 }
