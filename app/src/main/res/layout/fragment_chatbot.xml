@@ -1,66 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ChatbotFragment">
 
-    <!-- Replace with a Toolbar or your custom ActionBar if needed -->
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        android:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+<!--    &lt;!&ndash; Replace with a Toolbar or your custom ActionBar if needed &ndash;&gt;-->
+<!--    <androidx.appcompat.widget.Toolbar-->
+<!--        android:id="@+id/toolbar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="?attr/actionBarSize"-->
+<!--        android:background="?attr/colorPrimary"-->
+<!--        android:elevation="4dp"-->
+<!--        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"-->
+<!--        android:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>-->
 
-
-<!-- This RecyclerView is the chat area -->
-<androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/chatRecyclerView"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_above="@id/bottomArea"
-    android:layout_below="@id/toolbar"
-    android:padding="10dp"
-    android:background="@color/white"/>
-
-    <TextView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:id="@+id/welcomeText"
-        android:text="Try out our RigCraft chatbot!"
-        android:gravity="top|center_horizontal"
-        android:textSize="35dp"
-        />
+        android:layout_above="@+id/cardView"
+        android:layout_alignParentTop="true"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="10dp"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardCornerRadius="18dp"
+        app:cardElevation="5dp">
 
-    <!-- Bottom area containing the EditText and Send button -->
-<LinearLayout
-    android:id="@+id/bottomArea"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
-    android:orientation="horizontal"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <!-- This RecyclerView is the chat area -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/chatRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@id/bottomArea"
+                android:background="@color/white"
+                android:padding="10dp" />
 
-    android:padding="10dp">
+            <TextView
+                android:id="@+id/welcomeText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
 
-    <EditText
-        android:id="@+id/editTextMessage"
-        android:layout_width="0dp"
+                android:gravity="top|center_horizontal"
+                android:text="Try out our RigCraft chatbot!"
+                android:textSize="35dp" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:hint="Ask me anything about PC’s..." />
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardCornerRadius="18dp"
+        app:cardElevation="5dp">
+        <!-- Bottom area containing the EditText and Send button -->
+        <LinearLayout
+            android:id="@+id/bottomArea"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:padding="7dp">
 
-    <ImageButton
-        android:id="@+id/buttonSend"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_menu_send"
-        />
-</LinearLayout>
+            <EditText
+                android:id="@+id/editTextMessage"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:hint="Ask me anything about PC’s..." />
 
+            <ImageButton
+                android:id="@+id/buttonSend"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:src="@android:drawable/ic_menu_send"
+                android:background="@drawable/rounded_custom_button"/>
+
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
 
 </RelativeLayout>

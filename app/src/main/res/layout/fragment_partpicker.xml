@@ -23,16 +23,16 @@
             android:drawableLeft = "@drawable/press"
             android:drawablePadding= "30dp"
             android:textColor="@color/white"
+            android:layout_marginBottom="11dp"
         />
 
-        <!-- Replace the following with a RecyclerView for dynamic content -->
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fillViewport="true"
-            android:paddingTop="15dp"
-            android:background="#f0f0f0"
-            >
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="18dp"
+        app:cardElevation="5dp"
+        app:cardBackgroundColor="@android:color/white">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -42,38 +42,53 @@
 <!--Select CPU-->
                 <Button
                     android:id="@+id/selectCpu"
-                    android:layout_width="250dp"
-                    android:layout_gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_marginHorizontal="3dp"
                     android:layout_height="wrap_content"
-                    android:padding="6dp"
-                    android:text="Select CPU"
+                    android:layout_gravity="center"
                     android:drawableLeft="@drawable/cpu"
-                    />
+                    android:padding="6dp"
+                    android:text="Select CPU" />
 
                 <LinearLayout
                     android:id="@+id/cpuSelectedLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
-                    android:background="@color/white"
-                    android:visibility="gone"
                     >
 
                     <ImageView
                         android:id="@+id/cpuImageView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
+                        android:src="@drawable/press"
                         />
 
-                    <TextView
-                        android:id="@+id/cpuTextView"
+                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Selected Mobo: B450 AMD, £120"
-                        android:gravity="center"
-                        android:textAppearance="?attr/textAppearanceListItem"/>
+                        android:orientation="vertical"
+                        android:paddingHorizontal="5dp"
+                        >
+
+                        <TextView
+                            android:id="@+id/cpuTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Selected Mobo: B450 AMD, £120"
+
+                            android:textAppearance="?attr/textAppearanceListItem"/>
+
+                        <TextView
+                            android:id="@+id/cpuPriceTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:textStyle="bold"
+                            android:textSize="15sp"
+                            android:textColor="#C3777474" />
+                    </LinearLayout>
 
                     <ImageButton
                         android:id="@+id/cpuRemoveButton"
@@ -87,12 +102,14 @@
 <!--  Select GPU-->
                 <Button
                     android:id="@+id/selectGpu"
-                    android:layout_width="250dp"
+                    android:layout_width="match_parent"
+                    android:layout_marginHorizontal="3dp"
                     android:layout_gravity="center"
                     android:layout_height="wrap_content"
                     android:text="Select GPU"
                     android:drawableLeft="@drawable/indicator_sensors_gpu"
                     android:padding="6dp" />
+
 
                 <LinearLayout
                     android:id="@+id/gpuSelectedLayout"
@@ -110,15 +127,30 @@
 
                         />
 
-                    <TextView
-                        android:id="@+id/gpuTextView"
+                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="5dp"
+                        >
+                    <TextView
+                        android:id="@+id/gpuTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="Selected Mobo: B450 AMD, £120"
-                        android:gravity="center"
+
                         android:textAppearance="?attr/textAppearanceListItem"/>
 
+                        <TextView
+                            android:id="@+id/gpuPriceTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:textStyle="bold"
+                            android:textSize="15sp"
+                            android:textColor="#C3777474" />
+                    </LinearLayout>
                     <ImageButton
                         android:id="@+id/gpuRemoveButton"
                         android:layout_width="30dp"
@@ -130,7 +162,8 @@
 <!--     Select Ram-->
                 <Button
                     android:id="@+id/selectRam"
-                    android:layout_width="250dp"
+                    android:layout_width="match_parent"
+                    android:layout_marginHorizontal="3dp"
                     android:layout_gravity="center"
                     android:layout_height="wrap_content"
                     android:text="Select RAM"
@@ -152,16 +185,31 @@
                         android:layout_height="wrap_content"
 
                         />
-
-                    <TextView
-                        android:id="@+id/ramTextView"
+                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Selected Mobo: B450 AMD, £120"
-                        android:gravity="center"
-                        android:textAppearance="?attr/textAppearanceListItem"/>
+                        android:orientation="vertical"
+                        android:paddingHorizontal="5dp"
+                        >
 
+                    <TextView
+                        android:id="@+id/ramTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Selected Mobo: B450 AMD, £120"
+
+                        android:textAppearance="?attr/textAppearanceListItem"/>
+                    <TextView
+                        android:id="@+id/ramPriceTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:textColor="#C3777474" />
+                </LinearLayout>
                     <ImageButton
                         android:id="@+id/ramRemoveButton"
                         android:layout_width="30dp"
@@ -173,7 +221,8 @@
 <!--    Select Storage  -->
                 <Button
                     android:id="@+id/selectStorage"
-                    android:layout_width="250dp"
+                    android:layout_width="match_parent"
+                    android:layout_marginHorizontal="3dp"
                     android:layout_gravity="center"
                     android:layout_height="wrap_content"
                     android:text="Select Storage"
@@ -195,16 +244,32 @@
                         android:layout_height="wrap_content"
 
                         />
-
-                    <TextView
-                        android:id="@+id/Pc_storageTextView"
+                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Selected Mobo: B450 AMD, £120"
-                        android:gravity="center"
-                        android:textAppearance="?attr/textAppearanceListItem"/>
+                        android:orientation="vertical"
+                        android:paddingHorizontal="5dp"
+                        >
 
+                    <TextView
+                        android:id="@+id/Pc_storageTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Selected Mobo: B450 AMD, £120"
+
+                        android:textAppearance="?attr/textAppearanceListItem"/>
+                        <TextView
+                            android:id="@+id/Pc_storagePriceTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:textStyle="bold"
+                            android:textSize="15sp"
+                            android:textColor="#C3777474" />
+
+                    </LinearLayout>
                     <ImageButton
                         android:id="@+id/Pc_storageRemoveButton"
                         android:layout_width="30dp"
@@ -217,7 +282,8 @@
 <!--     Selected Power Supply -->
                 <Button
                     android:id="@+id/selectPowersupply"
-                    android:layout_width="250dp"
+                    android:layout_width="match_parent"
+                    android:layout_marginHorizontal="3dp"
                     android:layout_gravity="center"
                     android:layout_height="wrap_content"
                     android:text="Select Power Supply"
@@ -238,15 +304,32 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         />
-
-                    <TextView
-                        android:id="@+id/power_supplyTextView"
+                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="5dp"
+                        >
+
+                    <TextView
+                        android:id="@+id/power_supplyTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
                         android:text="Selected Mobo: B450 AMD, £120"
-                        android:gravity="center"
+
                         android:textAppearance="?attr/textAppearanceListItem"/>
+
+                    <TextView
+                        android:id="@+id/power_supplyPriceTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:textColor="#C3777474" />
+                </LinearLayout>
 
                     <ImageButton
                         android:id="@+id/power_supplyRemoveButton"
@@ -259,7 +342,8 @@
 <!--     Selected Motherboard-->
                 <Button
                     android:id="@+id/selectMotherboard"
-                    android:layout_width="250dp"
+                    android:layout_width="match_parent"
+                    android:layout_marginHorizontal="3dp"
                     android:layout_gravity="center"
                     android:layout_height="wrap_content"
                     android:text="Select Motherboard"
@@ -281,14 +365,31 @@
 
                         />
 
-                    <TextView
-                        android:id="@+id/motherboardTextView"
+                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="5dp"
+                        >
+                    <TextView
+                        android:id="@+id/motherboardTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
                         android:text="Selected Mobo: B450 AMD, £120"
-                        android:gravity="center"
+
                         android:textAppearance="?attr/textAppearanceListItem"/>
+                    <TextView
+                        android:id="@+id/motherboardPriceTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:textColor="#C3777474" />
+                </LinearLayout>
+
 
                     <ImageButton
                         android:id="@+id/motherboardRemoveButton"
@@ -297,11 +398,11 @@
                         android:src="@drawable/red_x_icon" />
                 </LinearLayout>
 
-<!--//Selected Motherboard   -->
+
             </LinearLayout>
 
 
-        </ScrollView>
+        </androidx.cardview.widget.CardView>
 
 <!--        &lt;!&ndash; Option that shows when a component is selected for each category &ndash;&gt;-->
 <!--        <LinearLayout-->
@@ -379,40 +480,65 @@
 <!--            android:layout_height="wrap_content"-->
 <!--            android:text="Clear Build"-->
 <!--            />-->
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="5dp"
+            app:cardBackgroundColor="@android:color/white"
+            android:layout_marginTop="30dp">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="11dp">
+            android:padding="8dp"
+            >
+
+            <TextView
+                android:id="@+id/subtotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="6dp"
+                android:text="Subtotal:"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="invisible"
+
+                />
+
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/saveBuild"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Save Build"
-                app:layout_constraintEnd_toStartOf="@+id/clearBuild"
-                app:layout_constraintHorizontal_bias="0.108"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:layout_editor_absoluteY="4dp"
+                android:layout_marginStart="72dp"
                 android:background="@drawable/rounded_custom_button"
+                android:padding="10sp"
+                android:text="Save Build"
                 android:textColor="@color/white"
-                android:padding="11sp"
-
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/subtotal"
                 />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/clearBuild"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:text="Clear Build"
-                app:layout_constraintEnd_toEndOf="parent"
-                tools:layout_editor_absoluteY="4dp"
+                android:layout_marginEnd="68dp"
                 android:background="@drawable/rounded_custom_button1"
+                android:padding="10sp"
+                android:text="Clear Build"
                 android:textColor="@color/white"
-                android:padding="11sp"
-                />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/saveBuild"
+                app:layout_constraintTop_toBottomOf="@+id/subtotal" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
 
         <!-- Saved builds section -->
         <TextView
@@ -424,13 +550,23 @@
             android:textSize="24sp"
             android:textStyle="bold"/>
 
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="5dp"
+            app:cardBackgroundColor="@android:color/white">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/savedBuildsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+
             android:scrollbars="vertical"
             android:background="@color/white"
             />
+
+        </androidx.cardview.widget.CardView>
 
 <!--        &lt;!&ndash; Placeholder for dynamic list of saved builds &ndash;&gt;-->
 <!--        <LinearLayout-->
@@ -473,4 +609,5 @@
 <!--        </LinearLayout>-->
 
     </LinearLayout>
+
 </ScrollView>

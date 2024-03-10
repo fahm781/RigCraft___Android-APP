@@ -19,8 +19,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fahm781.rigcraft.ChatbotServices.ChatbotRepository
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
@@ -49,9 +51,11 @@ class PartPickerFragment : Fragment() {
     private lateinit var saveBuild: Button
     private lateinit var clearBuild: Button
     private lateinit var compatibilityCheck: Button
+    private lateinit var subtotalTextView: TextView
     private var savedBuildsAdapter: SavedBuildsAdapter? = null
-    val productTypes = listOf("cpu", "gpu", "ram", "Pc_storage", "power_supply", "motherboard")
 
+    //    private lateinit var subtotal: TextView
+    val productTypes = listOf("cpu", "gpu", "ram", "Pc_storage", "power_supply", "motherboard")
 
 
     override fun onCreateView(
@@ -117,10 +121,14 @@ class PartPickerFragment : Fragment() {
         clearBuild = view.findViewById(R.id.clearBuild)
         clearBuild.setOnClickListener {
             clearCurrentBuild()
+//                Log.d("SUBTOTAL", getCurrentBuildSubtotal().toString())
+
         }
 
         //show selected builds if any
         showSelectedBuild()
+
+        subtotalTextView = view.findViewById(R.id.subtotal)
 
         val savedBuildsRecyclerView: RecyclerView = view.findViewById(R.id.savedBuildsRecyclerView)
         savedBuildsRecyclerView.layoutManager = LinearLayoutManager(context)
@@ -138,9 +146,21 @@ class PartPickerFragment : Fragment() {
                 return@setOnClickListener
             }
 
+            //If theres only one Item selected, return a toast message (therws nothing else to compare with)
+            val count = getVisibleLayoutsCount()
+            if (count < 2) {
+                Toast.makeText(
+                    context,
+                    "You need to select more than 1 product",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+
             Log.d("BuildDetails Actual", buildDetails)
             val chatbotRepository = ChatbotRepository()
-            val prompt = "Check the compatibility of the components. And respond with GREEN if the components are compatible, RED if they are not compatible, and GREY if you are not sure. Ignore the price and other useless information"
+            val prompt =
+                "Check the compatibility of the components. And respond with GREEN if the components are compatible, RED if they are not compatible, and GREY if you are not sure. Ignore the price and other useless information"
 
             chatbotRepository.getResponse(buildDetails, prompt) { response ->
                 //return the message from the chatbot and display it in a Log message
@@ -148,21 +168,34 @@ class PartPickerFragment : Fragment() {
                 when (response) {
                     "GREEN" -> context?.let { it1 -> ContextCompat.getColor(it1, R.color.green) }
                         ?.let { it2 ->
-                            setButtonStyle(compatibilityCheck,
-                                it2, "Compatible", R.drawable.reshot_icon_tick_circle_nc7gmqhp6x, 105)
+                            setButtonStyle(
+                                compatibilityCheck,
+                                it2,
+                                "Compatible",
+                                R.drawable.reshot_icon_tick_circle_nc7gmqhp6x,
+                                105
+                            )
                         }
+
                     "RED" -> context?.let { it1 -> ContextCompat.getColor(it1, R.color.red) }
                         ?.let { it2 ->
-                            setButtonStyle(compatibilityCheck,
-                                it2, "Incompatible", R.drawable.red_x_icon, 100)
+                            setButtonStyle(
+                                compatibilityCheck,
+                                it2, "Incompatible", R.drawable.red_x_icon, 100
+                            )
                         }
+
                     else -> context?.let { it1 -> ContextCompat.getColor(it1, R.color.grey) }
                         ?.let { it2 ->
-                            setButtonStyle(compatibilityCheck,
-                                it2, "Compibility: Unverified", R.drawable.question_mark_icon, 70)
+                            setButtonStyle(
+                                compatibilityCheck,
+                                it2, "Compibility: Unverified", R.drawable.question_mark_icon, 70
+                            )
                         }
                 }
             }
+
+
         }
     }
 
@@ -170,23 +203,40 @@ class PartPickerFragment : Fragment() {
     private fun getCurrentBuildDetails(): String {
         val buildDetails = StringBuilder()
         for (productType in productTypes) {
-            val selectedLayoutId = resources.getIdentifier("${productType}SelectedLayout", "id", activity?.packageName)
+            val selectedLayoutId =
+                resources.getIdentifier("${productType}SelectedLayout", "id", activity?.packageName)
             val selectedLayout: LinearLayout = view?.findViewById(selectedLayoutId) as LinearLayout
             if (selectedLayout.visibility == View.VISIBLE) {
-                val selectedTextViewId = resources.getIdentifier("${productType}TextView", "id", activity?.packageName)
+                val selectedTextViewId =
+                    resources.getIdentifier("${productType}TextView", "id", activity?.packageName)
                 val selectedTextView: TextView = view?.findViewById(selectedTextViewId) as TextView
-                buildDetails.append("{"+ productType+ ": "+selectedTextView.text.toString()).append("}")
+                buildDetails.append("{" + productType + ": " + selectedTextView.text.toString())
+                    .append("}")
             }
         }
         return buildDetails.toString()
     }
 
-    suspend fun getApiKey():  String?  {
+    //get the number of visible layouts (Items in the selected build list)
+    private fun getVisibleLayoutsCount(): Int {
+        var count = 0
+        for (productType in productTypes) {
+            val selectedLayoutId =
+                resources.getIdentifier("${productType}SelectedLayout", "id", activity?.packageName)
+            val selectedLayout: LinearLayout = view?.findViewById(selectedLayoutId) as LinearLayout
+            if (selectedLayout.visibility == View.VISIBLE) {
+                count++
+            }
+        }
+        return count
+    }
+
+    suspend fun getApiKey(): String? {
         return try {
-        val db = FirebaseFirestore.getInstance()
-        val snapshot = db.collection("OpenAIAPIKey").document("api_key").get().await()
-       // Log.d("Firestore", "Key is : ${snapshot.getString("key")}")
-         snapshot.getString("key")
+            val db = FirebaseFirestore.getInstance()
+            val snapshot = db.collection("OpenAIAPIKey").document("api_key").get().await()
+            // Log.d("Firestore", "Key is : ${snapshot.getString("key")}")
+            snapshot.getString("key")
         } catch (e: Exception) {
             Log.d("Firestore", "Error getting documents: ", e)
             null
@@ -207,7 +257,7 @@ class PartPickerFragment : Fragment() {
         val db = FirebaseFirestore.getInstance()
         setLayoutToGone()
         for (productType in productTypes) {
-            val documentName =  productType.replace("_", " ")
+            val documentName = productType.replace("_", " ")
             db.collection("SelectedBuild").document(documentName).get()
                 .addOnSuccessListener { document ->
                     if (document != null && document.exists()) {
@@ -216,49 +266,93 @@ class PartPickerFragment : Fragment() {
                         val price = document.data?.get("price").toString()
 
                         // Get the layout, ImageView, and TextView of the selected component
-                        val selectedLayoutId = resources.getIdentifier("${productType}SelectedLayout", "id", activity?.packageName)
-                        val selectedLayout: LinearLayout = view?.findViewById(selectedLayoutId) as LinearLayout
-                        val selectedImageViewId = resources.getIdentifier("${productType}ImageView", "id", activity?.packageName)
-                        val selectedImageView: ImageView = view?.findViewById(selectedImageViewId) as ImageView
-                        val selectedTextViewId = resources.getIdentifier("${productType}TextView", "id", activity?.packageName)
-                        val selectedTextView: TextView = view?.findViewById(selectedTextViewId) as TextView
-                        val selectedRemoveButtonId = resources.getIdentifier("${productType}RemoveButton", "id", activity?.packageName)
-                        val selectedRemoveButton: ImageButton = view?.findViewById(selectedRemoveButtonId) as ImageButton
+                        val selectedLayoutId = resources.getIdentifier(
+                            "${productType}SelectedLayout",
+                            "id",
+                            activity?.packageName
+                        )
+                        val selectedLayout: LinearLayout =
+                            view?.findViewById(selectedLayoutId) as LinearLayout
+                        val selectedImageViewId = resources.getIdentifier(
+                            "${productType}ImageView",
+                            "id",
+                            activity?.packageName
+                        )
+                        val selectedImageView: ImageView =
+                            view?.findViewById(selectedImageViewId) as ImageView
+                        val selectedTextViewId = resources.getIdentifier(
+                            "${productType}TextView",
+                            "id",
+                            activity?.packageName
+                        )
+                        val selectedTextView: TextView =
+                            view?.findViewById(selectedTextViewId) as TextView
+                        val selectedPriceTextViewId = resources.getIdentifier(
+                            "${productType}PriceTextView",
+                            "id",
+                            activity?.packageName
+                        )
+                        val selectedPriceTextView: TextView =
+                            view?.findViewById(selectedPriceTextViewId) as TextView
+                        val selectedRemoveButtonId = resources.getIdentifier(
+                            "${productType}RemoveButton",
+                            "id",
+                            activity?.packageName
+                        )
+                        val selectedRemoveButton: ImageButton =
+                            view?.findViewById(selectedRemoveButtonId) as ImageButton
 
                         // Set the visibility, image, title and price
                         selectedLayout.visibility = View.VISIBLE
                         Picasso.get().load(image).into(selectedImageView)
-                        selectedTextView.text = title + " - £" + price
+                        selectedTextView.text = title
+                        selectedPriceTextView.text = "£ ${price}"
 
                         // delete the selected item from the build if the remove button is clicked
                         selectedRemoveButton.setOnClickListener {
                             deletebuild(documentName)
                         }
+                            getCurrentBuildSubtotal()
                         Log.d("Firestore", "DocumentSnapshot data: ${document.data}")
                     }
                 }
+
+
                 .addOnFailureListener { exception ->
                     Log.d("Firestore", "get failed with ", exception)
-                    Toast.makeText(context, "An Unknown Database Error Has Occurred", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        "An Unknown Database Error Has Occurred",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
         }
+
+
+
     }
 
     // Initially set all selected buildItem layout(s) to GONE
     private fun setLayoutToGone() {
         for (productType in productTypes) {
-            val selectedLayoutId = resources.getIdentifier("${productType}SelectedLayout", "id", activity?.packageName)
+            val selectedLayoutId =
+                resources.getIdentifier("${productType}SelectedLayout", "id", activity?.packageName)
             val selectedLayout: LinearLayout = view?.findViewById(selectedLayoutId) as LinearLayout
             selectedLayout.visibility = View.GONE
         }
     }
 
     //save the build to firestore database
-     fun saveBuild() {
-         if (getCurrentBuildDetails().isEmpty()) {
-             Toast.makeText(context, "No items to save", Toast.LENGTH_SHORT).show()
-             return
-         }
+    fun saveBuild() {
+        if (getCurrentBuildDetails().isEmpty()) {
+            Toast.makeText(context, "No items to save", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (getVisibleLayoutsCount() < 2) {
+            Toast.makeText(context, "You need to select more than 1 product", Toast.LENGTH_SHORT)
+                .show()
+            return
+        }
         GlobalScope.launch(Dispatchers.IO) {
             val db = FirebaseFirestore.getInstance()
             val buildData = hashMapOf<String, Any>()
@@ -279,6 +373,7 @@ class PartPickerFragment : Fragment() {
                     savedBuildsAdapter?.notifyDataSetChanged()
                 }
                 clearCurrentBuild()
+                subtotalTextView.visibility = View.GONE
                 Toast.makeText(context, "Build saved", Toast.LENGTH_SHORT).show()
             }.addOnFailureListener { e ->
                 Log.w("Firestore", "Error saving build", e)
@@ -288,13 +383,16 @@ class PartPickerFragment : Fragment() {
     }
 
     //delete current build
-    fun deletebuild(documentName: String){
+    fun deletebuild(documentName: String) {
         val db = FirebaseFirestore.getInstance()
         db.collection("SelectedBuild").document(documentName).delete()
             .addOnSuccessListener {
                 Log.d("Firestore", "DocumentSnapshot successfully deleted!")
                 showSelectedBuild() // Refresh the selected build
 //                                    selectedLayout.visibility = View.GONE // Hide the layout (temporary fix)
+                if (getVisibleLayoutsCount() == 0){
+                    subtotalTextView.visibility = View.GONE
+                }
 
             }
             .addOnFailureListener { e ->
@@ -304,7 +402,7 @@ class PartPickerFragment : Fragment() {
     }
 
     //clear current build
-    fun clearCurrentBuild(){
+    fun clearCurrentBuild() {
         if (getCurrentBuildDetails().isEmpty()) {
             Toast.makeText(context, "No items to clear", Toast.LENGTH_SHORT).show()
             return
@@ -312,7 +410,7 @@ class PartPickerFragment : Fragment() {
         //you have to delete one by one, firestore does not support batch delete
         val db = FirebaseFirestore.getInstance()
         for (productType in productTypes) {
-            val documentName =  productType.replace("_", " ")
+            val documentName = productType.replace("_", " ")
             db.collection("SelectedBuild").document(documentName).delete()
                 .addOnSuccessListener { documentReference ->
                     Log.d("Firestore", "Build Cleared")
@@ -322,6 +420,7 @@ class PartPickerFragment : Fragment() {
                     Log.w("Firestore", "Error adding document", e)
                 }
         }
+        subtotalTextView.visibility = View.GONE
     }
 
     //get saved builds from firestore database, add them to the SavedBuild list and return it
@@ -341,7 +440,8 @@ class PartPickerFragment : Fragment() {
                 callback(savedBuilds)
 
                 // Update the visibility of the heading based on the item count
-                val savedBuildsHeading: TextView = view?.findViewById(R.id.savedBuildsHeading) as TextView
+                val savedBuildsHeading: TextView =
+                    view?.findViewById(R.id.savedBuildsHeading) as TextView
                 if (savedBuilds.size > 0) {
                     savedBuildsHeading.visibility = View.VISIBLE
                 } else {
@@ -354,4 +454,23 @@ class PartPickerFragment : Fragment() {
             }
     }
 
+    private fun getCurrentBuildSubtotal(){
+        if (getVisibleLayoutsCount() > 0){
+        var subtotal = 0.0
+        for (productType in productTypes) {
+            val selectedLayoutId = resources.getIdentifier("${productType}SelectedLayout", "id", activity?.packageName)
+            val selectedLayout: LinearLayout = view?.findViewById(selectedLayoutId) as LinearLayout
+            if (selectedLayout.visibility == View.VISIBLE) {
+                val selectedPriceTextViewId = resources.getIdentifier("${productType}PriceTextView", "id", activity?.packageName)
+                val selectedPriceTextView: TextView = view?.findViewById(selectedPriceTextViewId) as TextView
+                val priceText = selectedPriceTextView.text.toString()
+                val price = priceText.replace("£", "").trim().toDouble()
+                subtotal += price
+            }
+        }
+        Log.d("SUBTOTAL", subtotal.toString())
+            subtotalTextView.visibility = View.VISIBLE
+        subtotalTextView.text = "Subtotal: £$subtotal"
+            }
+    }
 }
