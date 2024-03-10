@@ -505,7 +505,8 @@ class PartPickerFragment : Fragment() {
             }
             Log.d("SUBTOTAL", subtotal.toString())
             subtotalTextView.visibility = View.VISIBLE
-            subtotalTextView.text = "Subtotal: £$subtotal"
+            val formattedSubtotal = String.format("%.2f", subtotal) // Format the subtotal to 2 decimal places
+            subtotalTextView.text = "Subtotal: £$formattedSubtotal"
         }
     }
 }
