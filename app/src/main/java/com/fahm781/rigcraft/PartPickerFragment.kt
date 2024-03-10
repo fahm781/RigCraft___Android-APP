@@ -361,29 +361,34 @@ class PartPickerFragment : Fragment() {
         }
         GlobalScope.launch(Dispatchers.IO) {
             val db = FirebaseFirestore.getInstance()
-            val buildData = hashMapOf<String, Any>()
-            for (productType in productTypes) {
-                val documentName = productType.replace("_", " ")
-                //need to use await to get the data from firestore before adding to buildData.
-                val document = db.collection("SelectedBuild").document(documentName).get().await()
-                val data = document.data
-                if (data != null) {
-                    buildData[documentName] = data
+            val userId = getUserID()
+            if (userId != null) {
+                val buildData = hashMapOf<String, Any>()
+                for (productType in productTypes) {
+                    val documentName = productType.replace("_", " ")
+                    //need to use await to get the data from firestore before adding to buildData.
+                    val document =
+                        db.collection("Users").document(userId).collection("currentBuild")
+                            .document(documentName).get().await()
+                    val data = document.data
+                    if (data != null) {
+                        buildData[documentName] = data
+                    }
                 }
-            }
-            val newBuildId = db.collection("SavedBuilds").document().id
-            db.collection("SavedBuilds").document(newBuildId).set(buildData).addOnSuccessListener {
-                Log.d("Firestore", "Build successfully saved with ID: $newBuildId")
-                getSavedBuilds { savedBuilds ->
-                    savedBuildsAdapter?.updateData(savedBuilds)
-                    savedBuildsAdapter?.notifyDataSetChanged()
+                val newBuildId = db.collection("Users").document(userId).collection("savedBuilds").document().id
+                db.collection("Users").document(userId).collection("savedBuilds").document(newBuildId).set(buildData).addOnSuccessListener{
+                        Log.d("Firestore", "Build successfully saved with ID: $newBuildId")
+                        getSavedBuilds { savedBuilds ->
+                            savedBuildsAdapter?.updateData(savedBuilds)
+                            savedBuildsAdapter?.notifyDataSetChanged()
+                        }
+                        clearCurrentBuild()
+                        subtotalTextView.visibility = View.GONE
+                        Toast.makeText(context, "Build saved", Toast.LENGTH_SHORT).show()
+                    }.addOnFailureListener { e ->
+                    Log.w("Firestore", "Error saving build", e)
+                    Toast.makeText(context, "Error saving Build", Toast.LENGTH_SHORT).show()
                 }
-                clearCurrentBuild()
-                subtotalTextView.visibility = View.GONE
-                Toast.makeText(context, "Build saved", Toast.LENGTH_SHORT).show()
-            }.addOnFailureListener { e ->
-                Log.w("Firestore", "Error saving build", e)
-                Toast.makeText(context, "Error saving Build", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -421,7 +426,8 @@ class PartPickerFragment : Fragment() {
         val userId = getUserID()
         if (userId != null) {
         for (productType in productTypes) {
-                db.collection("Users").document(userId).collection("currentBuild").document(productType).delete()
+            val documentName = productType.replace("_", " ")
+                db.collection("Users").document(userId).collection("currentBuild").document(documentName).delete()
                     .addOnSuccessListener { documentReference ->
                         Log.d("Firestore", "Build Cleared")
                         showSelectedBuild() //try moving this outside the loop
@@ -437,42 +443,45 @@ class PartPickerFragment : Fragment() {
     //get saved builds from firestore database, add them to the SavedBuild list and return it
     private fun getSavedBuilds(callback: (MutableList<SavedBuild>) -> Unit) {
         val savedBuilds = mutableListOf<SavedBuild>()
+        val userId = getUserID()
         val db = FirebaseFirestore.getInstance()
-        db.collection("SavedBuilds").get()
-            .addOnSuccessListener { snapshot ->
-                for (document in snapshot.documents) {
-                    val id = document.id
-                    val buildData = document.data
-                    if (buildData != null) {
-                        val savedBuild = SavedBuild(id, buildData)
-                        savedBuilds.add(savedBuild)
+        if (userId != null) {
+            db.collection("Users").document(userId).collection("savedBuilds").get()
+                .addOnSuccessListener { snapshot ->
+                    for (document in snapshot.documents) {
+                        val id = document.id
+                        val buildData = document.data
+                        if (buildData != null) {
+                            val savedBuild = SavedBuild(id, buildData)
+                            savedBuilds.add(savedBuild)
+                        }
+                    }
+                    callback(savedBuilds)
+
+                    //commented out the code below if any errors happen
+                    // Update the visibility of the heading based on the item count
+    //                val savedBuildsHeading: TextView =
+    //                    view?.findViewById(R.id.savedBuildsHeading) as TextView
+    //                if (savedBuilds.size > 0) {
+    //                    savedBuildsHeading.visibility = View.VISIBLE
+    //                } else {
+    //                    savedBuildsHeading.visibility = View.GONE
+    //                }
+
+                    val savedBuildsHeading: TextView? = view?.findViewById(R.id.savedBuildsHeading) as? TextView
+                    if (savedBuildsHeading != null) {
+                        if (savedBuilds.size > 0) {
+                            savedBuildsHeading.visibility = View.VISIBLE
+                        } else {
+                            savedBuildsHeading.visibility = View.GONE
+                        }
                     }
                 }
-                callback(savedBuilds)
-
-                //commented out the code below if any errors happen
-                // Update the visibility of the heading based on the item count
-//                val savedBuildsHeading: TextView =
-//                    view?.findViewById(R.id.savedBuildsHeading) as TextView
-//                if (savedBuilds.size > 0) {
-//                    savedBuildsHeading.visibility = View.VISIBLE
-//                } else {
-//                    savedBuildsHeading.visibility = View.GONE
-//                }
-
-                val savedBuildsHeading: TextView? = view?.findViewById(R.id.savedBuildsHeading) as? TextView
-                if (savedBuildsHeading != null) {
-                    if (savedBuilds.size > 0) {
-                        savedBuildsHeading.visibility = View.VISIBLE
-                    } else {
-                        savedBuildsHeading.visibility = View.GONE
-                    }
+                .addOnFailureListener { exception ->
+                    Log.w("Firestore", "Error fetching saved builds", exception)
+                    Toast.makeText(context, "Error fetching saved builds", Toast.LENGTH_SHORT).show()
                 }
-            }
-            .addOnFailureListener { exception ->
-                Log.w("Firestore", "Error fetching saved builds", exception)
-                Toast.makeText(context, "Error fetching saved builds", Toast.LENGTH_SHORT).show()
-            }
+        }
     }
 
     private fun getUserID(): String? {

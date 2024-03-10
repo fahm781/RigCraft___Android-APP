@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class SavedBuildsAdapter(private var savedBuilds: MutableList<SavedBuild>) : RecyclerView.Adapter<SavedBuildsAdapter.ViewHolder>() {
@@ -56,25 +57,27 @@ class SavedBuildsAdapter(private var savedBuilds: MutableList<SavedBuild>) : Rec
     private fun deleteBuildFromFirestore (position: Int, context: Context) {
         val buildId = savedBuilds[position].id
         val db = FirebaseFirestore.getInstance()
-        db.collection("SavedBuilds").document(buildId)
-            .delete()
-            .addOnSuccessListener {
-                savedBuilds.removeAt(position)
-                notifyItemRemoved(position)
-                Log.d("Firestore", "Successfully deleted build with ID: $buildId")
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+        if (userId != null) {
+            db.collection("Users").document(userId).collection("savedBuilds").document(buildId)
+                .delete()
+                .addOnSuccessListener {
+                    savedBuilds.removeAt(position)
+                    notifyItemRemoved(position)
+                    Log.d("Firestore", "Successfully deleted build with ID: $buildId")
 
-                // Update the visibility of the heading based on the item count
-                val savedBuildsHeading: TextView = (context as Activity).findViewById(R.id.savedBuildsHeading)
-                if (savedBuilds.size > 0) {
-                    savedBuildsHeading.visibility = View.VISIBLE
-                } else {
-                    savedBuildsHeading.visibility = View.GONE
+                    // Update the visibility of the heading based on the item count
+                    val savedBuildsHeading: TextView = (context as Activity).findViewById(R.id.savedBuildsHeading)
+                    if (savedBuilds.size > 0) {
+                        savedBuildsHeading.visibility = View.VISIBLE
+                    } else {
+                        savedBuildsHeading.visibility = View.GONE
+                    }
                 }
-
-            }
-            .addOnFailureListener { e ->
-                Log.w("Firestore", "Error deleting build", e)
-            }
+                .addOnFailureListener { e ->
+                    Log.w("Firestore", "Error deleting build", e)
+                }
+        }
     }
 
     fun updateData(newSavedBuilds: MutableList<SavedBuild>) {
