@@ -2,18 +2,27 @@ package com.fahm781.rigcraft
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.squareup.picasso.Picasso
 
 class SavedBuildsAdapter(private var savedBuilds: MutableList<SavedBuild>) : RecyclerView.Adapter<SavedBuildsAdapter.ViewHolder>() {
+
+
 
     // Step 3: Define a ViewHolder
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -31,29 +40,37 @@ class SavedBuildsAdapter(private var savedBuilds: MutableList<SavedBuild>) : Rec
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val savedBuild = savedBuilds[position]
-        holder.buildNumber.text = savedBuild.id
+        holder.buildNumber.text = "Build "+ (position + 1).toString() // display position + 1 instead
         holder.viewBuildButton.setOnClickListener {
-            // Handle view build button click
-            val buildDataString = StringBuilder()
-            for ((key, value) in savedBuild.buildData) {
-                buildDataString.append("$key: $value\n\n")
+            val dialog = Dialog(it.context)
+            dialog.setContentView(R.layout.dialog_view_build)
+            val recyclerView: RecyclerView = dialog.findViewById(R.id.recyclerView)
+            recyclerView.layoutManager = LinearLayoutManager(it.context)
+
+            // Create a list to hold the product items
+                val productItems = mutableListOf<SavedProductItem>()
+
+                for ((key, value) in savedBuild.buildData) {
+                    // Create a ProductItem for each product and add it to the list
+                    Log.d("SavedBuildsAdapterTESTTTT", "Key: $key, Value: $value")
+                    val productItem = SavedProductItem(key, value)
+                    productItems.add(productItem)
             }
 
-            // Create an AlertDialog to display the build data
-            val builder = AlertDialog.Builder(it.context)
-            builder.setTitle("Build Details")
-            builder.setMessage(buildDataString.toString())
-            builder.setPositiveButton("OK") { dialog, _ ->
-                dialog.dismiss()
+            // Create an adapter for the RecyclerView and set it
+                val adapter = SavedProductItemsAdapter(productItems)
+                recyclerView.adapter = adapter
+
+                dialog.show()
             }
-            builder.show()
+
+            holder.deleteBuildButton.setOnClickListener{
+                deleteBuildFromFirestore(position, holder.itemView.context)
+            }
+
         }
 
-        holder.deleteBuildButton.setOnClickListener{
-            deleteBuildFromFirestore(position, holder.itemView.context)
-        }
-        }
-
+    //delete the saved Build from Firestore
     private fun deleteBuildFromFirestore (position: Int, context: Context) {
         val buildId = savedBuilds[position].id
         val db = FirebaseFirestore.getInstance()

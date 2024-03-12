@@ -427,7 +427,7 @@ class PartPickerFragment : Fragment() {
         if (userId != null) {
         for (productType in productTypes) {
             val documentName = productType.replace("_", " ")
-                db.collection("Users").document(userId).collection("currentBuild").document(documentName).delete()
+            db.collection("Users").document(userId).collection("currentBuild").document(documentName).delete()
                     .addOnSuccessListener { documentReference ->
                         Log.d("Firestore", "Build Cleared")
                         showSelectedBuild() //try moving this outside the loop
@@ -458,7 +458,7 @@ class PartPickerFragment : Fragment() {
                     }
                     callback(savedBuilds)
 
-                    //commented out the code below if any errors happen
+                    //comment out the code below if any errors happen
                     // Update the visibility of the heading based on the item count
     //                val savedBuildsHeading: TextView =
     //                    view?.findViewById(R.id.savedBuildsHeading) as TextView
@@ -484,11 +484,13 @@ class PartPickerFragment : Fragment() {
         }
     }
 
+    //Return the current user's ID
     private fun getUserID(): String? {
         val user = FirebaseAuth.getInstance().currentUser
         return user?.uid
     }
 
+    //get the current build subtotal and display it on the partPickerFragment
     private fun getCurrentBuildSubtotal(){
         if (getVisibleLayoutsCount() > 0){
             var subtotal = 0.0

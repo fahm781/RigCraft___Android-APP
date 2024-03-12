@@ -1,49 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
-
-    <TextView
-        android:id="@+id/titleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/priceTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="14sp" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    android:layout_margin="5dp"
+    app:cardCornerRadius="5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_gravity="center"
-        android:gravity="center">
-        <Button
-            android:id="@+id/itemWebUrlButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="View on eBay" />
-        <Button
-            android:id="@+id/moreDetailsButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="More Details" />
-        <Button
-            android:id="@+id/addToBuildButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add To Build" />
+        android:padding="5dp">
 
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="7dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/titleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/priceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/itemWebUrlButton"
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="View on eBay"
+                    app:layout_constraintEnd_toStartOf="@+id/moreDetailsButton"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/moreDetailsButton"
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="More Details"
+                    app:layout_constraintEnd_toStartOf="@+id/addToBuildButton"
+                    app:layout_constraintStart_toEndOf="@+id/itemWebUrlButton"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/addToBuildButton"
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Add To Build"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/moreDetailsButton"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
     </LinearLayout>
-
-</LinearLayout>
+</androidx.cardview.widget.CardView>

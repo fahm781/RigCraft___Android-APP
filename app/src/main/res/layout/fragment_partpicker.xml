@@ -535,7 +535,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/saveBuild"
-                app:layout_constraintTop_toBottomOf="@+id/subtotal" />
+                app:layout_constraintTop_toBottomOf="@+id/subtotal"
+                />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
