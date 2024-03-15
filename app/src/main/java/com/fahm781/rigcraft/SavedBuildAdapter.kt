@@ -40,30 +40,29 @@ class SavedBuildsAdapter(private var savedBuilds: MutableList<SavedBuild>) : Rec
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val savedBuild = savedBuilds[position]
-        holder.buildNumber.text = "Build "+ (position + 1).toString() // display position + 1 instead
+        holder.buildNumber.text = "Build No. "+ (position + 1).toString()
         holder.viewBuildButton.setOnClickListener {
             val dialog = Dialog(it.context)
             dialog.setContentView(R.layout.dialog_view_build)
+            dialog.setCancelable(true) // The dialog will be dismissed when the user touches outside it
+
             val recyclerView: RecyclerView = dialog.findViewById(R.id.recyclerView)
             recyclerView.layoutManager = LinearLayoutManager(it.context)
 
             // Create a list to hold the product items
                 val productItems = mutableListOf<SavedProductItem>()
-
                 for ((key, value) in savedBuild.buildData) {
                     // Create a ProductItem for each product and add it to the list
                     Log.d("SavedBuildsAdapterTESTTTT", "Key: $key, Value: $value")
                     val productItem = SavedProductItem(key, value)
                     productItems.add(productItem)
             }
-
             // Create an adapter for the RecyclerView and set it
                 val adapter = SavedProductItemsAdapter(productItems)
                 recyclerView.adapter = adapter
 
                 dialog.show()
             }
-
             holder.deleteBuildButton.setOnClickListener{
                 deleteBuildFromFirestore(position, holder.itemView.context)
             }

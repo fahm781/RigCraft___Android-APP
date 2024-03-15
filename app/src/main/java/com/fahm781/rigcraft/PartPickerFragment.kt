@@ -58,7 +58,6 @@ class PartPickerFragment : Fragment() {
     //    private lateinit var subtotal: TextView
     val productTypes = listOf("cpu", "gpu", "ram", "Pc_storage", "power_supply", "motherboard")
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -74,7 +73,7 @@ class PartPickerFragment : Fragment() {
         selectCpu = view.findViewById(R.id.selectCpu)
         selectCpu.setOnClickListener {
             findNavController().navigate(R.id.action_partPickerFragment_to_productListFragment,
-                Bundle().apply { putString("productType", "cpu") })
+                Bundle().apply { putString("productType",  "cpu") })
         }
 
         selectGpu = view.findViewById(R.id.selectGpu)
@@ -122,8 +121,6 @@ class PartPickerFragment : Fragment() {
         clearBuild = view.findViewById(R.id.clearBuild)
         clearBuild.setOnClickListener {
             clearCurrentBuild()
-//                Log.d("SUBTOTAL", getCurrentBuildSubtotal().toString())
-
         }
 
         //show selected builds if any

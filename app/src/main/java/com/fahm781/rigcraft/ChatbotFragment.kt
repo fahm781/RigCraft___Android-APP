@@ -130,7 +130,7 @@ class ChatbotFragment : Fragment() {
                     val message = document.getString("message") ?: ""
                     msgList.add(Msg(sentBy, message))
                 }
-                // If the total number of messages exceeds 90, delete the oldest messages (uncomment the following loop if any problems)
+                // If the total number of messages exceeds 90, delete the oldest messages
                 val excess = documents.size() - 90
                 if (excess > 0) {
                     // If the total number of messages exceeds 90, delete the oldest messages

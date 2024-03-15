@@ -115,6 +115,19 @@ class ProductListFragment : Fragment() {
         }
     }
 
+    //gets the category id for the product type
+    fun getCategoryID(productType: String): String {
+        return when (productType) {
+            "cpu" -> "164"
+            "gpu" -> "27386"
+            "ram" -> "170083"
+            "Pc storage" -> "56083"
+            "power supply" -> "1788"
+            "motherboard" -> "1244"
+            else -> "0"
+        }
+    }
+
     fun filterSearchResults(searchQuery: String){
         val filteredList = ArrayList<ItemSummary>()
         for (item in itemSummaries){

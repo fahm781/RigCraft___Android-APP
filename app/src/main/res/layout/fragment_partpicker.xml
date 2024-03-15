@@ -481,13 +481,6 @@
 <!--            android:text="Clear Build"-->
 <!--            />-->
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="18dp"
-            app:cardElevation="5dp"
-            app:cardBackgroundColor="@android:color/white"
-            android:layout_marginTop="30dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -495,51 +488,51 @@
             android:padding="8dp"
             >
 
+
             <TextView
                 android:id="@+id/subtotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingVertical="6dp"
+                android:layout_marginStart="4dp"
+                android:paddingVertical="4dp"
                 android:text="Subtotal:"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:visibility="invisible"
-
+                android:visibility="gone"
                 />
-
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/saveBuild"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="72dp"
                 android:background="@drawable/rounded_custom_button"
                 android:padding="10sp"
+                android:layout_marginTop="4dp"
                 android:text="Save Build"
                 android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/subtotal"
-                />
+                app:layout_constraintTop_toBottomOf="@+id/subtotal" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/clearBuild"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="68dp"
                 android:background="@drawable/rounded_custom_button1"
                 android:padding="10sp"
+                android:layout_marginTop="4dp"
                 android:text="Clear Build"
                 android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.061"
                 app:layout_constraintStart_toEndOf="@+id/saveBuild"
                 app:layout_constraintTop_toBottomOf="@+id/subtotal"
-                />
-
+                app:layout_constraintVertical_bias="0.0" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
+
 
         <!-- Saved builds section -->
         <TextView
