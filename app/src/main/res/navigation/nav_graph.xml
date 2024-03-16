@@ -48,4 +48,9 @@
         android:id="@+id/accountFragment"
         android:name="com.fahm781.rigcraft.AccountFragment"
         android:label="AccountFragment" />
+
+    <fragment
+        android:id="@+id/SocialHubFragment"
+        android:name="com.fahm781.rigcraft.SocialHubFragment"
+        android:label="SocialHubFragment" />
 </navigation>

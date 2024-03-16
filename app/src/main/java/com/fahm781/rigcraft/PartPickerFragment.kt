@@ -229,18 +229,6 @@ class PartPickerFragment : Fragment() {
         return count
     }
 
-    suspend fun getApiKey(): String? {
-        return try {
-            val db = FirebaseFirestore.getInstance()
-            val snapshot = db.collection("OpenAIAPIKey").document("api_key").get().await()
-            // Log.d("Firestore", "Key is : ${snapshot.getString("key")}")
-            snapshot.getString("key")
-        } catch (e: Exception) {
-            Log.d("Firestore", "Error getting documents: ", e)
-            null
-        }
-    }
-
     //changing the compatibilityCheck button style based on the response from the chatbot
     fun setButtonStyle(button: Button, color: Int, text: String, drawable: Int, padding: Int) {
         button.setBackgroundColor(color)

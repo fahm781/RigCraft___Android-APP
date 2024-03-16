@@ -42,11 +42,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center">
+                android:gravity="center"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/priceTextView"
+                app:layout_constraintVertical_bias="0.0"
+                android:padding="5dp"
+                >
 
                 <Button
                     android:id="@+id/itemWebUrlButton"
-
+                    android:padding="5dp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="View on eBay"
@@ -56,7 +62,7 @@
 
                 <Button
                     android:id="@+id/moreDetailsButton"
-
+                    android:padding="5dp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="More Details"
@@ -66,7 +72,7 @@
 
                 <Button
                     android:id="@+id/addToBuildButton"
-
+                    android:padding="5dp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Add To Build"

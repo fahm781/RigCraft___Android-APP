@@ -14,11 +14,18 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 class SavedBuildsAdapter(private var savedBuilds: MutableList<SavedBuild>) : RecyclerView.Adapter<SavedBuildsAdapter.ViewHolder>() {
 
@@ -38,6 +45,7 @@ class SavedBuildsAdapter(private var savedBuilds: MutableList<SavedBuild>) : Rec
 
     override fun getItemCount()= savedBuilds.size
 
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val savedBuild = savedBuilds[position]
         holder.buildNumber.text = "Build No. "+ (position + 1).toString()
@@ -60,6 +68,96 @@ class SavedBuildsAdapter(private var savedBuilds: MutableList<SavedBuild>) : Rec
             // Create an adapter for the RecyclerView and set it
                 val adapter = SavedProductItemsAdapter(productItems)
                 recyclerView.adapter = adapter
+
+
+            // Find the buttons in the dialog
+            val shareBuildButton: Button = dialog.findViewById(R.id.shareBuildButton)
+            val closeButton: Button = dialog.findViewById(R.id.closeButton)
+
+
+//            shareBuildButton.setOnClickListener {
+//                // Convert the productItems list to a HashMap as required by Firestore
+//                val buildData = hashMapOf<String, Any>()
+//                for (productItem in productItems) {
+//                    buildData[productItem.type] = productItem.details
+//                }
+//                val userEmail = FirebaseAuth.getInstance().currentUser?.email
+//                if (userEmail != null) {
+//                    buildData["userEmail"] = userEmail
+//                }
+//
+//                // Generate a unique identifier for the build (like a hash of the build data) and add it to the build data
+//                val buildIdentifier = buildData.hashCode().toString()
+//                buildData["buildIdentifier"] = buildIdentifier
+//
+//                // Save the build to Firestore
+//                GlobalScope.launch(Dispatchers.IO) {
+//                    val db = FirebaseFirestore.getInstance()
+//                    // Check if the build already exists in the "SharedBuilds" collection using the unique buildIdentifier identifier
+//                    val existingBuild = db.collection("SharedBuilds").whereEqualTo("buildIdentifier", buildIdentifier).get().await().documents
+//                    if (existingBuild.isNotEmpty()) {
+//                        // If the build already exists, show a toast message and return
+//                        withContext(Dispatchers.Main) {
+//                            Toast.makeText(it.context, "This build has already been shared", Toast.LENGTH_SHORT).show()
+//                        }
+//                        return@launch
+//                    }
+//
+//                    val newBuildId = db.collection("SharedBuilds").document().id
+//                    db.collection("SharedBuilds").document(newBuildId).set(buildData).addOnSuccessListener {
+//                        Log.d("Firestore", "Build successfully shared with ID: $newBuildId")
+//
+//                    }.addOnFailureListener { e ->
+//                        Log.w("Firestore", "Error sharing build", e)
+//                    }
+//                }
+//            }
+            shareBuildButton.setOnClickListener {
+                // Convert the productItems list to a HashMap
+                val buildDataMap = hashMapOf<String, Any>()
+                for (productItem in productItems) {
+                    buildDataMap[productItem.type] = productItem.details
+                }
+
+                // Create the main HashMap that you're saving to Firestore
+                val buildData = hashMapOf<String, Any>()
+                buildData["buildData"] = buildDataMap
+
+                val userEmail = FirebaseAuth.getInstance().currentUser?.email
+                if (userEmail != null) {
+                    buildData["userEmail"] = userEmail
+                }
+
+                // Generate a unique identifier for the build (like a hash of the build data) and add it to the build data
+                val buildIdentifier = buildData.hashCode().toString()
+                buildData["buildIdentifier"] = buildIdentifier
+
+                // Save the build to Firestore
+                GlobalScope.launch(Dispatchers.IO) {
+                    val db = FirebaseFirestore.getInstance()
+                    // Check if the build already exists in the "SharedBuilds" collection using the unique buildIdentifier identifier
+                    val existingBuild = db.collection("SharedBuilds").whereEqualTo("buildIdentifier", buildIdentifier).get().await().documents
+                    if (existingBuild.isNotEmpty()) {
+                        // If the build already exists, show a toast message and return
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(it.context, "This build has already been shared", Toast.LENGTH_SHORT).show()
+                        }
+                        return@launch
+                    }
+
+                    val newBuildId = db.collection("SharedBuilds").document().id
+                    db.collection("SharedBuilds").document(newBuildId).set(buildData).addOnSuccessListener {
+                        Log.d("Firestore", "Build successfully shared with ID: $newBuildId")
+                    }.addOnFailureListener { e ->
+                        Log.w("Firestore", "Error sharing build", e)
+                    }
+                }
+            }
+
+
+            closeButton.setOnClickListener {
+                dialog.dismiss()
+            }
 
                 dialog.show()
             }

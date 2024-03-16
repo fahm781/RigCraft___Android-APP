@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tvSocialHubHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Social Hub"
+        android:textAppearance="?attr/textAppearanceHeadline6"
+        android:layout_alignParentTop="true"/>
+
+    <TextView
+        android:id="@+id/tvSocialHubSubHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvSocialHubHeader"
+        android:layout_marginTop="8dp"
+        android:text="A place where you can share your builds!"
+
+
+
+        />
+
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/sharedBuildrecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="50dp"
+
+            />
+
+
+</RelativeLayout>

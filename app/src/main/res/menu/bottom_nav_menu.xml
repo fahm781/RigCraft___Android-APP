@@ -3,6 +3,9 @@
         <item android:id="@+id/partPickerFragment"
             android:icon="@drawable/partpicker_icon_svg"
             android:title="@string/partPicker"/>
+    <item android:id="@+id/SocialHubFragment"
+        android:icon="@android:drawable/ic_menu_myplaces"
+        android:title="@string/SocialHub"/>
         <item android:id="@+id/buildGuideFragment"
               android:icon="@drawable/twotone_book_24"
               android:title="@string/buildGuide"/>
