@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fahm781.rigcraft.SharedBuildPackage.SharedBuild
 import com.fahm781.rigcraft.SharedBuildPackage.SharedBuildsAdapter
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 // TODO: Rename parameter arguments, choose names that match
@@ -65,12 +66,10 @@ class SocialHubFragment : Fragment() {
             .addOnSuccessListener { documents ->
                 val sharedBuilds = mutableListOf<SharedBuild>()
                 for (document in documents) {
-//                    val sharedBuild = document.toObject(SharedBuild::class.java)
                     val buildIdentifier = document.getString("buildIdentifier") ?: ""
                     val userEmail = document.getString("userEmail") ?: ""
                     val buildData = document.get("buildData") as Map<String, Any>
-                    val likes = document.getDouble("likes") ?: 0
-
+                    val likes = document.getDouble("likes")?.toInt() ?: 0
 
                     val sharedBuild = SharedBuild(buildData, userEmail, buildIdentifier, likes)
                     sharedBuilds.add(sharedBuild)

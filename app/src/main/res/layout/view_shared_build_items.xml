@@ -38,15 +38,13 @@ app:cardCornerRadius="5dp">
         android:layout_gravity="end"
         >
 
-
-
-
         <ToggleButton
             android:id="@+id/likeButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:background="@drawable/toggle_button_selector"
-            android:padding="10dp"
+            android:textOn=""
+            android:textOff=""
             />
 
         <TextView

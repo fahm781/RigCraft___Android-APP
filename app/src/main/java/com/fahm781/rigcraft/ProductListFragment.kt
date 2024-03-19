@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Adapter
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
@@ -47,7 +48,7 @@ class ProductListFragment : Fragment() {
     private var productType: String? = null
     private lateinit var searchView: androidx.appcompat.widget.SearchView
     private var itemSummaries: List<ItemSummary> = ArrayList<ItemSummary>()
-
+    private lateinit var progressBar: ProgressBar
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,6 +65,7 @@ class ProductListFragment : Fragment() {
     ): View? {
         val view =  inflater.inflate(R.layout.fragment_product_list, container, false)
 
+        //set the heading to the product type
         productrecyclerView = view.findViewById(R.id.productrecyclerView)
         productType = requireArguments().getString("productType")
         if (productType != null) {
@@ -71,8 +73,13 @@ class ProductListFragment : Fragment() {
             heading.text = "Select " + productType + ":"
         }
 
+        progressBar = view.findViewById(R.id.progressBar)
+        //Show progress bar while loading
+        progressBar.visibility = View.VISIBLE
+        //search for the productType on ebay
         searchEbayForItems(productType.toString())
 
+        //filter out the search results based on the search query
         searchView = view.findViewById(R.id.searchView)
         searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -94,11 +101,11 @@ class ProductListFragment : Fragment() {
             if (token != null) {
                 RetrofitClient.ebayApi.searchItems("Bearer $token", query).enqueue(object : Callback<SearchResult> {
                     override fun onResponse(call: Call<SearchResult>, response: Response<SearchResult>) {
+                        progressBar.visibility = View.GONE
                         if (response.isSuccessful) {
                             response.body()?.let { searchResult ->
                                 for (item in searchResult.itemSummaries) {
                                     itemSummaries = searchResult.itemSummaries
-//                                    Log.d("EbaySearch", "Item: ${item.title}" + "// Price: ${item.price.value}" + "// Price Currency: ${item.price.currency}" + "// Item URL: ${item.itemWebUrl}" + "// Image URL: ${item.image.imageUrl}")
                                     productrecyclerView.adapter = ItemSummaryAdapter(searchResult.itemSummaries, productType.toString())
                                     productrecyclerView.layoutManager = LinearLayoutManager(context)
                                 }
@@ -108,6 +115,7 @@ class ProductListFragment : Fragment() {
                         }
                     }
                     override fun onFailure(call: Call<SearchResult>, t: Throwable) {
+                        progressBar.visibility = View.GONE
                         Log.e("EbaySearch", "Network error: ${t.message}")
                     }
                 })

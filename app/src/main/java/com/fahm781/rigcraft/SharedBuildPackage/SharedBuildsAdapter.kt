@@ -1,5 +1,6 @@
 package com.fahm781.rigcraft.SharedBuildPackage
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import android.widget.TextView
 import android.widget.ToggleButton
 import androidx.recyclerview.widget.RecyclerView
 import com.fahm781.rigcraft.R
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
 
@@ -50,6 +52,13 @@ class SharedBuildsAdapter(var sharedBuilds: MutableList<SharedBuild>) : Recycler
         val sharedBuild = sharedBuilds[position]
         val likeButton: ToggleButton = holder.itemView.findViewById(R.id.likeButton)
 
+        // Get the SharedPreferences instance
+        val sharedPreferences = holder.itemView.context.getSharedPreferences("SharedBuildsPrefs", Context.MODE_PRIVATE)
+
+        // Retrieve the state of the like button from SharedPreferences
+        val isLiked = sharedPreferences.getBoolean(sharedBuild.buildIdentifier, false)
+        likeButton.isChecked = isLiked
+
         holder.buildName.text =
             "Build Name: " + sharedBuild.buildIdentifier //sets the build name to the buildIdentifier for now
         holder.sharedBy.text = "Shared by: " + sharedBuild.userEmail
@@ -65,62 +74,6 @@ class SharedBuildsAdapter(var sharedBuilds: MutableList<SharedBuild>) : Recycler
             }
         }
 
-
-//        likeButton.setOnCheckedChangeListener { _, isChecked ->
-//            val db = FirebaseFirestore.getInstance()
-//            val docRef = db.collection("SharedBuilds").document(sharedBuild.buildIdentifier)
-//
-//            db.runTransaction { transaction ->
-//                val snapshot = transaction.get(docRef)
-//                var likes = snapshot.getDouble("likes")?.toInt() ?: 0
-//                likes = if (isChecked) {
-//                    likes + 1
-//                } else {
-//                    likes - 1
-//                }
-//                transaction.update(docRef, "likes", likes)
-//                null
-//            }.addOnSuccessListener {
-//                holder.likeCounter.text = sharedBuild.likes.toString()
-//                Log.d("SharedBuildsAdapter", " updated.")
-//            }.addOnFailureListener { e ->
-//                Log.w("SharedBuildsAdapter", "Transaction failure.", e)
-//            }
-//        }
-//
-//        likeButton.setOnCheckedChangeListener { _, isChecked ->
-//            val db = FirebaseFirestore.getInstance()
-//
-//            db.collection("SharedBuilds").whereEqualTo("buildIdentifier", sharedBuild.buildIdentifier)
-//                .get()
-//                .addOnSuccessListener { documents ->
-//                    if (documents.isEmpty) {
-//                        Log.w("SharedBuildsAdapter", "No document found with buildIdentifier: ${sharedBuild.buildIdentifier}")
-//                    } else {
-//                        val docRef = documents.documents[0].reference
-//
-//                        db.runTransaction { transaction ->
-//                            val snapshot = transaction.get(docRef)
-//                            var likes = snapshot.getLong("likes") ?: 0L
-//                            likes = if (isChecked) {
-//                                likes + 1
-//
-//                            } else {
-//                                likes - 1
-//                            }
-//                            transaction.update(docRef, "likes", likes)
-//                            null
-//                        }.addOnSuccessListener {
-//                            holder.likeCounter.text = sharedBuild.likes.toString()
-//                        }.addOnFailureListener { e ->
-//                            Log.w("SharedBuildsAdapter", "Transaction failure.", e)
-//                        }
-//                    }
-//                }
-//                .addOnFailureListener { e ->
-//                    Log.w("SharedBuildsAdapter", "Error getting documents: ", e)
-//                }
-//        }
         likeButton.setOnCheckedChangeListener { _, isChecked ->
             val db = FirebaseFirestore.getInstance()
 
@@ -144,7 +97,7 @@ class SharedBuildsAdapter(var sharedBuilds: MutableList<SharedBuild>) : Recycler
                             likes
                         }.addOnSuccessListener { likes ->
                             holder.likeCounter.text = likes.toString()
-                            
+
 
                         }.addOnFailureListener { e ->
                             Log.w("SharedBuildsAdapter", "Transaction failure.", e)
@@ -154,9 +107,13 @@ class SharedBuildsAdapter(var sharedBuilds: MutableList<SharedBuild>) : Recycler
                 .addOnFailureListener { e ->
                     Log.w("SharedBuildsAdapter", "Error getting documents: ", e)
                 }
+
+            // Save the state of the like button in SharedPreferences when it changes
+            with(sharedPreferences.edit()) {
+                putBoolean(sharedBuild.buildIdentifier, isChecked)
+                apply()
+            }
         }
-
-
 
 //        holder.spinner.setOnClickListener {
 //            if (holder.productLayout.visibility == View.VISIBLE) {

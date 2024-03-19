@@ -6,6 +6,6 @@
         android:width="2dp"
         android:color="#BCA5A8" /> <!-- Border color, change as needed -->
     <corners android:radius="20dip"/>
-    <solid android:color="#E82323"/>
+    <solid android:color="#911B1B"/>
 
 </shape>

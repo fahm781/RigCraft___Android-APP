@@ -15,11 +15,16 @@
         android:id="@+id/viewBuildButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="View" />
+        android:text="View"
+        android:padding="10dp"
+        android:layout_marginEnd="5dp"
+        />
     <Button
         android:id="@+id/deleteBuildButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Delete" />
+        android:text="Delete"
+        android:padding="10dp"
+        />
 
 </LinearLayout>

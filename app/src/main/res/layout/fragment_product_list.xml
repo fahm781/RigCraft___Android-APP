@@ -16,46 +16,8 @@
         android:gravity="left"
         android:padding="10dp" />
 
-<!--    <FrameLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent">-->
 
-<!--        <LinearLayout-->
-<!--            android:id="@+id/selected"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:background="@android:drawable/dialog_holo_light_frame"-->
-<!--            android:padding="16dp">-->
 
-<!--            <ImageView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:src="@android:drawable/ic_menu_manage" />-->
-
-<!--            <TextView-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="1"-->
-<!--                android:text="Selected Mobo: B450 AMD, £120"-->
-<!--                android:gravity="center_vertical"-->
-<!--                android:paddingStart="16dp"-->
-<!--                android:paddingEnd="16dp" />-->
-
-<!--            <Button-->
-<!--                android:id="@+id/moreDetailsButton"-->
-<!--                android:layout_width="100dp"-->
-<!--                android:layout_height="50dp"-->
-<!--                android:text="More Details" />-->
-<!--        </LinearLayout>-->
-<!--    </FrameLayout>-->
-<!--    <EditText-->
-<!--        android:id="@+id/searchBar"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:hint="Search items..."-->
-<!--        android:inputType="text"-->
-<!--        android:padding="10dp" />-->
     <androidx.cardview.widget.CardView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
@@ -65,6 +27,7 @@
         app:cardElevation="5dp"
         app:cardBackgroundColor="@android:color/white"
         >
+
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchView"
         android:layout_width="match_parent"
@@ -73,20 +36,26 @@
         app:iconifiedByDefault="false"
         />
     </androidx.cardview.widget.CardView>
-
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone"/>
     <ScrollView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingHorizontal="9dp"
-        android:paddingTop="10dp"
+    android:paddingTop="10dp"
     android:scrollbarStyle="insideInset"
     >
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/productrecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
        />
+
     </ScrollView>
 </LinearLayout>
 

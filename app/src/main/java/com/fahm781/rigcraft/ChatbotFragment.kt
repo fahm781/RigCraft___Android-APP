@@ -1,5 +1,7 @@
 package com.fahm781.rigcraft
 
+import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -20,6 +22,7 @@ import com.fahm781.rigcraft.ChatbotServices.Msg
 import com.fahm781.rigcraft.ChatbotServices.MsgAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.Query
+import kotlin.random.Random
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -65,6 +68,9 @@ class ChatbotFragment : Fragment() {
             chatRecyclerView.layoutManager = linearLayoutManager
         }
 
+
+
+        //send the message to the chatbot and add it to the recycler view
         buttonSend.setOnClickListener {
             val query = editTextMessage.text.toString().trim()
             if (query.isNotEmpty()) {
@@ -76,11 +82,20 @@ class ChatbotFragment : Fragment() {
                 chatbotRepository.getResponse(query, prompt) { result ->
                     addMessage(result, BOT_MSG)
                 }
+                // Generate a random integer between 1 and 100
+                val randomNumber = Random.nextInt(1, 101)
+
+                // Show the disclaimer if the user is new or at random (20% chance)
+                if (isFirstTimeUser() || randomNumber <= 20) {
+                    showDisclaimer()
+                    setNotFirstTimeUser()
+                }
             } else {
                 Toast.makeText(requireContext(), "Please enter a query", Toast.LENGTH_SHORT).show()
             }
         }
-      loadMessagesFromFirestore()
+        //If there is previous chat history, load it and add it to the recycler view
+        loadMessagesFromFirestore()
         return view
     }
 
@@ -148,6 +163,29 @@ class ChatbotFragment : Fragment() {
             }
     }
 
+    // store a flag indicating whether the user is new or not
+    private fun isFirstTimeUser(): Boolean {
+        val sharedPreferences = requireActivity().getSharedPreferences("ChatbotPrefs", Context.MODE_PRIVATE)
+        return sharedPreferences.getBoolean("firstTimeUser", true)
+    }
+
+    // set the flag to indicate that the user is not new
+    private fun setNotFirstTimeUser() {
+        val sharedPreferences = requireActivity().getSharedPreferences("ChatbotPrefs", Context.MODE_PRIVATE)
+        sharedPreferences.edit().putBoolean("firstTimeUser", false).apply()
+    }
+
+    // show a disclaimer to the user stating that the chatbot responses may not be accurate
+    private fun showDisclaimer() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Disclaimer")
+        builder.setMessage("Please note that sometimes the Chatbot may give inaccurate answers as this feature is still a work in progress.")
+        builder.setPositiveButton("OK") { dialog, _ ->
+            dialog.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.show()
+    }
 
     }
 

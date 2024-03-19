@@ -76,9 +76,11 @@
 
         <Button
             android:id="@+id/changePwdButton"
-            android:layout_width="115dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Change Password" />
+            android:text="Change Password"
+            android:padding="10dp"
+            />
 
     </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -91,7 +93,6 @@
             app:cardCornerRadius="18dp"
             app:cardElevation="5dp"
             app:cardBackgroundColor="@android:color/white"
-
             >
 
     <LinearLayout
@@ -125,18 +126,18 @@
 
         <Button
             android:id="@+id/feedbackSubButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Send Feedback"
-            android:layout_width="115dp"
+            android:padding="10dp"
             />
-        <androidx.appcompat.widget.AppCompatButton
+        <Button
             android:id="@+id/logoutButton"
-            android:layout_width="115dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Log Out"
-            android:background="@drawable/rounded_custom_button1"
-            android:textColor="@color/white"
-            android:layout_marginTop="4dp"
+            android:backgroundTint="#911B1B"
+            android:padding="10dp"
             />
 
     </LinearLayout>

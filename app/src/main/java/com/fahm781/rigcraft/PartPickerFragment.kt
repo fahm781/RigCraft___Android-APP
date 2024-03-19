@@ -1,5 +1,7 @@
 package com.fahm781.rigcraft
 
+import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -26,6 +28,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kotlin.random.Random
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -137,6 +140,7 @@ class PartPickerFragment : Fragment() {
 
         compatibilityCheck = view.findViewById(R.id.compatibilityCheck)
         compatibilityCheck.setOnClickListener {
+
             val buildDetails = getCurrentBuildDetails()
             if (buildDetails.isEmpty()) {
                 Toast.makeText(context, "Please select a build", Toast.LENGTH_SHORT).show()
@@ -156,6 +160,15 @@ class PartPickerFragment : Fragment() {
             }
 
             Log.d("BuildDetails Actual", buildDetails)
+            // Generate a random integer between 1 and 100
+            val randomNumber = Random.nextInt(1, 101)
+
+            // Show the disclaimer if the user is new or at random (20% chance)
+            if (isFirstTimeUser() || randomNumber <= 20) {
+                showDisclaimer()
+                setNotFirstTimeUser()
+            }
+
             val chatbotRepository = ChatbotRepository()
             val prompt =
                 "Check the compatibility of the components. And respond with GREEN if the components are compatible, RED if they are not compatible, and GREY if you are not sure. Ignore the price and other useless information"
@@ -495,5 +508,29 @@ class PartPickerFragment : Fragment() {
             val formattedSubtotal = String.format("%.2f", subtotal) // Format the subtotal to 2 decimal places
             subtotalTextView.text = "Subtotal: £$formattedSubtotal"
         }
+    }
+
+    // store a flag indicating whether the user is new or not
+    private fun isFirstTimeUser(): Boolean {
+        val sharedPreferences = requireActivity().getSharedPreferences("PartPickerPrefs", Context.MODE_PRIVATE)
+        return sharedPreferences.getBoolean("firstTimeUser", true)
+    }
+
+    // set the flag to indicate that the user is not new
+    private fun setNotFirstTimeUser() {
+        val sharedPreferences = requireActivity().getSharedPreferences("PartPickerPrefs", Context.MODE_PRIVATE)
+        sharedPreferences.edit().putBoolean("firstTimeUser", false).apply()
+    }
+
+    // show a disclaimer to the user stating that the compatibility check may not be accurate
+    private fun showDisclaimer() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Disclaimer")
+        builder.setMessage("Please note that some compatibility checks may yield inaccurate results. Please verify the compatibility of the components before purchasing them.")
+        builder.setPositiveButton("OK") { dialog, _ ->
+            dialog.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.show()
     }
 }
