@@ -76,8 +76,10 @@ class ProductListFragment : Fragment() {
         progressBar = view.findViewById(R.id.progressBar)
         //Show progress bar while loading
         progressBar.visibility = View.VISIBLE
+
         //search for the productType on ebay
-        searchEbayForItems(productType.toString())
+        val categoryId = getCategoryID(productType.toString())
+        searchEbayForItems(productType.toString(), categoryId)
 
         //filter out the search results based on the search query
         searchView = view.findViewById(R.id.searchView)
@@ -95,11 +97,11 @@ class ProductListFragment : Fragment() {
         return view
     }
 
-    fun searchEbayForItems(query: String) {
+    fun searchEbayForItems(query: String, categoryId:String) {
         CoroutineScope(Dispatchers.Main).launch {
             val token = EbayTokenRegenerator().getToken()
             if (token != null) {
-                RetrofitClient.ebayApi.searchItems("Bearer $token", query).enqueue(object : Callback<SearchResult> {
+                RetrofitClient.ebayApi.searchItems("Bearer $token", query, categoryId, "conditionIds:{1000}").enqueue(object : Callback<SearchResult> {
                     override fun onResponse(call: Call<SearchResult>, response: Response<SearchResult>) {
                         progressBar.visibility = View.GONE
                         if (response.isSuccessful) {
@@ -108,6 +110,7 @@ class ProductListFragment : Fragment() {
                                     itemSummaries = searchResult.itemSummaries
                                     productrecyclerView.adapter = ItemSummaryAdapter(searchResult.itemSummaries, productType.toString())
                                     productrecyclerView.layoutManager = LinearLayoutManager(context)
+                                    Log.d("EbaySearch", "Search successful: $item")
                                 }
                             }
                         } else {
@@ -124,15 +127,15 @@ class ProductListFragment : Fragment() {
     }
 
     //gets the category id for the product type
-    fun getCategoryID(productType: String): String {
+    private fun getCategoryID(productType: String): String {
         return when (productType) {
-            "cpu" -> "164"
-            "gpu" -> "27386"
-            "ram" -> "170083"
-            "Pc storage" -> "56083"
-            "power supply" -> "1788"
-            "motherboard" -> "1244"
-            else -> "0"
+//            "cpu" -> "164"
+            "gpu" -> "27386&58058&175673"
+//            "ram" -> "170083"
+            "Pc storage" -> "175669"
+//            "power supply" -> "1788"
+//            "motherboard" -> "1244"
+            else -> ""
         }
     }
 

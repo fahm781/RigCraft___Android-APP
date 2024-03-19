@@ -10,19 +10,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center">
+        android:gravity="end"
+        android:paddingBottom="4dp"
+        >
 
         <Button
             android:id="@+id/buttonPrevious"
-            android:layout_width="wrap_content"
+            android:layout_width="42dp"
             android:layout_height="wrap_content"
-            android:text="&lt;"/>
+            android:text="&lt;"
+            android:textSize="30sp"
+            style="?android:attr/buttonBarButtonStyle"
+            android:backgroundTint="#22746C83"
+            />
 
         <Button
             android:id="@+id/buttonNext"
-            android:layout_width="wrap_content"
+            android:layout_width="42dp"
             android:layout_height="wrap_content"
-            android:text="&gt;"/>
+            android:text="&gt;"
+            android:textSize="30sp"
+            style="?android:attr/buttonBarButtonStyle"
+            android:backgroundTint="#22746C83"
+            />
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
@@ -45,13 +55,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="24sp"
+        android:paddingBottom="3dp"
         />
 
     <TextView
         android:id="@+id/textViewContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"/>
+        android:textSize="16sp"
+        />
             </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -68,7 +80,6 @@
         android:layout_margin="4dp"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
-        android:src="@drawable/ic_launcher_foreground"
         />
 
     </LinearLayout>

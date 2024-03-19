@@ -26,6 +26,8 @@ interface EbayApiService {
     @GET("buy/browse/v1/item_summary/search")
     fun searchItems(
         @Header("Authorization") authorization: String,
-        @Query("q") query: String
+        @Query("q") query: String,
+        @Query("category_ids") categoryID: String,
+        @Query("filter") filter: String
     ): Call<SearchResult>
 }
