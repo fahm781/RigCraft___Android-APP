@@ -121,6 +121,12 @@ class BuildGuideFragment : Fragment() {
         textViewTitle.text = currentStep.title
         textViewContent.text = currentStep.content
         instructionImageView.setImageResource(currentStep.imageResId)
+
+        // Disable the previous button if the current step is the first step
+        buttonPrevious.isEnabled = currentStepIndex != 0
+
+        // Disable the next button if the current step is the last step
+        buttonNext.isEnabled = currentStepIndex != steps.size - 1
     }
 }
 
