@@ -24,20 +24,9 @@ class SharedBuildsAdapter(var sharedBuilds: MutableList<SharedBuild>) : Recycler
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val buildName: TextView = view.findViewById(R.id.buildName)
         val sharedBy: TextView = view.findViewById(R.id.sharedBy)
+        val commentTextView: TextView = view.findViewById(R.id.comment)
         val productLayout: LinearLayout = view.findViewById(R.id.productLayout)
         val likeCounter: TextView = view.findViewById(R.id.likeCounter)
-
-//        val spinner: Spinner = view.findViewById(R.id.spinner)
-
-//        init {
-//            itemView.setOnClickListener {
-//                if (productLayout.visibility == View.GONE) {
-//                    productLayout.visibility = View.VISIBLE
-//                } else {
-//                    productLayout.visibility = View.GONE
-//                }
-//            }
-//        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -59,9 +48,17 @@ class SharedBuildsAdapter(var sharedBuilds: MutableList<SharedBuild>) : Recycler
         val isLiked = sharedPreferences.getBoolean(sharedBuild.buildIdentifier, false)
         likeButton.isChecked = isLiked
 
-        holder.buildName.text =
-            "Build Name: " + sharedBuild.buildIdentifier //sets the build name to the buildIdentifier for now
+        holder.buildName.text = if (sharedBuild.buildName.isEmpty()) {
+            "Build Name: " + sharedBuild.buildIdentifier
+        } else {
+            "Build Name: " + sharedBuild.buildName
+        }
         holder.sharedBy.text = "Shared by: " + sharedBuild.userEmail
+        holder.commentTextView.text = if (sharedBuild.comment.isEmpty()) {
+            "Comment: -"
+        } else {
+            "Comment: " + sharedBuild.comment
+        }
 
         addProductToLayout(sharedBuild, holder)
 
@@ -114,29 +111,6 @@ class SharedBuildsAdapter(var sharedBuilds: MutableList<SharedBuild>) : Recycler
                 apply()
             }
         }
-
-//        holder.spinner.setOnClickListener {
-//            if (holder.productLayout.visibility == View.VISIBLE) {
-//                holder.productLayout.visibility = View.GONE
-//            } else {
-//                holder.productLayout.visibility = View.VISIBLE
-//            }
-//        }
-//
-//        holder.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-//            override fun onNothingSelected(parent: AdapterView<*>?) {
-//                holder.productLayout.visibility = View.GONE
-//            }
-//
-//            override fun onItemSelected(
-//                parent: AdapterView<*>?,
-//                view: View?,
-//                position: Int,
-//                id: Long
-//            ) {
-//                holder.productLayout.visibility = View.GONE
-//            }
-//        }
     }
 
     private fun addProductToLayout(
@@ -154,7 +128,7 @@ class SharedBuildsAdapter(var sharedBuilds: MutableList<SharedBuild>) : Recycler
             val titleTextView: TextView = productItemView.findViewById(R.id.titleTextView)
             val priceTextView: TextView = productItemView.findViewById(R.id.priceTextView)
             val productImageView: ImageView = productItemView.findViewById(R.id.productImageView)
-//            val likeCounter: TextView = holder.itemView.findViewById(R.id.likeCounter)
+
             // Set the text and image for each view
             prodType.text = productType
             titleTextView.text = productDetails["title"] as String
@@ -166,22 +140,4 @@ class SharedBuildsAdapter(var sharedBuilds: MutableList<SharedBuild>) : Recycler
             holder.productLayout.addView(productItemView)
         }
     }
-
-//    fun getLikesFromDatabase(buildIdentifier: String) {
-//        val db = FirebaseFirestore.getInstance()
-//        db.collection("SharedBuilds").whereEqualTo("buildIdentifier", buildIdentifier).get()
-//        .addOnSuccessListener { querySnapshot ->
-//                if (!querySnapshot.isEmpty) {
-//                    val document = querySnapshot.documents[0]
-//                    val likes = document.data?.get("likes") as String
-//
-//                    Log.d("SharedBuildsAdapter", "Likes: $likes")
-//                } else {
-//                    Log.d("SharedBuildsAdapter", "No such document")
-//                }
-//            }
-//            .addOnFailureListener { exception ->
-//                Log.d("SharedBuildsAdapter", "get failed with ", exception)
-//            }
-//    }
 }

@@ -42,6 +42,7 @@
             android:inputType="textEmailAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -58,7 +59,9 @@
             android:hint="@string/password"
             android:inputType="textPassword"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Confirm Password input -->
@@ -72,7 +75,9 @@
         android:hint="@string/confirmPassword"
         android:inputType="textPassword"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        />
     </com.google.android.material.textfield.TextInputLayout>
 <!--    Progress bar that shows once login btn pressed -->
     <ProgressBar

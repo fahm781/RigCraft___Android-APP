@@ -1,6 +1,8 @@
 package com.fahm781.rigcraft.ChatbotServices
 
 import android.util.Log
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import retrofit2.Call
 import retrofit2.Callback
 
@@ -42,6 +44,7 @@ class ChatbotRepository {
                             response.errorBody()?.let {
                                 callback(it.toString())
                                 Log.d("Error", it.string())
+
                             }
                             }
                     }

@@ -31,6 +31,14 @@ app:cardCornerRadius="5dp">
         android:textSize="16sp"
         android:textStyle="bold"
         android:layout_marginStart="7dp"/>
+
+    <TextView
+        android:id="@+id/comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Comment"
+        android:layout_marginStart="7dp"/>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

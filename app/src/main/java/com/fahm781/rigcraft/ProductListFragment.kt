@@ -139,6 +139,8 @@ class ProductListFragment : Fragment() {
         }
     }
 
+
+    //filter the search results based on the search query
     fun filterSearchResults(searchQuery: String){
         val filteredList = ArrayList<ItemSummary>()
         for (item in itemSummaries){

@@ -70,8 +70,10 @@ class SocialHubFragment : Fragment() {
                     val userEmail = document.getString("userEmail") ?: ""
                     val buildData = document.get("buildData") as Map<String, Any>
                     val likes = document.getDouble("likes")?.toInt() ?: 0
+                    val buildName = document.getString("buildName") ?: ""
+                    val comment = document.getString("comment") ?: ""
 
-                    val sharedBuild = SharedBuild(buildData, userEmail, buildIdentifier, likes)
+                    val sharedBuild = SharedBuild(buildData, userEmail, buildIdentifier, likes,comment, buildName)
                     sharedBuilds.add(sharedBuild)
                     Log.d("fetchSharedBuilds", "buildData for $buildIdentifier: $buildData")
 

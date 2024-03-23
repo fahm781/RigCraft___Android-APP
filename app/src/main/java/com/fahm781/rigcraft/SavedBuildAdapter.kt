@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -75,86 +76,65 @@ class SavedBuildsAdapter(private var savedBuilds: MutableList<SavedBuild>) : Rec
             val closeButton: Button = dialog.findViewById(R.id.closeButton)
 
 
-//            shareBuildButton.setOnClickListener {
-//                // Convert the productItems list to a HashMap as required by Firestore
-//                val buildData = hashMapOf<String, Any>()
-//                for (productItem in productItems) {
-//                    buildData[productItem.type] = productItem.details
-//                }
-//                val userEmail = FirebaseAuth.getInstance().currentUser?.email
-//                if (userEmail != null) {
-//                    buildData["userEmail"] = userEmail
-//                }
-//
-//                // Generate a unique identifier for the build (like a hash of the build data) and add it to the build data
-//                val buildIdentifier = buildData.hashCode().toString()
-//                buildData["buildIdentifier"] = buildIdentifier
-//
-//                // Save the build to Firestore
-//                GlobalScope.launch(Dispatchers.IO) {
-//                    val db = FirebaseFirestore.getInstance()
-//                    // Check if the build already exists in the "SharedBuilds" collection using the unique buildIdentifier identifier
-//                    val existingBuild = db.collection("SharedBuilds").whereEqualTo("buildIdentifier", buildIdentifier).get().await().documents
-//                    if (existingBuild.isNotEmpty()) {
-//                        // If the build already exists, show a toast message and return
-//                        withContext(Dispatchers.Main) {
-//                            Toast.makeText(it.context, "This build has already been shared", Toast.LENGTH_SHORT).show()
-//                        }
-//                        return@launch
-//                    }
-//
-//                    val newBuildId = db.collection("SharedBuilds").document().id
-//                    db.collection("SharedBuilds").document(newBuildId).set(buildData).addOnSuccessListener {
-//                        Log.d("Firestore", "Build successfully shared with ID: $newBuildId")
-//
-//                    }.addOnFailureListener { e ->
-//                        Log.w("Firestore", "Error sharing build", e)
-//                    }
-//                }
-//            }
             shareBuildButton.setOnClickListener {
-                // Convert the productItems list to a HashMap
-                val buildDataMap = hashMapOf<String, Any>()
-                for (productItem in productItems) {
-                    buildDataMap[productItem.type] = productItem.details
-                }
+                    // Convert the productItems list to a HashMap
+                    val buildDataMap = hashMapOf<String, Any>()
+                    for (productItem in productItems) {
+                        buildDataMap[productItem.type] = productItem.details
+                    }
 
-                // Create the main HashMap that you're saving to Firestore
-                val buildData = hashMapOf<String, Any>()
-                buildData["buildData"] = buildDataMap
 
-                val userEmail = FirebaseAuth.getInstance().currentUser?.email
-                if (userEmail != null) {
-                    buildData["userEmail"] = userEmail
-                }
+                    // Create the main HashMap that is being saved to Firestore
+                    val buildData = hashMapOf<String, Any>()
+                    buildData["buildData"] = buildDataMap
+//                    buildData["buildName"] = buildName
+//                    buildData["comment"] = comment
 
-                // Generate a unique identifier for the build (like a hash of the build data) and add it to the build data
-                val buildIdentifier = buildData.hashCode().toString()
-                buildData["buildIdentifier"] = buildIdentifier
+                    val userEmail = FirebaseAuth.getInstance().currentUser?.email
+                    if (userEmail != null) {
+                        buildData["userEmail"] = userEmail
+                    }
 
-                // Save the build to Firestore
-                GlobalScope.launch(Dispatchers.IO) {
-                    val db = FirebaseFirestore.getInstance()
-                    // Check if the build already exists in the "SharedBuilds" collection using the unique buildIdentifier identifier
-                    val existingBuild = db.collection("SharedBuilds").whereEqualTo("buildIdentifier", buildIdentifier).get().await().documents
-                    if (existingBuild.isNotEmpty()) {
-                        // If the build already exists, show a toast message and return
-                        withContext(Dispatchers.Main) {
-                            Toast.makeText(it.context, "This build has already been shared", Toast.LENGTH_SHORT).show()
+                    // Generate a unique identifier for the build (like a hash of the build data) and add it to the build data
+                    val buildIdentifier = buildData.hashCode().toString()
+                    buildData["buildIdentifier"] = buildIdentifier
+
+                    // Save the build to Firestore
+                    GlobalScope.launch(Dispatchers.IO) {
+                        val db = FirebaseFirestore.getInstance()
+                        // Check if the build already exists in the "SharedBuilds" collection using the unique buildIdentifier identifier
+                        val existingBuild = db.collection("SharedBuilds")
+                            .whereEqualTo("buildIdentifier", buildIdentifier).get()
+                            .await().documents
+                        if (existingBuild.isNotEmpty()) {
+                            // If the build already exists, show a toast message and return
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(
+                                    it.context,
+                                    "This build has already been shared",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                            return@launch
                         }
-                        return@launch
-                    }
 
-                    val newBuildId = db.collection("SharedBuilds").document().id
-                    db.collection("SharedBuilds").document(newBuildId).set(buildData).addOnSuccessListener {
-                        Log.d("Firestore", "Build successfully shared with ID: $newBuildId")
-                    }.addOnFailureListener { e ->
-                        Log.w("Firestore", "Error sharing build", e)
+                        // If the build does not exist in the database, show the dialog
+                        withContext(Dispatchers.Main) {
+                            showAlertDialog(it) { (buildName, comment) ->
+                                buildData["buildName"] = buildName
+                                buildData["comment"] = comment
+
+                                val newBuildId = db.collection("SharedBuilds").document().id
+                                db.collection("SharedBuilds").document(newBuildId).set(buildData)
+                                    .addOnSuccessListener {
+                                        dialog.dismiss()
+                                    }.addOnFailureListener { e ->
+                                        Log.w("Firestore", "Error sharing build", e)
+                                    }
+                            }
+                        }
                     }
-                }
             }
-
-
             closeButton.setOnClickListener {
                 dialog.dismiss()
             }
@@ -192,6 +172,27 @@ class SavedBuildsAdapter(private var savedBuilds: MutableList<SavedBuild>) : Rec
                     Log.w("Firestore", "Error deleting build", e)
                 }
         }
+    }
+
+    private fun showAlertDialog(view: View, callback: (Pair<String, String>) -> Unit) {
+        val builder = AlertDialog.Builder(view.context)
+        val inflater = LayoutInflater.from(view.context)
+        val dialogView = inflater.inflate(R.layout.dialog_share_build, null)
+
+        val buildNameEditText: EditText = dialogView.findViewById(R.id.buildNameEditText)
+        val commentEditText: EditText = dialogView.findViewById(R.id.commentEditText)
+
+        builder.setView(dialogView)
+        builder.setPositiveButton("Submit") { dialog, _ ->
+            val buildName = buildNameEditText.text.toString()
+            val comment = commentEditText.text.toString()
+            callback(Pair(buildName, comment))
+            dialog.dismiss()
+        }
+        builder.setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
+
+        val dialog = builder.create()
+        dialog.show()
     }
 
     fun updateData(newSavedBuilds: MutableList<SavedBuild>) {
