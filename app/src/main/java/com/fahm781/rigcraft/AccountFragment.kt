@@ -2,7 +2,6 @@ package com.fahm781.rigcraft
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -61,7 +60,7 @@ class AccountFragment : Fragment() {
         oldPassword = view.findViewById(R.id.oldPassword)
         confirmNewPassword = view.findViewById(R.id.confirmNewPassword)
         changePwdButton.setOnClickListener{
-            changePassword(view)
+            changePassword()
         }
 
         // Get the TextView by its ID
@@ -112,7 +111,7 @@ class AccountFragment : Fragment() {
             Toast.makeText(context, "No email client installed", Toast.LENGTH_SHORT).show()
         }
     }
-    private fun changePassword(view: View) {
+    private fun changePassword() {
 
 
             val user = FirebaseAuth.getInstance().currentUser
@@ -148,7 +147,7 @@ class AccountFragment : Fragment() {
             }
 
             if (user != null) {
-                // Re-authenticate the user
+                // Reauthenticate the user
                 val credential = EmailAuthProvider.getCredential(user.email!!, oldPwd)
                 user.reauthenticate(credential).addOnCompleteListener { reauthTask ->
                     if (reauthTask.isSuccessful) {
@@ -160,6 +159,10 @@ class AccountFragment : Fragment() {
                                     "Password updated successfully!",
                                     Toast.LENGTH_SHORT
                                 ).show()
+                                // Clear the fields
+                                oldPassword.text.clear()
+                                newPassword.text.clear()
+                                confirmNewPassword.text.clear()
                             } else {
                                 Toast.makeText(
                                     requireContext(),

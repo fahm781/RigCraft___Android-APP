@@ -20,8 +20,8 @@
             android:gravity="center_vertical"
             android:text="Press to check for compatibility"
             android:background="#C5960A"
-            android:drawableLeft = "@drawable/press"
-            android:drawablePadding= "30dp"
+            android:drawableStart = "@drawable/press"
+            android:textAlignment="center"
             android:textColor="@color/white"
             android:layout_marginBottom="11dp"
         />

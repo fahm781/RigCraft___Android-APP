@@ -44,7 +44,6 @@ class ChatbotRepository {
                             response.errorBody()?.let {
                                 callback(it.toString())
                                 Log.d("Error", it.string())
-
                             }
                             }
                     }

@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.fahm781.rigcraft.EbayServices.ItemSummary
 import com.fahm781.rigcraft.SharedBuildPackage.SharedBuild
 import com.fahm781.rigcraft.SharedBuildPackage.SharedBuildsAdapter
 import com.google.firebase.auth.FirebaseAuth
@@ -27,6 +28,9 @@ private const val ARG_PARAM2 = "param2"
 class SocialHubFragment : Fragment() {
     private lateinit var sharedBuildsAdapter: SharedBuildsAdapter
     private lateinit var recyclerView: RecyclerView
+    private lateinit var searchView: androidx.appcompat.widget.SearchView
+    private var items: List<SharedBuild> = ArrayList<SharedBuild>()
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +57,18 @@ class SocialHubFragment : Fragment() {
         // Fetch the shared builds and update the adapter's data
         fetchSharedBuildsAndUpdateAdapter()
 
+        //filter out the search results based on the search query
+        searchView = view.findViewById(R.id.searchView)
+        searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
 
+            override fun onQueryTextChange(newText: String?): Boolean {
+                filterSharedBuilds(newText.toString())
+                return true
+            }
+        })
 
         return view
     }
@@ -86,6 +101,21 @@ class SocialHubFragment : Fragment() {
                 Log.w(TAG, "Error getting documents: ", exception)
             }
     }
+
+    // Function to filter the sharedBuilds list and update the adapter
+    private fun filterSharedBuilds(searchQuery: String) {
+        val filteredList = ArrayList<SharedBuild>()
+        for (item in items) {
+            if (item.buildName.contains(searchQuery.lowercase())) {
+                if (item.buildName.contains(searchQuery.lowercase())) {
+                    filteredList.add(item)
+                }
+            }
+            sharedBuildsAdapter.sharedBuilds = filteredList
+            sharedBuildsAdapter.notifyDataSetChanged()
+        }
+    }
+
     companion object {
         /**
          * Use this factory method to create a new instance of

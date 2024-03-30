@@ -87,7 +87,8 @@ class RegistrationActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT,
                         ).show()
                         val user = auth.currentUser
-
+                        val intent = Intent(applicationContext, MainActivity::class.java)
+                        startActivity(intent)
                     } else {
                         // If sign in fails, display a message to the user
                         Toast.makeText(

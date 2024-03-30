@@ -170,42 +170,30 @@ class PartPickerFragment : Fragment() {
             }
 
             val chatbotRepository = ChatbotRepository()
-            val prompt =
-                "Check the compatibility of the components. And respond with GREEN if the components are compatible, RED if they are not compatible, and GREY if you are not sure. Ignore the price and other useless information"
+            val prompt = "Check the compatibility of the components. And respond with GREEN if the components are compatible, RED if they are not compatible, and GREY if you are not sure. Ignore the price and other useless information"
 
             chatbotRepository.getResponse(buildDetails, prompt) { response ->
-                //return the message from the chatbot and display it in a Log message
                 Log.d("ChatbotResponse", response)
                 when (response) {
-                    "GREEN" -> context?.let { it1 -> ContextCompat.getColor(it1, R.color.green) }
-                        ?.let { it2 ->
-                            setButtonStyle(
-                                compatibilityCheck,
-                                it2,
-                                "Compatible",
-                                R.drawable.reshot_icon_tick_circle_nc7gmqhp6x,
-                                105
-                            )
-                        }
-
-                    "RED" -> context?.let { it1 -> ContextCompat.getColor(it1, R.color.red) }
-                        ?.let { it2 ->
-                            setButtonStyle(
-                                compatibilityCheck,
-                                it2, "Incompatible", R.drawable.red_x_icon, 100
-                            )
-                        }
-
-                    else -> context?.let { it1 -> ContextCompat.getColor(it1, R.color.grey) }
-                        ?.let { it2 ->
-                            setButtonStyle(
-                                compatibilityCheck,
-                                it2, "Compibility: Unverified", R.drawable.question_mark_icon, 70
-                            )
-                        }
+                    "GREEN" -> setButtonStyle(compatibilityCheck,
+                        ContextCompat.getColor(requireContext(), R.color.green),
+                        "Compatible",
+                        R.drawable.reshot_icon_tick_circle_nc7gmqhp6x
+                    )
+                    "RED" -> setButtonStyle(
+                        compatibilityCheck,
+                        ContextCompat.getColor(requireContext(), R.color.red),
+                        "Incompatible",
+                        R.drawable.red_x_icon
+                    )
+                    else -> setButtonStyle(
+                        compatibilityCheck,
+                        ContextCompat.getColor(requireContext(), R.color.grey),
+                        "Compibility: Unverified",
+                        R.drawable.question_mark_icon
+                    )
                 }
             }
-
 
         }
     }
@@ -243,12 +231,10 @@ class PartPickerFragment : Fragment() {
     }
 
     //changing the compatibilityCheck button style based on the response from the chatbot
-    fun setButtonStyle(button: Button, color: Int, text: String, drawable: Int, padding: Int) {
+    private fun setButtonStyle(button: Button, color: Int, text: String, drawable: Int) {
         button.setBackgroundColor(color)
         button.text = text
         button.setCompoundDrawablesWithIntrinsicBounds(drawable, 0, 0, 0)
-        button.compoundDrawablePadding = padding
-        button.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
     }
 
 //    show the selected build items on the GUI

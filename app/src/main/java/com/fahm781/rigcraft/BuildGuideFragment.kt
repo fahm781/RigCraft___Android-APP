@@ -96,7 +96,7 @@ class BuildGuideFragment : Fragment() {
         return view;
     }
 
-    fun getCurrentStep(): InstructionStep {
+    private fun getCurrentStep(): InstructionStep {
         if (currentStepIndex >= 0 && currentStepIndex < steps.size) {
             return steps[currentStepIndex]
         }
@@ -104,13 +104,13 @@ class BuildGuideFragment : Fragment() {
         return InstructionStep("Invalid Heading Index", "Invalid step index", 0)
     }
 
-    fun moveToNextStep() {
+    private fun moveToNextStep() {
         if (currentStepIndex < steps.size - 1) {
             currentStepIndex++
         }
     }
 
-    fun moveToPreviousStep() {
+    private fun moveToPreviousStep() {
         if (currentStepIndex > 0) {
             currentStepIndex--
         }
@@ -121,10 +121,8 @@ class BuildGuideFragment : Fragment() {
         textViewTitle.text = currentStep.title
         textViewContent.text = currentStep.content
         instructionImageView.setImageResource(currentStep.imageResId)
-
         // Disable the previous button if the current step is the first step
         buttonPrevious.isEnabled = currentStepIndex != 0
-
         // Disable the next button if the current step is the last step
         buttonNext.isEnabled = currentStepIndex != steps.size - 1
     }
