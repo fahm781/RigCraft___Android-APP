@@ -1,8 +1,6 @@
-package com.fahm781.rigcraft.ChatbotServices
+package com.fahm781.rigcraft.chatbotServices
 
 import android.util.Log
-import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import retrofit2.Call
 import retrofit2.Callback
 

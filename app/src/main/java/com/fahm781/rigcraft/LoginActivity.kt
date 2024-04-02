@@ -12,14 +12,14 @@ import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {
 
-    lateinit var editTextEmail: TextInputEditText
-    lateinit var editTextPassword: TextInputEditText
-    lateinit var buttonLogin: Button
-    lateinit var progressBar: ProgressBar;
+    private lateinit var editTextEmail: TextInputEditText
+    private lateinit var editTextPassword: TextInputEditText
+    private lateinit var buttonLogin: Button
+    private lateinit var progressBar: ProgressBar
 
     //create a Firebase Authentication object
-    lateinit var auth: FirebaseAuth
-    lateinit var textView: TextView
+    private lateinit var auth: FirebaseAuth
+    private lateinit var textView: TextView
 
 //this method checks if the user is already logged in, also this function is causing the crash when logged in
     public override fun onStart() {
@@ -74,7 +74,7 @@ class LoginActivity : AppCompatActivity() {
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Toast.makeText(baseContext, "Logged In Successfully.",Toast.LENGTH_SHORT).show()
-                        val user = auth.currentUser
+                        auth.currentUser
                         //Send the user to the next relevant page
                         val intent = Intent(applicationContext, MainActivity::class.java)
                         startActivity(intent)

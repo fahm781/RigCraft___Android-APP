@@ -1,6 +1,4 @@
-package com.fahm781.rigcraft.SharedBuildPackage
-
-import org.w3c.dom.Comment
+package com.fahm781.rigcraft.sharedBuildPackage
 
 data class SharedBuild(
     val buildData: Map<String, Any> = mapOf(),

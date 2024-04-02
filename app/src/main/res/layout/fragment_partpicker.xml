@@ -46,7 +46,7 @@
                     android:layout_marginHorizontal="3dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:drawableLeft="@drawable/cpu"
+                    android:drawableLeft="@drawable/cpu_icon2"
                     android:padding="6dp"
                     android:text="Select CPU" />
 
@@ -107,7 +107,7 @@
                     android:layout_gravity="center"
                     android:layout_height="wrap_content"
                     android:text="Select GPU"
-                    android:drawableLeft="@drawable/indicator_sensors_gpu"
+                    android:drawableLeft="@drawable/gpu_icon2"
                     android:padding="6dp" />
 
 
@@ -226,7 +226,7 @@
                     android:layout_gravity="center"
                     android:layout_height="wrap_content"
                     android:text="Select Storage"
-                    android:drawableLeft="@drawable/storage_icon"
+                    android:drawableLeft="@drawable/storage_icon2"
                     android:padding="6dp" />
 
                 <LinearLayout

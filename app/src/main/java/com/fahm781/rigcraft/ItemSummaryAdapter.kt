@@ -14,7 +14,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.fahm781.rigcraft.EbayServices.ItemSummary
+import com.fahm781.rigcraft.ebayServices.ItemSummary
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso

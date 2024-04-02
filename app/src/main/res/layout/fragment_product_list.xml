@@ -34,6 +34,7 @@
         android:layout_height="wrap_content"
         android:queryHint="Search items..."
         app:iconifiedByDefault="false"
+        app:queryBackground="@android:color/white"
         />
     </androidx.cardview.widget.CardView>
     <ProgressBar

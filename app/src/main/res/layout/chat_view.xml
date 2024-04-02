@@ -3,6 +3,12 @@
     android:layout_height="wrap_content"
     android:padding="8dp">
 
+<!--    <ProgressBar-->
+<!--        android:id="@+id/chatProgressBar"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:visibility="invisible"-->
+<!--        />-->
     <!-- Left chat bubble -->
     <LinearLayout
         android:id="@+id/left_chat_view"
@@ -14,10 +20,11 @@
         android:padding="8dp">
 
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@mipmap/ic_launcher"
-            android:layout_marginEnd="8dp"/>
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:src="@drawable/bot_icon"
+            android:layout_marginEnd="8dp"
+            />
 
         <TextView
             android:id="@+id/left_chat_text_view"
@@ -25,7 +32,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColor="@color/black"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            />
+
 
     </LinearLayout>
 
@@ -54,7 +63,7 @@
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@mipmap/ic_launcher"
+            android:src="@drawable/user_icon2"
             android:layout_marginStart="8dp"/>
 
     </LinearLayout>

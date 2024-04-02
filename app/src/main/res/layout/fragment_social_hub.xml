@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="10dp">
 
     <TextView
         android:id="@+id/tvSocialHubHeader"
@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvSocialHubSubHeader"
-        android:layout_margin="4dp"
+        android:layout_marginVertical="4dp"
         app:cardCornerRadius="18dp"
         app:cardElevation="5dp"
         app:cardBackgroundColor="@android:color/white"
@@ -40,16 +40,14 @@
             android:layout_height="wrap_content"
             android:queryHint="Search items..."
             app:iconifiedByDefault="false"
+            app:queryBackground="@android:color/white"
             />
     </androidx.cardview.widget.CardView>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/sharedBuildrecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/cardView"
-
-            />
-
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/sharedBuildrecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/cardView"
+    />
 </RelativeLayout>

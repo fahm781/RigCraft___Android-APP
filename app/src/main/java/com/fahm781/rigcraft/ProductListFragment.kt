@@ -6,20 +6,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
-import android.widget.Button
 import android.widget.ProgressBar
-import android.widget.SearchView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.fahm781.rigcraft.EbayServices.EbayTokenRegenerator
-import com.fahm781.rigcraft.EbayServices.ItemSummary
+import com.fahm781.rigcraft.ebayServices.EbayTokenRegenerator
+import com.fahm781.rigcraft.ebayServices.ItemSummary
 
-import com.fahm781.rigcraft.EbayServices.RetrofitClient
-import com.fahm781.rigcraft.EbayServices.SearchResult
+import com.fahm781.rigcraft.ebayServices.RetrofitClient
+import com.fahm781.rigcraft.ebayServices.SearchResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

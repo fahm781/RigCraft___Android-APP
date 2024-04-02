@@ -1,4 +1,4 @@
-package com.fahm781.rigcraft.EbayServices
+package com.fahm781.rigcraft.ebayServices
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

@@ -1,4 +1,4 @@
-package com.fahm781.rigcraft.ChatbotServices
+package com.fahm781.rigcraft.chatbotServices
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

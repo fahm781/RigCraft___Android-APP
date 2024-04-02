@@ -1,4 +1,4 @@
-package com.fahm781.rigcraft.EbayServices
+package com.fahm781.rigcraft.ebayServices
 
 import android.util.Base64
 import com.google.gson.JsonParser

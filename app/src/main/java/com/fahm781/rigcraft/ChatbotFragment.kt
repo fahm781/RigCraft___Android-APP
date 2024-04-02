@@ -14,12 +14,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.fahm781.rigcraft.ChatbotServices.BOT_MSG
-import com.fahm781.rigcraft.ChatbotServices.ChatbotRepository
-import com.fahm781.rigcraft.ChatbotServices.MY_MSG
+import com.fahm781.rigcraft.chatbotServices.BOT_MSG
+import com.fahm781.rigcraft.chatbotServices.ChatbotRepository
+import com.fahm781.rigcraft.chatbotServices.MY_MSG
 import com.google.firebase.firestore.FirebaseFirestore
-import com.fahm781.rigcraft.ChatbotServices.Msg
-import com.fahm781.rigcraft.ChatbotServices.MsgAdapter
+import com.fahm781.rigcraft.chatbotServices.Msg
+import com.fahm781.rigcraft.chatbotServices.MsgAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.Query
 import kotlin.random.Random

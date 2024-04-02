@@ -1,4 +1,4 @@
-package com.fahm781.rigcraft.ChatbotServices
+package com.fahm781.rigcraft.chatbotServices
 
 import com.fahm781.rigcraft.BuildConfig
 import retrofit2.Call

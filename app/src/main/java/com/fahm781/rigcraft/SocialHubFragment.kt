@@ -9,10 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.fahm781.rigcraft.EbayServices.ItemSummary
-import com.fahm781.rigcraft.SharedBuildPackage.SharedBuild
-import com.fahm781.rigcraft.SharedBuildPackage.SharedBuildsAdapter
-import com.google.firebase.auth.FirebaseAuth
+import com.fahm781.rigcraft.sharedBuildPackage.SharedBuild
+import com.fahm781.rigcraft.sharedBuildPackage.SharedBuildsAdapter
 import com.google.firebase.firestore.FirebaseFirestore
 
 // TODO: Rename parameter arguments, choose names that match

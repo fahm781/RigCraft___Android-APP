@@ -1,9 +1,10 @@
-package com.fahm781.rigcraft.ChatbotServices
+package com.fahm781.rigcraft.chatbotServices
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.fahm781.rigcraft.R
@@ -20,8 +21,6 @@ class MsgAdapter(private val msgList: List<Msg>) :
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MsgViewHolder {
-        //val view = LayoutInflater.from(parent.context).inflate(R.layout.chat_view, null)
-        //if the code below doesnt work, uncomment the code above
         val view = LayoutInflater.from(parent.context).inflate(R.layout.chat_view, parent, false)
         return MsgViewHolder(view)
     }
