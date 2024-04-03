@@ -13,10 +13,10 @@
 
         <!-- User Account Section -->
         <ImageView
-            android:layout_width="94dp"
-            android:layout_height="97dp"
+            android:layout_width="127dp"
+            android:layout_height="135dp"
             android:layout_gravity="center"
-            android:src="@drawable/sharp_manage_accounts_24" />
+            android:src="@drawable/user_icon2" />
 
         <TextView
             android:layout_width="wrap_content"

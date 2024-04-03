@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fahm781.rigcraft.ebayServices.EbayTokenRegenerator
 import com.fahm781.rigcraft.ebayServices.ItemSummary
 
-import com.fahm781.rigcraft.ebayServices.RetrofitClient
+import com.fahm781.rigcraft.ebayServices.EbayApiClient
 import com.fahm781.rigcraft.ebayServices.SearchResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -92,11 +92,11 @@ class ProductListFragment : Fragment() {
         return view
     }
 
-    fun searchEbayForItems(query: String, categoryId:String) {
+    private fun searchEbayForItems(query: String, categoryId:String) {
         CoroutineScope(Dispatchers.Main).launch {
             val token = EbayTokenRegenerator().getToken()
             if (token != null) {
-                RetrofitClient.ebayApi.searchItems("Bearer $token", query, categoryId, "conditionIds:{1000}").enqueue(object : Callback<SearchResult> {
+                EbayApiClient.ebayApi.searchItems("Bearer $token", query, categoryId, "conditionIds:{1000}").enqueue(object : Callback<SearchResult> {
                     override fun onResponse(call: Call<SearchResult>, response: Response<SearchResult>) {
                         progressBar.visibility = View.GONE
                         if (response.isSuccessful) {

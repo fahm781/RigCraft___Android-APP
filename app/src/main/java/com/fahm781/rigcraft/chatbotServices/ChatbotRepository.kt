@@ -33,10 +33,10 @@ class ChatbotRepository {
                     override fun onResponse(call: Call<Response>, response: retrofit2.Response<Response>) {
 
                         val code = response.code()
-                        if(code == 200){
+                        if(code == 200){  //if the response is successful
                             response.body()?.choices?.get(0)?.message?.let {
                                 callback(it.content)
-                                Log.d("message", it.content) //this is just for testing
+                                Log.d("message", it.content)
                             }
                             }   else{
                             response.errorBody()?.let {
@@ -51,7 +51,6 @@ class ChatbotRepository {
                 })
         }   catch (e: Exception) {
                 return e.printStackTrace()
-
         }
     }
 }

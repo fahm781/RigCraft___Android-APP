@@ -6,7 +6,7 @@ data class ItemSummary(
     val price: Price,
     val image: Image,
     val itemWebUrl: String
-    // Add other fields as needed
+    // Add other fields here later
 )
 data class Price(
     val value: String,

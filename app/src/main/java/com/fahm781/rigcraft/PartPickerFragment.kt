@@ -235,6 +235,14 @@ class PartPickerFragment : Fragment() {
         button.setCompoundDrawablesWithIntrinsicBounds(drawable, 0, 0, 0)
     }
 
+    //set the compatibilityCheck button to default
+    private fun setCompatibiltiyButtonToDefault() {
+        setButtonStyle(compatibilityCheck,
+            ContextCompat.getColor(requireContext(), R.color.compat_yellow),
+            "PRESS TO CHECK FOR COMPATIBILITY",
+            R.drawable.press)
+    }
+
 //    show the selected build items on the GUI
     private fun showSelectedBuild() {
         val db = FirebaseFirestore.getInstance()
@@ -295,7 +303,7 @@ class PartPickerFragment : Fragment() {
 
                             // delete the selected item from the build if the remove button is clicked
                             selectedRemoveButton.setOnClickListener {
-                                deletebuild(documentName)
+                                deleteBuild(documentName)
                             }
                             getCurrentBuildSubtotal()
                             Log.d("Firestore", "DocumentSnapshot data: ${document.data}")
@@ -313,12 +321,7 @@ class PartPickerFragment : Fragment() {
                     }
             }
         }
-
-
-
     }
-
-
 
     // Initially set all selected buildItem layout(s) to GONE
     private fun setLayoutToGone() {
@@ -331,7 +334,7 @@ class PartPickerFragment : Fragment() {
     }
 
     //save the build to firestore database
-    fun saveBuild() {
+    private fun saveBuild() {
         if (getCurrentBuildDetails().isEmpty()) {
             Toast.makeText(context, "No items to save", Toast.LENGTH_SHORT).show()
             return
@@ -366,6 +369,7 @@ class PartPickerFragment : Fragment() {
                         }
                         clearCurrentBuild()
                         subtotalTextView.visibility = View.GONE
+                        setCompatibiltiyButtonToDefault()
                         Toast.makeText(context, "Build saved", Toast.LENGTH_SHORT).show()
                     }.addOnFailureListener { e ->
                     Log.w("Firestore", "Error saving build", e)
@@ -376,7 +380,7 @@ class PartPickerFragment : Fragment() {
     }
 
     //delete current build
-    fun deletebuild(documentName: String) {
+    private fun deleteBuild(documentName: String) {
         val userId = getUserID()
         val db = FirebaseFirestore.getInstance()
         if (userId != null) {
@@ -384,11 +388,10 @@ class PartPickerFragment : Fragment() {
                 .addOnSuccessListener {
                     Log.d("Firestore", "DocumentSnapshot successfully deleted!")
                     showSelectedBuild() // Refresh the selected build
-    //                                    selectedLayout.visibility = View.GONE // Hide the layout (temporary fix)
+                    setCompatibiltiyButtonToDefault()
                     if (getVisibleLayoutsCount() == 0){
                         subtotalTextView.visibility = View.GONE
                     }
-
                 }
                 .addOnFailureListener { e ->
                     Log.w("Firestore", "Error deleting document", e)
@@ -398,12 +401,12 @@ class PartPickerFragment : Fragment() {
     }
 
     //clear current build
-    fun clearCurrentBuild() {
+    private fun clearCurrentBuild() {
         if (getCurrentBuildDetails().isEmpty()) {
             Toast.makeText(context, "No items to clear", Toast.LENGTH_SHORT).show()
             return
         }
-        //you have to delete one by one, firestore does not support batch delete
+        //you have to delete one by one, firestore does not support batch delete hence the loop
         val db = FirebaseFirestore.getInstance()
         val userId = getUserID()
         if (userId != null) {
@@ -412,7 +415,8 @@ class PartPickerFragment : Fragment() {
             db.collection("Users").document(userId).collection("currentBuild").document(documentName).delete()
                     .addOnSuccessListener { documentReference ->
                         Log.d("Firestore", "Build Cleared")
-                        showSelectedBuild() //try moving this outside the loop
+                        showSelectedBuild()
+                        setCompatibiltiyButtonToDefault()
                     }
                     .addOnFailureListener { e ->
                         Log.w("Firestore", "Error adding document", e)
@@ -439,16 +443,6 @@ class PartPickerFragment : Fragment() {
                         }
                     }
                     callback(savedBuilds)
-
-                    //comment out the code below if any errors happen
-                    // Update the visibility of the heading based on the item count
-    //                val savedBuildsHeading: TextView =
-    //                    view?.findViewById(R.id.savedBuildsHeading) as TextView
-    //                if (savedBuilds.size > 0) {
-    //                    savedBuildsHeading.visibility = View.VISIBLE
-    //                } else {
-    //                    savedBuildsHeading.visibility = View.GONE
-    //                }
 
                     val savedBuildsHeading: TextView? = view?.findViewById(R.id.savedBuildsHeading) as? TextView
                     if (savedBuildsHeading != null) {

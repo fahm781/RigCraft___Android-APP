@@ -79,6 +79,7 @@ class ChatbotFragment : Fragment() {
                 val prompt = "Answer queries only related to PC building and such. Otherwise, say 'I can only answer queries related to PC building'"
 
                 welcomeText.visibility = View.GONE
+                // Get the response from the chatbot and add it to the recycler view
                 chatbotRepository.getResponse(query, prompt) { result ->
                     addMessage(result, BOT_MSG)
                 }
