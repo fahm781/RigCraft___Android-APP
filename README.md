@@ -20,4 +20,10 @@ RigCraft is an Android application developed using Kotlin and Java. It allows us
 
 ## Setup
 
-To run this project, you will need to have Android Studio installed. You can then clone the project and open it in Android Studio.
+1. To run this project, you will need to have Android Studio installed. You can then clone the project and open it in Android Studio.
+
+2. Sign up for the eBay Developers Program at [https://developer.ebay.com/](https://developer.ebay.com/). After signing up, you will receive a `clientId` and `clientSecret`. Add these to the `EbayTokenRegenerator.kt` file in your project. The file is located at `src/main/java/com/fahm781/rigcraft/ebayServices/EbayTokenRegenerator.kt`.
+
+3. Get the OpenAI API key from [https://openai.com/blog/openai-api](https://openai.com/blog/openai-api). Add this key to the `OpenAiApiInterface.kt` file in your project. The file is located at `src/main/java/com/fahm781/rigcraft/chatbotServices/OpenAiApiInterface.kt`.
+
+  Please replace the placeholders with the actual keys you received from eBay and OpenAI.
