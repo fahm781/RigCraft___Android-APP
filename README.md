@@ -1,5 +1,7 @@
 # RigCraft
 
+<img src="https://github.com/fahm781/RigCraft___Android-APP/assets/116156632/305037eb-13f4-4fc3-8b00-85fb974601be" alt="RigCraft Logo" width="240" height="240">
+
 RigCraft is an Android application developed using Kotlin and Java. It allows users to select and build their own custom PC rig from a list of components. The application also checks the compatibility of the selected components.
 
 ## Features
@@ -7,16 +9,17 @@ RigCraft is an Android application developed using Kotlin and Java. It allows us
 - Select components for your custom PC rig, including CPU, GPU, RAM, Storage, Power Supply, and Motherboard.
 - Save your custom build for future reference.
 - Check the compatibility of the selected components.
-- View saved builds.
+- Share builds with other users.
+- A chatbot that helps with all your PC building queries.
 
 ## Technologies Used
 
 - Kotlin
-- Java
-- Gradle
 - Android Studio
-- Firebase Firestore for data storage
-- Firebase Authentication for user management
+- Google Firebase Firestore for data storage
+- Google Firebase Authentication for user management
+- Open AI API
+- eBay Browse API
 
 ## Setup
 
