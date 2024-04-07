@@ -13,15 +13,15 @@ import com.google.firebase.auth.FirebaseAuth
 
 class RegistrationActivity : AppCompatActivity() {
 
-    lateinit var editTextEmail: TextInputEditText
-    lateinit var editTextPassword: TextInputEditText
-    lateinit var editTextPassword2: TextInputEditText
-    lateinit var buttonRegister: Button
-    lateinit var progressBar: ProgressBar
+    private lateinit var editTextEmail: TextInputEditText
+    private lateinit var editTextPassword: TextInputEditText
+    private lateinit var editTextPassword2: TextInputEditText
+    private lateinit var buttonRegister: Button
+    private lateinit var progressBar: ProgressBar
 
     //create a Firebase Authentication object
-    lateinit var auth: FirebaseAuth
-    lateinit var textView: TextView
+    private lateinit var auth: FirebaseAuth
+    private lateinit var textView: TextView
 
     public override fun onStart() {
         super.onStart()

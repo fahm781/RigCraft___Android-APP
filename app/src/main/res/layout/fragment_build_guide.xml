@@ -10,9 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="end"
-        android:paddingBottom="4dp"
-        >
+        android:gravity="start"
+        android:paddingBottom="4dp">
+
+        <Spinner
+            android:id="@+id/stepsSpinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
         <Button
             android:id="@+id/buttonPrevious"
@@ -21,8 +26,7 @@
             android:text="&lt;"
             android:textSize="30sp"
             style="?android:attr/buttonBarButtonStyle"
-            android:backgroundTint="#22746C83"
-            />
+            android:backgroundTint="#22746C83" />
 
         <Button
             android:id="@+id/buttonNext"
@@ -31,8 +35,7 @@
             android:text="&gt;"
             android:textSize="30sp"
             style="?android:attr/buttonBarButtonStyle"
-            android:backgroundTint="#22746C83"
-            />
+            android:backgroundTint="#22746C83" />
     </LinearLayout>
 
     <androidx.cardview.widget.CardView

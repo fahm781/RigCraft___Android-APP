@@ -16,8 +16,6 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var editTextPassword: TextInputEditText
     private lateinit var buttonLogin: Button
     private lateinit var progressBar: ProgressBar
-
-    //create a Firebase Authentication object
     private lateinit var auth: FirebaseAuth
     private lateinit var textView: TextView
 

@@ -5,8 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Spinner
 import android.widget.TextView
 
 // TODO: Rename parameter arguments, choose names that match
@@ -68,6 +71,7 @@ class BuildGuideFragment : Fragment() {
     private lateinit var textViewTitle: TextView
     private lateinit var textViewContent: TextView
     private lateinit var instructionImageView: ImageView
+    private lateinit var stepsSpinner: Spinner
     private var currentStepIndex = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -91,6 +95,24 @@ class BuildGuideFragment : Fragment() {
         buttonPrevious.setOnClickListener {
             moveToPreviousStep()
             updateUI()
+        }
+
+        stepsSpinner = view.findViewById(R.id.stepsSpinner)
+        ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, steps.map { it.title }).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            stepsSpinner.adapter = adapter
+        }
+
+        stepsSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                currentStepIndex = position
+                updateUI()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+
+            }
         }
 
         return view;

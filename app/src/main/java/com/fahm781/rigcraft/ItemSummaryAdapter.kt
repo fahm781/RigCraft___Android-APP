@@ -39,7 +39,8 @@ class ItemSummaryAdapter(private val itemSummaries: List<ItemSummary>,  private 
         val itemSummary = itemSummaries[position]
         holder.titleTextView.text = itemSummary.title
         holder.priceTextView.text = "£${itemSummary.price.value}"
-        Picasso.get().load(itemSummary.image.imageUrl).into(holder.imageView)
+//        Picasso.get().load(itemSummary.image.imageUrl).into(holder.imageView)
+        Picasso.get().load(itemSummary.image?.imageUrl).into(holder.imageView)
 
         holder.itemWebUrlButton.setOnClickListener {
             //redirect user to the ebay listing page aka. the itemSuumary.itemWebUrl

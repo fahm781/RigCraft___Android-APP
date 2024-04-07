@@ -59,7 +59,10 @@
                     android:text="View on eBay"
                     app:layout_constraintEnd_toStartOf="@+id/moreDetailsButton"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:backgroundTint="#22746C83"
+                    />
 
                 <Button
                     android:id="@+id/moreDetailsButton"
@@ -69,7 +72,10 @@
                     android:text="More Details"
                     app:layout_constraintEnd_toStartOf="@+id/addToBuildButton"
                     app:layout_constraintStart_toEndOf="@+id/itemWebUrlButton"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:backgroundTint="#22746C83"
+                    />
 
                 <Button
                     android:id="@+id/addToBuildButton"
@@ -79,7 +85,9 @@
                     android:text="Add To Build"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/moreDetailsButton"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+
+                    />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>

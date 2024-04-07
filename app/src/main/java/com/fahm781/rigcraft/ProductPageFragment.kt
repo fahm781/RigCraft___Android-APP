@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.fragment.findNavController
 import com.squareup.picasso.Picasso
 
 // TODO: Rename parameter arguments, choose names that match
@@ -30,6 +31,8 @@ class ProductPageFragment : Fragment() {
     private lateinit var priceTextView: TextView
     private lateinit var imageView: ImageView
     private lateinit var itemWebUrlButton: Button
+    private lateinit var backButton: Button
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +65,12 @@ class ProductPageFragment : Fragment() {
         itemWebUrlButton.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(itemWebUrl))
             startActivity(intent)
+        }
+
+        backButton = view.findViewById(R.id.backButton)
+
+        backButton.setOnClickListener {
+            findNavController().navigateUp()
         }
 
         return view

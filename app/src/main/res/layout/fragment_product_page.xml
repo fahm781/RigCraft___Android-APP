@@ -50,7 +50,15 @@
             android:text="Look on eBay" />
 
 
+
     </LinearLayout>
     </androidx.cardview.widget.CardView>
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="?android:attr/buttonBarButtonStyle"
+        android:text="Back To Product List" />
+
 
 </LinearLayout>
