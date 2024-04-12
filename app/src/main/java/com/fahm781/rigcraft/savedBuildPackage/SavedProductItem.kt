@@ -1,4 +1,4 @@
-package com.fahm781.rigcraft
+package com.fahm781.rigcraft.savedBuildPackage
 
 data class SavedProductItem(
     val type: String,

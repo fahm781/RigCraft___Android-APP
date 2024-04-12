@@ -19,6 +19,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fahm781.rigcraft.chatbotServices.ChatbotRepository
+import com.fahm781.rigcraft.savedBuildPackage.SavedBuild
+import com.fahm781.rigcraft.savedBuildPackage.SavedBuildsAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
@@ -74,7 +76,7 @@ class PartPickerFragment : Fragment() {
         selectCpu = view.findViewById(R.id.selectCpu)
         selectCpu.setOnClickListener {
             findNavController().navigate(R.id.action_partPickerFragment_to_productListFragment,
-                Bundle().apply { putString("productType",  "cpu") })
+                Bundle().apply { putString("productType", "cpu") })
         }
 
         selectGpu = view.findViewById(R.id.selectGpu)
@@ -163,36 +165,41 @@ class PartPickerFragment : Fragment() {
 
             // Show the disclaimer if the user is new or at random (20% chance)
             if (isFirstTimeUser() || randomNumber <= 20) {
-                showDisclaimer()
-                setNotFirstTimeUser()
-            }
+                showDisclaimer {
+                    setNotFirstTimeUser()
 
-            val chatbotRepository = ChatbotRepository()
-            val prompt = "Check the compatibility of the components. And respond with GREEN if the components are compatible, RED if they are not compatible, and GREY if you are not sure. Ignore the price and other useless information"
 
-            chatbotRepository.getResponse(buildDetails, prompt) { response ->
-                Log.d("ChatbotResponse", response)
-                when (response) {
-                    "GREEN" -> setButtonStyle(compatibilityCheck,
-                        ContextCompat.getColor(requireContext(), R.color.green),
-                        "Compatible",
-                        R.drawable.reshot_icon_tick_circle_nc7gmqhp6x
-                    )
-                    "RED" -> setButtonStyle(
-                        compatibilityCheck,
-                        ContextCompat.getColor(requireContext(), R.color.red),
-                        "Incompatible",
-                        R.drawable.red_x_icon
-                    )
-                    else -> setButtonStyle(
-                        compatibilityCheck,
-                        ContextCompat.getColor(requireContext(), R.color.grey),
-                        "Compibility: Unverified",
-                        R.drawable.question_mark_icon
-                    )
+                    val chatbotRepository = ChatbotRepository()
+                    val prompt =
+                        "Check the compatibility of the components. And respond with GREEN if the components are compatible, RED if they are not compatible, and GREY if you are not sure. Ignore the price and other useless information"
+
+                    chatbotRepository.getResponse(buildDetails, prompt) { response ->
+                        Log.d("ChatbotResponse", response)
+                        when (response) {
+                            "GREEN" -> setButtonStyle(
+                                compatibilityCheck,
+                                ContextCompat.getColor(requireContext(), R.color.green),
+                                "Compatible",
+                                R.drawable.reshot_icon_tick_circle_nc7gmqhp6x
+                            )
+
+                            "RED" -> setButtonStyle(
+                                compatibilityCheck,
+                                ContextCompat.getColor(requireContext(), R.color.red),
+                                "Incompatible",
+                                R.drawable.red_x_icon
+                            )
+
+                            else -> setButtonStyle(
+                                compatibilityCheck,
+                                ContextCompat.getColor(requireContext(), R.color.grey),
+                                "Compibility: Unverified",
+                                R.drawable.question_mark_icon
+                            )
+                        }
+                    }
                 }
             }
-
         }
     }
 
@@ -501,12 +508,13 @@ class PartPickerFragment : Fragment() {
     }
 
     // show a disclaimer to the user stating that the compatibility check may not be accurate
-    private fun showDisclaimer() {
+    private fun showDisclaimer(callback: () -> Unit) {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Disclaimer")
         builder.setMessage("Please note that some compatibility checks may yield inaccurate results. Please verify the compatibility of the components before purchasing them.")
         builder.setPositiveButton("OK") { dialog, _ ->
             dialog.dismiss()
+            callback()
         }
         val dialog = builder.create()
         dialog.show()

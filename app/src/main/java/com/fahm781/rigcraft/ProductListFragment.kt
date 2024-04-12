@@ -16,6 +16,7 @@ import com.fahm781.rigcraft.ebayServices.ItemSummary
 
 import com.fahm781.rigcraft.ebayServices.EbayApiClient
 import com.fahm781.rigcraft.ebayServices.SearchResult
+import com.fahm781.rigcraft.partPickerPackage.ItemSummaryAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

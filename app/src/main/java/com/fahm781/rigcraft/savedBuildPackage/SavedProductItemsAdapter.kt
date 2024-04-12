@@ -1,8 +1,7 @@
-package com.fahm781.rigcraft
+package com.fahm781.rigcraft.savedBuildPackage
 
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +9,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.fahm781.rigcraft.R
 import com.squareup.picasso.Picasso
 
 class SavedProductItemsAdapter (private val productItems: List<SavedProductItem>) : RecyclerView.Adapter<SavedProductItemsAdapter.ViewHolder>() {

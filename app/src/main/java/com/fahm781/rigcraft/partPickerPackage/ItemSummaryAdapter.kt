@@ -1,4 +1,4 @@
-package com.fahm781.rigcraft
+package com.fahm781.rigcraft.partPickerPackage
 
 
 import android.content.Intent
@@ -14,6 +14,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.fahm781.rigcraft.R
 import com.fahm781.rigcraft.ebayServices.ItemSummary
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
