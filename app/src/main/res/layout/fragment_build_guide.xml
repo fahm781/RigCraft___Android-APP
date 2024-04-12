@@ -17,7 +17,9 @@
             android:id="@+id/stepsSpinner"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:dropDownWidth="250dp"
+            />
 
         <Button
             android:id="@+id/buttonPrevious"

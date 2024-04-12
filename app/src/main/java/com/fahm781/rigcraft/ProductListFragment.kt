@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -44,7 +45,7 @@ class ProductListFragment : Fragment() {
     private lateinit var searchView: androidx.appcompat.widget.SearchView
     private var itemSummaries: List<ItemSummary> = ArrayList<ItemSummary>()
     private lateinit var progressBar: ProgressBar
-
+    private lateinit var sortByPrice: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,6 +90,11 @@ class ProductListFragment : Fragment() {
             }
         })
 
+//        sortByPrice = view.findViewById(R.id.sortByPrice)
+//        sortByPrice.setOnClickListener {
+//            searchEbayForItemsSortedByPopularity(productType.toString(), getCategoryID(productType.toString()))
+//        }
+
         return view
     }
 
@@ -121,14 +127,42 @@ class ProductListFragment : Fragment() {
         }
     }
 
+//    private fun searchEbayForItemsSortedByPopularity(query: String, categoryId:String) {
+//        CoroutineScope(Dispatchers.Main).launch {
+//            val token = EbayTokenRegenerator().getToken()
+//            if (token != null) {
+//                EbayApiClient.ebayApi.searchItemsSortedByPrice("Bearer $token", query, categoryId, "conditionIds:{1000}").enqueue(object : Callback<SearchResult> {
+//                    override fun onResponse(call: Call<SearchResult>, response: Response<SearchResult>) {
+//                        progressBar.visibility = View.GONE
+//                        if (response.isSuccessful) {
+//                            response.body()?.let { searchResult ->
+//                                for (item in searchResult.itemSummaries) {
+//                                    itemSummaries = searchResult.itemSummaries
+//                                    productrecyclerView.adapter = ItemSummaryAdapter(searchResult.itemSummaries, productType.toString())
+//                                    productrecyclerView.layoutManager = LinearLayoutManager(context)
+//                                    Log.d("EbaySearch", "Search successful: $item")
+//                                }
+//                            }
+//                        } else {
+//                            Log.e("EbaySearch", "Search failed: ${response.errorBody()?.string()}")
+//                        }
+//                    }
+//                    override fun onFailure(call: Call<SearchResult>, t: Throwable) {
+//                        progressBar.visibility = View.GONE
+//                        Log.e("EbaySearch", "Network error: ${t.message}")
+//                    }
+//                })
+//            }
+//        }
+//    }
     //gets the category id for the product type
     private fun getCategoryID(productType: String): String {
         return when (productType) {
-//            "cpu" -> "164"
+            "cpu" -> "164"
             "gpu" -> "27386&58058&175673"
 //            "ram" -> "170083"
             "Pc storage" -> "175669"
-//            "power supply" -> "1788"
+            "power supply" -> "42017"
 //            "motherboard" -> "1244"
             else -> ""
         }

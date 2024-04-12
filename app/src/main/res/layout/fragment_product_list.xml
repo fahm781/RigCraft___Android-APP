@@ -5,7 +5,9 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".ProductListFragment">
+    tools:context=".ProductListFragment"
+    android:paddingHorizontal="9dp"
+    >
 
     <TextView
         android:id="@+id/heading"
@@ -37,6 +39,17 @@
         app:queryBackground="@android:color/white"
         />
     </androidx.cardview.widget.CardView>
+    <Button
+        android:id="@+id/sortByPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="sort by price"
+        style="?android:attr/buttonBarButtonStyle"
+        android:backgroundTint="#22746C83"
+        android:padding="5dp"
+        android:visibility="gone"
+        />
+
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
@@ -46,7 +59,7 @@
     <ScrollView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingHorizontal="9dp"
+
     android:paddingTop="10dp"
     android:scrollbarStyle="insideInset"
     >

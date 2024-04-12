@@ -105,7 +105,7 @@ class BuildGuideFragment : Fragment() {
         }
 
         stepsSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 currentStepIndex = position
                 updateUI()
             }
@@ -114,7 +114,6 @@ class BuildGuideFragment : Fragment() {
 
             }
         }
-
         return view;
     }
 

@@ -90,19 +90,9 @@ dependencies {
     val nav_version = "2.7.5"
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
     implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
-
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
-
     implementation ("com.google.code.gson:gson:2.8.9")
-
-
     implementation ("com.squareup.picasso:picasso:2.71828")
-
-
-
-
-
-//implementation("androidx.navigation:navigation-safe-args-gradle-plugin:2.7.7")
 
 }
