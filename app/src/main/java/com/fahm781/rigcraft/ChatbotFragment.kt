@@ -68,8 +68,6 @@ class ChatbotFragment : Fragment() {
             chatRecyclerView.layoutManager = linearLayoutManager
         }
 
-
-
         //send the message to the chatbot and add it to the recycler view
         buttonSend.setOnClickListener {
             val query = editTextMessage.text.toString().trim()

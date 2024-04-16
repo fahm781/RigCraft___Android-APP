@@ -76,7 +76,7 @@ class AccountFragment : Fragment() {
             userEmailTextView.text = "User: not logged in"
         }
 
-//Submitting User Feedback
+        //Submitting User Feedback
         feedbackSubButton = view.findViewById(R.id.feedbackSubButton)
         feedbackSubButton.setOnClickListener{
             sendFeedback(view)
@@ -111,9 +111,7 @@ class AccountFragment : Fragment() {
             Toast.makeText(context, "No email client installed", Toast.LENGTH_SHORT).show()
         }
     }
-    private fun changePassword() {
-
-
+    fun changePassword() {
             val user = FirebaseAuth.getInstance().currentUser
             val oldPwd = oldPassword.text.toString()
             val newPwd = newPassword.text.toString()

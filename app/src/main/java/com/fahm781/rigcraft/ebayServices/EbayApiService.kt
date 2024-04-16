@@ -20,14 +20,14 @@ interface EbayApiService {
 
     ): Call<SearchResult>
 
-    @Headers("Content-Type: application/json", "X-EBAY-C-MARKETPLACE-ID:EBAY_GB")
-    @GET("buy/browse/v1/item_summary/search")
-    fun searchItemsSortedByPrice(
-        @Header("Authorization") authorization: String,
-        @Query("q") query: String,
-        @Query("category_ids") categoryID: String,
-        @Query("filter") filter: String,
-        @Query("sort") sort: String = "price"
-    ): Call<SearchResult>
+//    @Headers("Content-Type: application/json", "X-EBAY-C-MARKETPLACE-ID:EBAY_GB")
+//    @GET("buy/browse/v1/item_summary/search")
+//    fun searchItemsSortedByPrice(
+//        @Header("Authorization") authorization: String,
+//        @Query("q") query: String,
+//        @Query("category_ids") categoryID: String,
+//        @Query("filter") filter: String,
+//        @Query("sort") sort: String = "price"
+//    ): Call<SearchResult>
 
 }
