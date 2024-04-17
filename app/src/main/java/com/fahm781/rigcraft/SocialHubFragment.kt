@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.fahm781.rigcraft.partPickerPackage.ItemSummaryAdapter
 import com.fahm781.rigcraft.sharedBuildPackage.SharedBuild
 import com.fahm781.rigcraft.sharedBuildPackage.SharedBuildsAdapter
 import com.google.firebase.firestore.FirebaseFirestore
@@ -28,8 +29,6 @@ class SocialHubFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var searchView: androidx.appcompat.widget.SearchView
     private var items: List<SharedBuild> = ArrayList<SharedBuild>()
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,7 +90,9 @@ class SocialHubFragment : Fragment() {
                     Log.d("fetchSharedBuilds", "buildData for $buildIdentifier: $buildData")
 
                 }
+                items = sharedBuilds
                 // Update the adapter's data and notify it of the changes
+                recyclerView.adapter = sharedBuildsAdapter
                 sharedBuildsAdapter.sharedBuilds = sharedBuilds
                 sharedBuildsAdapter.notifyDataSetChanged()
             }
@@ -103,15 +104,13 @@ class SocialHubFragment : Fragment() {
     // Function to filter the sharedBuilds list and update the adapter
     private fun filterSharedBuilds(searchQuery: String) {
         val filteredList = ArrayList<SharedBuild>()
-        for (item in items) {
-            if (item.buildName.contains(searchQuery.lowercase())) {
-                if (item.buildName.contains(searchQuery.lowercase())) {
-                    filteredList.add(item)
-                }
+        for (item in sharedBuildsAdapter.sharedBuilds) {
+            if (item.buildName.lowercase().contains(searchQuery.lowercase())) {
+                filteredList.add(item)
             }
-            sharedBuildsAdapter.sharedBuilds = filteredList
-            sharedBuildsAdapter.notifyDataSetChanged()
         }
+        recyclerView.adapter = SharedBuildsAdapter(filteredList)
+        recyclerView.adapter?.notifyDataSetChanged()
     }
 
     companion object {

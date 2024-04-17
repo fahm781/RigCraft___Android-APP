@@ -12,6 +12,8 @@
         android:textAppearance="?attr/textAppearanceHeadline6"
         android:layout_alignParentTop="true"
         android:textSize="24sp"
+        android:paddingTop="10dp"
+
         />
 
     <TextView
@@ -21,7 +23,8 @@
         android:layout_below="@id/tvSocialHubHeader"
         android:layout_marginTop="8dp"
         android:text="A place where you can share your builds!"
-        android:layout_marginBottom="2dp"
+        android:paddingVertical="3dp"
+
         />
 
     <androidx.cardview.widget.CardView

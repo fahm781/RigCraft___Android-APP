@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fahm781.rigcraft.ebayServices.EbayTokenRegenerator
@@ -99,6 +100,7 @@ class ProductListFragment : Fragment() {
         return view
     }
 
+    //search for the product type on ebay
     private fun searchEbayForItems(query: String, categoryId:String) {
         CoroutineScope(Dispatchers.Main).launch {
             val token = EbayTokenRegenerator().getToken()
@@ -112,16 +114,15 @@ class ProductListFragment : Fragment() {
                                     itemSummaries = searchResult.itemSummaries
                                     productrecyclerView.adapter = ItemSummaryAdapter(searchResult.itemSummaries, productType.toString())
                                     productrecyclerView.layoutManager = LinearLayoutManager(context)
-                                    Log.d("EbaySearch", "Search successful: $item")
                                 }
                             }
                         } else {
-                            Log.e("EbaySearch", "Search failed: ${response.errorBody()?.string()}")
+                            Toast.makeText(context, "No results found", Toast.LENGTH_SHORT).show()
                         }
                     }
                     override fun onFailure(call: Call<SearchResult>, t: Throwable) {
                         progressBar.visibility = View.GONE
-                        Log.e("EbaySearch", "Network error: ${t.message}")
+                        Toast.makeText(context, "Error Finding Results", Toast.LENGTH_SHORT).show()
                     }
                 })
             }
@@ -174,7 +175,7 @@ class ProductListFragment : Fragment() {
     fun filterSearchResults(searchQuery: String){
         val filteredList = ArrayList<ItemSummary>()
         for (item in itemSummaries){
-            if (item.title.toLowerCase().contains(searchQuery.lowercase())){
+            if (item.title.lowercase().contains(searchQuery.lowercase())){
                 filteredList.add(item)
             }
         }

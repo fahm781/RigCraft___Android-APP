@@ -3,7 +3,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.fahm781.rigcraft.R
-import com.fahm781.rigcraft.buildGuidePackage.InstructionStep
+
 
 class BuildGuideViewModel : ViewModel() {
 

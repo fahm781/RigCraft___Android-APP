@@ -1,3 +1,4 @@
+package com.fahm781.rigcraft
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import android.os.Bundle
@@ -10,7 +11,6 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
-import com.fahm781.rigcraft.R
 import com.fahm781.rigcraft.buildGuidePackage.BuildGuideViewModel
 
 
