@@ -2,9 +2,14 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.RigCraft" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+         <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorTertiary">@color/colorAccent</item>
+        <item name="android:textColor">@color/white</item>
 
         <!-- the following changes the bg Colour-->
-        <item name="android:windowBackground">@color/background_color</item>
+        <item name="android:windowBackground">#130330</item>
+
+
     </style>
 </resources>

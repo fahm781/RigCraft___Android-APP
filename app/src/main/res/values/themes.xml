@@ -6,10 +6,4 @@
         <!-- the following changes the bg Colour-->
         <item name="android:windowBackground">@color/background_color</item>
     </style>
-
-<!--    <style name="Theme.RigCraft" parent="Base.Theme.RigCraft" />-->
-
-
-
-
 </resources>

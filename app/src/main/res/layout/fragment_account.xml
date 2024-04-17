@@ -34,8 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             app:cardCornerRadius="18dp"
-            app:cardElevation="5dp"
-            app:cardBackgroundColor="@android:color/white">
+            app:cardElevation="5dp">
     <LinearLayout
         android:id="@+id/changePwdLayout"
         android:layout_width="match_parent"
@@ -91,9 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             app:cardCornerRadius="18dp"
-            app:cardElevation="5dp"
-            app:cardBackgroundColor="@android:color/white"
-            >
+            app:cardElevation="5dp">
 
     <LinearLayout
         android:id="@+id/feedbackAndLogoutLayout"

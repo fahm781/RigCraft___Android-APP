@@ -6,7 +6,6 @@
         <item name="android:text">Uncompatible</item>
         <item name="android:drawableLeft">@drawable/red_x_icon</item>
         <item name="android:drawablePadding">100dp</item>
-
     </style>
 
     <style name="CompatibilityButtonGrey" parent="Widget.AppCompat.Button">
