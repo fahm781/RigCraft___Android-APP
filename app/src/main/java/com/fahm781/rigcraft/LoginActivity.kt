@@ -18,8 +18,10 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
     private lateinit var auth: FirebaseAuth
     private lateinit var textView: TextView
+    private lateinit var forgotPassword: TextView
 
-//this method checks if the user is already logged in, also this function is causing the crash when logged in
+
+    //this method checks if the user is already logged in, also this function is causing the crash when logged in
     public override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
@@ -83,6 +85,32 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
 
+        }
+        var lastPasswordResetTime: Long = 0
+        forgotPassword = findViewById(R.id.forgotPassword)
+        forgotPassword.setOnClickListener {
+            val email = editTextEmail.text.toString()
+            if (email.isEmpty()) {
+                Toast.makeText(this, "Enter your registered email", Toast.LENGTH_SHORT).show()
+            } else {
+                val currentTime = System.currentTimeMillis()
+                if (currentTime - lastPasswordResetTime < 5 * 60 * 1000) {
+                    // If less than 5 minutes have passed since the last request, show a message
+                    Toast.makeText(this, "Please wait for 5 minutes before requesting another password reset", Toast.LENGTH_SHORT).show()
+                } else {
+                    // If 5 minutes or more have passed, proceed with the password reset request
+                    auth.sendPasswordResetEmail(email)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                Toast.makeText(this, "Reset link sent to your email", Toast.LENGTH_SHORT).show()
+                                // Update the time of the last password reset request
+                                lastPasswordResetTime = currentTime
+                            } else {
+                                Toast.makeText(this, "Unable to send reset mail", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                }
+            }
         }
     }
 }

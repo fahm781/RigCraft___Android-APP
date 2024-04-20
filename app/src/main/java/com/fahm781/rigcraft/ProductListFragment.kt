@@ -47,7 +47,7 @@ class ProductListFragment : Fragment() {
     private lateinit var searchView: androidx.appcompat.widget.SearchView
     private var itemSummaries: List<ItemSummary> = ArrayList<ItemSummary>()
     private lateinit var progressBar: ProgressBar
-    private lateinit var sortByPrice: Button
+//    private lateinit var sortByPrice: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

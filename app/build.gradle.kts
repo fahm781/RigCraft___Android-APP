@@ -77,6 +77,7 @@ dependencies {
     // Declare the dependency for the Cloud Firestore library
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation("com.google.firebase:firebase-firestore")
+    implementation("androidx.test:core-ktx:1.5.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -95,4 +96,8 @@ dependencies {
     implementation ("com.google.code.gson:gson:2.8.9")
     implementation ("com.squareup.picasso:picasso:2.71828")
 
+    testImplementation ("org.mockito:mockito-core:4.2.0")
+    testImplementation ("org.robolectric:robolectric:4.7.3")
+    androidTestImplementation ("androidx.test.espresso:espresso-intents:3.5.1")
+    androidTestImplementation ("org.mockito:mockito-android:4.0.0")
 }

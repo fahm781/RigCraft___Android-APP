@@ -64,8 +64,14 @@ class RegistrationActivity : AppCompatActivity() {
 
             if (password.isEmpty() || password2.isEmpty()) {
                 progressBar.visibility = ProgressBar.GONE
-                Toast.makeText(this, "Enter a Password into the field(s)", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(this, "Enter a Password into the field(s)", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Check if password is at least 8 characters long
+            if (password.length < 8) {
+                progressBar.visibility = ProgressBar.GONE
+                Toast.makeText(this, "Password should be at least 8 characters long", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 

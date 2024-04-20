@@ -19,8 +19,6 @@
         android:scaleType="fitCenter"
         />
 
-
-
     <!--Page Heading-->
     <TextView
         android:text="@string/login"
@@ -89,5 +87,14 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:paddingTop="15dp"/>
+
+    <TextView
+        android:id="@+id/forgotPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Forgot Password?"
+        android:textColor="@color/design_default_color_primary_dark"
+        android:paddingTop="5dp"
+        />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

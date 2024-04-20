@@ -9,6 +9,7 @@
 <!--        android:layout_height="wrap_content"-->
 <!--        android:visibility="invisible"-->
 <!--        />-->
+
     <!-- Left chat bubble -->
     <LinearLayout
         android:id="@+id/left_chat_view"
@@ -70,63 +71,4 @@
 
 </RelativeLayout>
 
-
-    <!--<?xml version="1.0" encoding="utf-8"?>-->
-<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="wrap_content"-->
-<!--    android:padding="8dp">-->
-
-<!--    <LinearLayout-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:id="@+id/left_chat_view"-->
-<!--        android:background="@drawable/rounded_chatbubble"-->
-<!--        android:padding="8dp"-->
-<!--        android:layout_marginEnd="80dp"-->
-<!--        android:orientation="horizontal"-->
-<!--        >-->
-<!--        <ImageView-->
-<!--            android:layout_width="40dp"-->
-<!--            android:layout_height="40dp"-->
-<!--            android:src="@mipmap/ic_launcher"-->
-<!--            android:layout_marginEnd="8dp"-->
-<!--        />-->
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:id="@+id/left_chat_text_view"-->
-<!--            android:textColor="@color/black"-->
-<!--            android:textSize="18sp"-->
-<!--            />-->
-<!--    </LinearLayout>-->
-
-<!--    <LinearLayout-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:id="@+id/right_chat_view"-->
-<!--        android:layout_alignParentEnd="true"-->
-<!--        android:background="@drawable/rounded_chatbubble"-->
-<!--        android:backgroundTint="#673AB7"-->
-<!--        android:padding="8dp"-->
-<!--        android:layout_marginStart="80dp"-->
-<!--        android:orientation="horizontal"-->
-<!--        >-->
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:id="@+id/right_chat_text_view"-->
-<!--            android:textColor="@color/white"-->
-<!--            android:textSize="18sp"-->
-<!--            />-->
-
-<!--        <ImageView-->
-<!--            android:layout_width="40dp"-->
-<!--            android:layout_height="40dp"-->
-<!--            android:src="@mipmap/ic_launcher"-->
-<!--            android:layout_marginStart="8dp"-->
-<!--            />-->
-<!--    </LinearLayout>-->
-
-<!--</RelativeLayout>-->
 
