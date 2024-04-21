@@ -109,6 +109,7 @@ class SharedBuildsAdapter(var sharedBuilds: MutableList<SharedBuild>) : Recycler
         }
     }
 
+    // Function to add the products to the layout
     private fun addProductToLayout(
         sharedBuild: SharedBuild,
         holder: SharedBuildsAdapter.ViewHolder

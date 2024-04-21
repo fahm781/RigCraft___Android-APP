@@ -18,8 +18,6 @@ class RegistrationActivity : AppCompatActivity() {
     private lateinit var editTextPassword2: TextInputEditText
     private lateinit var buttonRegister: Button
     private lateinit var progressBar: ProgressBar
-
-    //create a Firebase Authentication object
     private lateinit var auth: FirebaseAuth
     private lateinit var textView: TextView
 
@@ -97,16 +95,9 @@ class RegistrationActivity : AppCompatActivity() {
                         startActivity(intent)
                     } else {
                         // If sign in fails, display a message to the user
-                        Toast.makeText(
-                            baseContext,
-                            "Authentication failed.",
-                            Toast.LENGTH_SHORT,
-                        ).show()
-
+                        Toast.makeText(baseContext,"Authentication failed.",Toast.LENGTH_SHORT).show()
                     }
                 }
-
-
         }
     }
 }

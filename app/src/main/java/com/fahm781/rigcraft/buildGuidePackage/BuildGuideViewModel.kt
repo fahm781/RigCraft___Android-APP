@@ -6,7 +6,7 @@ import com.fahm781.rigcraft.R
 
 
 class BuildGuideViewModel : ViewModel() {
-
+    //list of steps to build a pc
     val steps = listOf(
         InstructionStep(
             "Install the CPU",
@@ -63,17 +63,20 @@ class BuildGuideViewModel : ViewModel() {
     private val _currentStep = MutableLiveData(steps[_currentStepIndex.value!!])
     val currentStep: LiveData<InstructionStep> = _currentStep
 
+    //move to the next step
     fun moveToNextStep() {
         if (_currentStepIndex.value!! < steps.size - 1) {
             _currentStepIndex.value = _currentStepIndex.value!! + 1
             _currentStep.value = steps[_currentStepIndex.value!!]
         }
     }
+    //update the current step index
     fun updateCurrentStepIndex(index: Int) {
         _currentStepIndex.value = index
         _currentStep.value = steps[index]
     }
 
+    //move to the previous step
     fun moveToPreviousStep() {
         if (_currentStepIndex.value!! > 0) {
             _currentStepIndex.value = _currentStepIndex.value!! - 1

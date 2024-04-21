@@ -21,7 +21,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var forgotPassword: TextView
 
 
-    //this method checks if the user is already logged in, also this function is causing the crash when logged in
+    //this method checks if the user is already logged in and sends them to the MainActivity
     public override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
@@ -43,6 +43,8 @@ class LoginActivity : AppCompatActivity() {
         buttonLogin = findViewById(R.id.buttonLogin)
         progressBar = findViewById(R.id.progressBar)
         textView = findViewById(R.id.regNow)
+        forgotPassword = findViewById(R.id.forgotPassword)
+        var lastPasswordResetTime: Long = 0
 
         textView.setOnClickListener {
             val intent = Intent(applicationContext, RegistrationActivity::class.java)
@@ -86,8 +88,8 @@ class LoginActivity : AppCompatActivity() {
                 }
 
         }
-        var lastPasswordResetTime: Long = 0
-        forgotPassword = findViewById(R.id.forgotPassword)
+
+
         forgotPassword.setOnClickListener {
             val email = editTextEmail.text.toString()
             if (email.isEmpty()) {

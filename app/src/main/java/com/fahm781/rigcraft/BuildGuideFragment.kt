@@ -17,7 +17,6 @@ import com.fahm781.rigcraft.buildGuidePackage.BuildGuideViewModel
 class BuildGuideFragment : Fragment() {
 
     private val viewModel: BuildGuideViewModel by viewModels()
-
     private lateinit var buttonNext: Button
     private lateinit var buttonPrevious: Button
     private lateinit var textViewTitle: TextView
@@ -38,41 +37,42 @@ class BuildGuideFragment : Fragment() {
         instructionImageView = view.findViewById(R.id.instructionImageView)
         stepsSpinner = view.findViewById(R.id.stepsSpinner)
 
+        // Observe the current step and update the UI
         viewModel.currentStep.observe(viewLifecycleOwner) { step ->
             textViewTitle.text = step.title
             textViewContent.text = step.content
             instructionImageView.setImageResource(step.imageResId)
         }
-
+        // Observe the current step index and update the UI
         viewModel.currentStepIndex.observe(viewLifecycleOwner) { index ->
             stepsSpinner.setSelection(index)
             buttonPrevious.isEnabled = index != 0
             buttonNext.isEnabled = index != viewModel.steps.size - 1
         }
-
+        //pressing next button will move to the next step
         buttonNext.setOnClickListener {
             viewModel.moveToNextStep()
         }
 
+        //pressing previous button will move to the previous step
         buttonPrevious.setOnClickListener {
             viewModel.moveToPreviousStep()
         }
 
+        //setting up the spinner with the steps
         ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, viewModel.steps.map { it.title }).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             stepsSpinner.adapter = adapter
         }
 
+        //selecting a step from the spinner will update the current step index
         stepsSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 viewModel.updateCurrentStepIndex(position)
             }
-
             override fun onNothingSelected(parent: AdapterView<*>) {
-
             }
         }
-
         return view
     }
 }

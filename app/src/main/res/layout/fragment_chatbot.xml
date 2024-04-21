@@ -62,10 +62,8 @@
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:src="@android:drawable/ic_menu_send"
-                android:background="@drawable/rounded_custom_button"
+                android:background="@drawable/rounded_custom_button3"
                  />
-
-
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

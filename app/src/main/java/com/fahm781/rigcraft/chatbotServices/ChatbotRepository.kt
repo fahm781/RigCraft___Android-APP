@@ -11,7 +11,6 @@ class ChatbotRepository {
     private val openAiApiInstance = openAiApiClient.getInstance()
 
     fun getResponse(msg: String, prompt: String, callback: (String) -> Unit) {
-//        val prompt = "Answer queries only related to PC building and such. Otherwise, say 'I can only answer queries related to PC building'"
         val model = "gpt-3.5-turbo"
         try {
             val request = Request(

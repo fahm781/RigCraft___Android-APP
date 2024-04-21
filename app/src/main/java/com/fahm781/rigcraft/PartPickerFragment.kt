@@ -31,7 +31,7 @@ import kotlinx.coroutines.tasks.await
 import kotlin.random.Random
 
 
-// TODO: Rename parameter arguments, choose names that match
+
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -43,7 +43,7 @@ private const val ARG_PARAM2 = "param2"
  */
 
 class PartPickerFragment : Fragment() {
-    // TODO: Rename and change types of parameters
+
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var selectCpu: Button
@@ -57,8 +57,6 @@ class PartPickerFragment : Fragment() {
     private lateinit var compatibilityCheck: Button
     private lateinit var subtotalTextView: TextView
     private var savedBuildsAdapter: SavedBuildsAdapter? = null
-
-    //    private lateinit var subtotal: TextView
     val productTypes = listOf("cpu", "gpu", "ram", "Pc_storage", "power_supply", "motherboard")
 
     override fun onCreateView(
@@ -138,9 +136,9 @@ class PartPickerFragment : Fragment() {
             savedBuildsRecyclerView.adapter = savedBuildsAdapter
         }
 
+        //check the compatibility of the selected components
         compatibilityCheck = view.findViewById(R.id.compatibilityCheck)
         compatibilityCheck.setOnClickListener {
-
             val buildDetails = getCurrentBuildDetails()
             if (buildDetails.isEmpty()) {
                 Toast.makeText(context, "Please select a build", Toast.LENGTH_SHORT).show()
@@ -148,7 +146,7 @@ class PartPickerFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            //If theres only one Item selected, return a toast message (therws nothing else to compare with)
+            //If theres only one Item selected, return a toast message (theres nothing else to compare with)
             val count = getVisibleLayoutsCount()
             if (count < 2) {
                 Toast.makeText(
@@ -237,7 +235,7 @@ class PartPickerFragment : Fragment() {
         button.setCompoundDrawablesWithIntrinsicBounds(drawable, 0, 0, 0)
     }
 
-    //set the compatibilityCheck button to default
+    //set the compatibilityCheck button style to default
     private fun setCompatibiltiyButtonToDefault() {
         setButtonStyle(compatibilityCheck,
             ContextCompat.getColor(requireContext(), R.color.compat_yellow),

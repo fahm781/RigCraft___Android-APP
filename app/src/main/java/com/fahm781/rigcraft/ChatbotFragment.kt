@@ -49,11 +49,9 @@ class ChatbotFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        // Inflate the layout for this fragment
         val view=  inflater.inflate(R.layout.fragment_chatbot, container, false)
 
-        // Initialize the button and set the click listener
+        // Initialise the button and set the click listener
         buttonSend = view.findViewById(R.id.buttonSend)
         editTextMessage = view.findViewById(R.id.editTextMessage)
         chatRecyclerView = view.findViewById(R.id.chatRecyclerView)
@@ -174,7 +172,7 @@ class ChatbotFragment : Fragment() {
         sharedPreferences.edit().putBoolean("firstTimeUser", false).apply()
     }
 
-    // show a disclaimer to the user stating that the chatbot responses may not be accurate
+    // show a disclaimer to the user stating that the chatbot responses may not be accurate at times
     private fun showDisclaimer() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Disclaimer")

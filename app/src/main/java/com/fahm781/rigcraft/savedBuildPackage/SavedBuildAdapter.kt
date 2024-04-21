@@ -66,11 +66,9 @@ class SavedBuildsAdapter(private var savedBuilds: MutableList<SavedBuild>) : Rec
                 val adapter = SavedProductItemsAdapter(productItems)
                 recyclerView.adapter = adapter
 
-
             // Find the buttons in the dialog
             val shareBuildButton: Button = dialog.findViewById(R.id.shareBuildButton)
             val closeButton: Button = dialog.findViewById(R.id.closeButton)
-
 
             shareBuildButton.setOnClickListener {
                     // Convert the productItems list to a HashMap
@@ -79,12 +77,9 @@ class SavedBuildsAdapter(private var savedBuilds: MutableList<SavedBuild>) : Rec
                         buildDataMap[productItem.type] = productItem.details
                     }
 
-
                     // Create the main HashMap that is being saved to Firestore
                     val buildData = hashMapOf<String, Any>()
                     buildData["buildData"] = buildDataMap
-//                    buildData["buildName"] = buildName
-//                    buildData["comment"] = comment
 
                     val userEmail = FirebaseAuth.getInstance().currentUser?.email
                     if (userEmail != null) {
@@ -170,6 +165,7 @@ class SavedBuildsAdapter(private var savedBuilds: MutableList<SavedBuild>) : Rec
         }
     }
 
+    //show the dialog to add a build name and comment before sharing the build
     private fun showAlertDialog(view: View, callback: (Pair<String, String>) -> Unit) {
         val builder = AlertDialog.Builder(view.context)
         val inflater = LayoutInflater.from(view.context)

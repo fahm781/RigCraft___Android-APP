@@ -2,6 +2,7 @@ package com.fahm781.rigcraft
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -43,9 +44,8 @@ class AccountFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_account, container, false)
 
-// Logging out User
-
-        logoutButton = view.findViewById(R.id.logoutButton) // replace with your actual button ID
+        // Logging out User
+        logoutButton = view.findViewById(R.id.logoutButton)
         logoutButton.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
             val intent = Intent(requireContext(), LoginActivity::class.java)
@@ -53,12 +53,12 @@ class AccountFragment : Fragment() {
             activity?.finish()
         }
 
-//Changing password
 
         changePwdButton = view.findViewById(R.id.changePwdButton)
         newPassword = view.findViewById(R.id.newPassword)
         oldPassword = view.findViewById(R.id.oldPassword)
         confirmNewPassword = view.findViewById(R.id.confirmNewPassword)
+
         changePwdButton.setOnClickListener{
             changePassword()
         }
@@ -81,7 +81,6 @@ class AccountFragment : Fragment() {
         feedbackSubButton.setOnClickListener{
             sendFeedback(view)
         }
-
         return view
     }
 
@@ -98,20 +97,26 @@ class AccountFragment : Fragment() {
             return
         }
 
-        val emailIntent = Intent(Intent.ACTION_SEND).apply {
-            type = "message/rfc822"
+//        val emailIntent = Intent(Intent.ACTION_SEND).apply {
+//            type = "message/rfc822"
+//            putExtra(Intent.EXTRA_EMAIL, arrayOf("farazahmed9910@gmail.com")) // Receiver's email address
+//            putExtra(Intent.EXTRA_SUBJECT, "RigCraft Feedback (User Email: $email)\n$title") // Subject of the email
+//            putExtra(Intent.EXTRA_TEXT, message) // Body of the email
+//        }
+        val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
+            data = Uri.parse("mailto:") // only email apps should handle this
             putExtra(Intent.EXTRA_EMAIL, arrayOf("farazahmed9910@gmail.com")) // Receiver's email address
             putExtra(Intent.EXTRA_SUBJECT, "RigCraft Feedback (User Email: $email)\n$title") // Subject of the email
             putExtra(Intent.EXTRA_TEXT, message) // Body of the email
         }
-
         try {
             startActivity(Intent.createChooser(emailIntent, "Send feedback..."))
         } catch (ex: ActivityNotFoundException) {
             Toast.makeText(context, "No email client installed", Toast.LENGTH_SHORT).show()
         }
     }
-    fun changePassword() {
+
+    private fun changePassword() {
             val user = FirebaseAuth.getInstance().currentUser
             val oldPwd = oldPassword.text.toString()
             val newPwd = newPassword.text.toString()
@@ -134,16 +139,15 @@ class AccountFragment : Fragment() {
                 return
             }
 
-            // Check password complexity requirements if any
-            if (newPwd.length < 6) {
+            // Password should be at least 8 characters long
+            if (newPwd.length < 8) {
                 Toast.makeText(
                     context,
-                    "Password should be at least 6 characters long.",
+                    "Password should be at least 8 characters long.",
                     Toast.LENGTH_SHORT
                 ).show()
                 return
             }
-
             if (user != null) {
                 // Reauthenticate the user
                 val credential = EmailAuthProvider.getCredential(user.email!!, oldPwd)
