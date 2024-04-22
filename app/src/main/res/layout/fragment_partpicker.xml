@@ -61,9 +61,10 @@
 
                     <ImageView
                         android:id="@+id/cpuImageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/press"
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
+                        android:layout_marginEnd="3dp"
+                        android:src="@drawable/connect_front_io"
                         />
 
                     <LinearLayout
@@ -124,9 +125,9 @@
 
                     <ImageView
                         android:id="@+id/gpuImageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
+                        android:layout_marginEnd="3dp"
                         />
 
                     <LinearLayout
@@ -183,9 +184,9 @@
 
                     <ImageView
                         android:id="@+id/ramImageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
+                        android:layout_marginEnd="3dp"
                         />
                     <LinearLayout
                         android:layout_width="0dp"
@@ -242,9 +243,9 @@
 
                     <ImageView
                         android:id="@+id/Pc_storageImageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
+                        android:layout_marginEnd="3dp"
                         />
                     <LinearLayout
                         android:layout_width="0dp"
@@ -303,8 +304,9 @@
 
                     <ImageView
                         android:id="@+id/power_supplyImageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
+                        android:layout_marginEnd="3dp"
                         />
                     <LinearLayout
                         android:layout_width="0dp"
@@ -362,9 +364,9 @@
 
                     <ImageView
                         android:id="@+id/motherboardImageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
+                        android:layout_marginEnd="3dp"
                         />
 
                     <LinearLayout
