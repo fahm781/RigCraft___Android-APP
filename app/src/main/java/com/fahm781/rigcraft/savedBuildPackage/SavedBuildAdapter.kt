@@ -118,7 +118,7 @@ class SavedBuildsAdapter(private var savedBuilds: MutableList<SavedBuild>) : Rec
                                 val newBuildId = db.collection("SharedBuilds").document().id
                                 db.collection("SharedBuilds").document(newBuildId).set(buildData)
                                     .addOnSuccessListener {
-                                        dialog.dismiss()
+                                            dialog.dismiss()
                                     }.addOnFailureListener { e ->
                                         Log.w("Firestore", "Error sharing build", e)
                                     }
@@ -180,6 +180,8 @@ class SavedBuildsAdapter(private var savedBuilds: MutableList<SavedBuild>) : Rec
             val comment = commentEditText.text.toString()
             callback(Pair(buildName, comment))
             dialog.dismiss()
+            // Show a toast message to confirm that the build has been shared
+            Toast.makeText(view.context, "Build shared successfully", Toast.LENGTH_SHORT).show()
         }
         builder.setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
 

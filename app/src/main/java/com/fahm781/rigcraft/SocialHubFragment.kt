@@ -13,6 +13,7 @@ import com.fahm781.rigcraft.partPickerPackage.ItemSummaryAdapter
 import com.fahm781.rigcraft.sharedBuildPackage.SharedBuild
 import com.fahm781.rigcraft.sharedBuildPackage.SharedBuildsAdapter
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
